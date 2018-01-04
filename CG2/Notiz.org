@@ -1,0 +1,270 @@
+* 2. Histogramme
+Wichtige Inhalten im Buch 书上重要内容
+** Was ist ein Histogramm
+Histogramme sind Bildstatistiken und ein häufig verwendetes Hilfsmit- tel, um wichtige Eigenschaften von Bildern rasch zu beurteilen. Histogramme sind Häufigkeitsverteilungen und Histogramme von Bil- dern beschreiben die Häufigkeit der einzelnen Intensitätswerte.
+** Was ist aus Histogrammen abzulesen
+Das Histogramm zeigt wichtige Eigenschaften eines Bilds, wie z. B. den Kontrast und die Dynamik, Probleme bei der Bildaufnahme und even- tuelle Folgen von anschließenden Verarbeitungsschritten.
+*** Eigenschaften der Bildaufnahme
+**** Belichtung
+**** Kontrast
+Als Kontrast bezeichnet man den Bereich von Intensitätsstufen, die in einem konkreten Bild effektiv genutzt werden, also die Differenz zwischen dem maximalen und minimalen Pixelwert.
+**** Dynamik
+Unter Dynamik versteht man die Anzahl verschiedener Pixelwerte in einem Bild.
+** Histogramme für Bilder mit mehr als 8 Bit
+*** Binning
+Die Lösung dafür besteht darin, jeweils mehrere Intensitätswerte bzw. ein Intervall von Intensitätswerten zu einem Eintrag zusammenzufassen, anstatt für jeden möglichen Wert eine eigene Zählerzelle vorzusehen.
+** Histogramme für Farb-Bilder
+*** 1. Möglichkeit:
+Histogramm pro Farbkanal angeben
+*** 2. Möglichkeit:
+Farbbild in Graubild gleicher Helligkeiten überführen
+Dabei müssen r,g,b unterschiedlich gewichtet werden
+I = 0,299 × R + 0,587 × G + 0,114 × B
+
+- Ergebnis ist ist ein Wert, der unabhängig von den Farben die Helligkeit des Bildpunktes wiedergibt.
+- Die prozentuale Verteilung der Farben hängt mit der entsprechenden Farbempfindlichkeit der Augen zusammen.
+*** Rekonstruktion von Über- oder Unterbelichtung nicht komplett möglich
+- überbelichtete Bereiche rot, unterbelichtete Bereiche blau eingefärbt.
+- Für diese Bereiche wird lediglich die Information „weiß“ bzw. „schwarz“ abgespeichert.
+- Diese Bereiche können auch in einer späteren Korrektur am Computer nicht wieder hergestellt werden.
+
+** Das kumulative Histogramm
+H(i)= H(i-1) + h(i)
+
+** Statistische Informationen aus dem Histogramm
+*** Mittelwert und Varianz
+*** Median
+mI =min{ i|H(i)≥ MN/2}
+
+
+
+
+* 3. Punktoperationen
+Als Punktoperationen bezeichnet man Operationen auf Bilder, die nur die Werte der einzelnen Bildelemente betreffen und keine Änderungen der Größe, Geometrie oder der lokalen Bildstruktur nach sich ziehen.
+
++ Punktoperation f:jeder neue Pixelwert hängt ausschließlich vom alten Pixelwert ab, unabhängig von anderen Pixelwerten im Bild
++ Homogene Punktoperation:f ist unabhängig von den Bildkoordinaten
+*** Typische Beispiele für homogene Punktoperationen
++ Änderungen von Kontrast und Helligkeit,
++ Anwendung von beliebigen Helligkeitskurven,
++ das Invertieren von Bildern,
++ das Quantisieren der Bildhelligkeit in grobe Stufen (Poster-Effekt), • eine Schwellwertbildung,
++ Gammakorrektur,
++ Farbtransformationen
+** Änderung der Bildintensität
+*** Kontrast und Helligkeit
+fcontr(a) = a · 1.5 bzw. fbright(a) = a + 10
+*** Beschränkung der Ergebniswerte(clamping)
+Bei der Umsetzung von Bildoperationen muss berücksichtigt werden, dass der vorgegebene Wertebereich für Bildpixel beschränkt ist (bei 8- Bit-Grauwertbildern auf [0, 255]) und die berechneten Ergebnisse mögli- cherweise außerhalb dieses Wertebereichs liegen.
++ if (b > 255) b = 255;
+*** Invertieren von Bildern
+finv(a) = −a + amax = amax − a.
+*** Schwellwertoperation (thresholding 阈值)
+fthreshold(a) =   a0 für a < q, a1 für a > q
+
+** Automatische Kontrastanpassung
+SCHEDULED: <2017-12-30 Sat>
+Ziel der automatischen Kontrastanpassung („Auto-Kontrast“) ist es, die Pixelwerte eines Bilds so zu verändern, dass der gesamte verfügbare Wer- tebereich abgedeckt wird.
+Dazu wird das aktuell dunkelste Pixel auf den niedrigsten, das hellste Pixel auf den höchsten Intensitätswert abgebildet und alle dazwischenliegenden Pixelwerte linear verteilt.
+
+fac(a) = (a−alow) · (255/(ahigh − alow))
+
+** Modifizierte Auto-Kontrast-Funktion
++  p65 详细
+In der Praxis kann die Formulierung in Gl. 4.6 dazu führen, dass durch
+einzelne Pixel mit extremen Werten die gesamte Intensitätsverteilung
+stark verändert wird. Das lässt sich weitgehend vermeiden, indem man
+einen fixen Prozentsatz (plow, phigh) der Pixel am oberen bzw. unteren .
+Ende des Wertebereichs in „Sättigung“ gehen lässt, d. h. auf die beiden Extremwerte abbildet.
+
+Die Werte für a′low, a′high sind vom gegebenen Bildinhalt abhängig und können auf einfache Weise aus dem kumulativen Histogramm H(i) des Ausgangsbilds I berechnet werden:
+a′low  = min  i | H(i) ≥ M ·N ·plow
+a′high = min  i | H(i) <= M ·N ·(1-phigh)
+
+
+** Linearer Histogrammausgleich
+*** Ziel des Histogrammausgleichs
+ Ziel des Histogrammausgleichs ist es, ein Bild durch eine homogene Punktoperation so zu verändern, dass das Ergebnisbild ein gleichförmig verteiltes Histogramm aufweist. Das kann bei diskreten Verteilungen natürlich nur angenähert werden, denn homogene Punktoperationen können (wie im vorigen Abschnitt diskutiert) Histogrammeinträge nur verschieben oder zusammenfügen, nicht aber trennen.
+*** Punktoperation feq(a)
++ f(a) = H(a)x(K-1)/(MxN)
+Das Verhältnis H(a) zu MxN soll annähernd gleich wie f(a) zu (K-1)
+Wie in Abb. 4.10 deutlich sichtbar, kann ein Histogrammausgleich zum Verschmelzen von Histo- grammlinien und damit zu einem Verlust an Bilddynamik führen
+
+*** Sinn von Histogrammausgleich
+- Anpassung als lineare Verteilung erscheint willkGrlich, kaum ein Bild (auch perfekt belichtete Bilder) hat a priori eine solche Verteilung der Grauwerte.
+- Meistens ist die Verteilung der Intensitätswerte nicht einmal annähernd gleichfRrmig, sondern ähnelt wenn Gberhaupt eher einer Gaußfunktion.
+
++ Notwendig :: Anpassung an eine beliebige Verteilung, etwa eine die durch ein Referenzbild gegeben ist.
+
+*** Anpassung des Histogramms an eine Referenzverteilung
+公式需要了解 P72 Abb 4.11
+- Ziel: Modifiziere Ausgangsbild I A durch eine homogene Punktoperation so, daß seine Verteilungsfunktion PA mRglichst gut mit PR eines Referenzbildes IR Gbereinstimmt
+- Schritt 1: Histogramm wird durch linearen Histogrammausgleich in eine Gleichverteilung GberfGhrt
+- Schritt 2: Das Resultat wird Gber die Inverse PR(a)−1 der Referenz- verteilung transformiert
+
+
++ Problem :: Natürliche Verteilungsfunktionen sind oft nicht invertierbar.
++ Lösung :: Schrittweises ”AusfGllen” der Referenzverteilung PR(a)
+für einen gegebenen Pixelwert a wird der minimale Wert a0 in P R (a 0 ) gesucht, bei dem PA(a) ≤ PR(a0) ist
+
+
+
+*** Ausgleich oder Kontrast-Anpassung für Farb-Bilder
++ Problem :: getrennter Histogrammausgleich oder Kontrast-Anpassung fGr die 3 Farb-Kanäle wGrde die relative Zusammensetzung der Farben im finalen Bild ändern.
+Lösung: Konvertierung von rgb in ein Farb-Modell, bei dem Helligkeits- und Farbinformation getrennt gespeichert werden.
+**** Prozedere:
+***** Konvertiere von rgb nach passendem Modell
+***** Histogrammausgleich / Kontrastanpassung nur fGr die Helligkeiten durchfGhren. RGck-Konvertierung ins rgb Modell
+***** Gesucht: Ein passendes Farb-Modell
+**** Das YIQ- bzw. YUV Farbmodell wird in der Fernseh-/Videotechnik verwendet.
+Luminanz-Signal (Helligkeit)
+Y = 0.3 R + 0.59 G + 0.11B
+*** Gamma-Korrektur
+需看书
++ Reale Aufnahmesysteme (Kameras, Scanner,..) setzen Intensitäten nicht 1:1 in Grauwerte um.
++ Die Abbildung von Intensitäten Φ in Grauwerte ist meist eine nichtlineare Funktion a = F(Φ).
++ Ebenso setzen Ausgabegeräte (z.B. Bildschirme) Grauwerte nicht 1:1 in Helligkeiten um. Auch hier gibt es Nichtlinearitäten.
++ Grundidee der Gammakorrektur :: :Bilder werden durch eine homogene Punktoperation so transfomiert, daß die geräteabhängige Nichtlinearität kompensiert wird.
+Nach der Korrektur entsprechen die Grauwerte nicht den absoluten Intensitäten, aber ihr relatives Verhältnis ist (idealerweise) gleich wie in der Wirklichkeit.
+
+
+* 4. Filter
+** Was ist ein Filter?
+*** Filterung - Motivation
++ Mit Punktoperationen allein lässt sich keine Glättung oder Schärfung eines Bildes erzielen Filterung notwendig,
++ Auch Filterung ändert nicht die Bildgeometrie, d.h. Die Position der Pixel bleibt nach Filterung unverändert
+
++ Idee :: Ersetze jeden Pixel durch den Durchschnitt seiner Nachbarschaft p1,p2,...,p9
+
+*** Filtermerkmale:
++ Ergebnis wird nicht aus einem einzigen Pixel berechnet, sondern aus einer Menge von Pixeln.
++ Die Koordinaten der Quellpixel habe eine feste relative Position zum Zielpixel und bilden i.A. eine zusammenhängende Region.
+*** Parameter:
++ Größe der Filterregion
++ Form der Filterregion
++ Gewichtung der Quellpixel (konstant oder ortsabhängig)
+** Lineare Filter
++ Lineare Filter :: Wert des Zielpixels wird als gewichtete Summe der Quellpixel berechnet.
+
+*** Zwei prinzipielle Varianten:
+Im Gegensatz zu Punktoperationen ist bei Filtern keine ”in place”-Verarbeitung möglich, da die Quellpixel mehrere Male benötigt werden.
++ Ergebnis in ein Zwischenbild speichern, am Schluss kom- plettes Bild zurückschreiben
++ Alternativ: erst Kopie erstellen und Ergebnisse direkt ins Original-Bild schreiben
+
+*** Anwendung eines Filters
+I′(u,v)←  求和 I(u+i,v+j)·H(i,j)
+
+*** Anwendung linearer Filter: Randbehandlung
++ a)nur Zentralbereich auswerten, bei dem die Filtermaske ganz ins Bild passt) Outputbild wird kleiner.
++ b) Zero padding: Inputbild wird um 0 oder Grauwert erweitert, In- und Outputbild gleich groß.
+  + Schwarz oder Grau führt bei Mittelwertbildung zu Artefakten am Rand, insbesondere in hellen Regionen
++ c) Konstante Randbedingung: Die Pixel außerhalb nehmen den Wert des jeweils nächstliegenden Randpixels an.
+  + Wenig Artefakte, einfach zu implementieren, häufig verwendet.
+
++ Gespiegelte Randbedingung: Die Pixelwerte werden an der nächstliegenden Bildkante gespiegelt. Die Ergebnisse sind ähnlich wie mit Methode c) solange die Filter nicht sehr groß sind.
+
++ e) Zyklische Randbehandlung: Die Pixelwerte wiederholen sich zyklisch in allen Richtungen
+  + erscheint unsinnig, Ergebniss nicht zufriedenstellend
+  + Zyklische Betrachtung allerdings in der Spektral- analyse (Fourier-Transformation) wichtig.
+**** Fazit:
++ Wahl der Rand-Methode abhängig vom verwendeten Filter
++ Debugging ob ein Filter korrekt arbeitet schwierig, da nicht notwendigerweise ein Programm- absturz vorliegen muss.
++ Analyse der Funktionalität ein einfachen Muster-Beispielen notwendig.
+
+*** Arten von linearen Filtern
+**** Box-Filter
+**** Gaußfilter
+**** Differenzfilter
+** Lineare Filter – Formale Eigenschaften
+*** p105
++ Ziel :: Effiziente Implementierung und Einsparen von Rechenoperationen
+*** Impulsfunktion
++ Faltung mit der Impulsfunktion ergibt das ursprüngliche Bild (nicht besonders überraschend)
+
++ Nützlicher: Die Impulsfunktion als Input eines linearen Filters liefert die Filterfunktion H als Ergebnis.
+*** Grenzen
+Lineare Glättungsfilter reduzieren zwar das Rauschen im Bild, aber gleichzeitig werden Kanten oder Linien verbreitert und im Kontrast reduziert.
+*** Nicht-Lineare Filter
+z.B. Minimum- und Maximumfilter
+**** Median-Filter
+Der Medianfilter ersetzt jeden Pixel durch den Median seiner Umgebung R.
+**** gewichteter Median-Filter
+Grundidee: Wert wird in der sortierten Liste so oft wiederholt, wie sein Gewicht ist, d.h. die Liste wird dadurch
+
+
+
+* 5. Kantendetektion
+** Motivation
++ Kanten spielen eine dominante Rolle im menschlichen Sehen: Bildinhalt ist bereits erkennbar, wenn nur wenige Konturen sichtbar sind (s. Karikaturen)
++ Subjektiver Schärfeeindruck eines Bildes steht in direktem Zusammenhang mit seiner Kantenstruktur.
++ Ein Bild kann (beinahe) vollständig aus Kanten rekonstruiert werden
+** Grundlagen
+ Kanten sind Bildorte, an denen sich die Intensität auf kleinem Raum stark verändert. Für eine diskrete Funktion ist eine Ableitung nicht definiert.
++ Daher: Näherung schätzen
++ Wie: Lege eine Gerade durch benachbarte Punkte und berechne die Steigung der Geraden
+*** Gradienten-basierte Kantendetektion
+diskrete 2-dimensionale Funktion
+Daher: partielle Abteilung
++ Ableitung einer mehrdimensionalen Funktion entlang einer der Koordinatenrichtungen, d.h. verfolge die Intensitätsänderung entlang einer Zeile oder Spalte
++ Formular in Folie 5 - 5 und Folie 5 - 6
+
+Der Betrag des Gradienten, ist invariant unter Bilddrehungen und damit auch unabhängig von der Orientierung der Bildstrukturen.
+
+** Abteilungsfilter
+ Realisierung der symmetrischen Differenzen als Filter
++ [-0.5 0 0.5]
+** Einfache Kantenoperatoren - Prewitt
++ Folien 5 - 8
+Verwende Ableitungsfilter, gemittelt über 3 Zeilen bzw. Spalten.
++ Prewitt-Operator ist separabel
+  - d.h. Es wird eine (Box-)Glättung gerechnet und dann eine Ableitung geschätzt.
+
+** Einfache Kantenoperatoren - Sobel
+Verwende Ableitungsfilter, gemittelt über 3 Zeilen bzw. Spalten mit stärkerer Gewichtung der mittleren Zeile bzw. Spalte
+
+** Einfache Kantenoperatoren: Kantenstärke und -Richtung
++ 5 - 10
+** Einfache Kantenoperatoren: Roberts-Operator
+** Kantendetektion mit der zweiten Ableitung
+Problematisch sind dabei Kanten mit einem langsamen Helligkeitswechsel, die sich damit nicht genau lokalisieren lassen.
++ Alternative: Bestimmung des Nulldurchgangs der zweiten Ableitung.
+  + Da die zweite Ableitung noch empfindlicher gegen Rauschen ist, muss das Bild gleichzeitig geglättet werden.
+*** Laplace Operator
+Der Laplace-Operator ist definiert als Summe der zweiten partiellen Ableitungen
+
+** Kanten-Detektion: Canny
+Der von Canny 1986 vorgestellte Kantenoperator ist ein sehr verbreitetes Verfahren und gilt auch heute noch als „State of the Art“.
++ Ziele
+  + Gute Detektion: möglichst alle Kanten detektieren, ohne zu viel Clutter.
+  + Gute Lokalisation: minimale Distanz zwischen detektierter und echter Kante.
+  + Klare Antwort: nur eine Antwort pro Kante
+
+In seiner vollständigen Form verwendet der Operator einen Satz von (relativ großen) gerichteten Filtern auf mehreren Auflösungsebenen und fügt die Ergebnisse der verschiedenen Skalenebenen in ein gemeinsames Kantenbild („edge map“) zusammen
+
+*** Algoritmus in 3 Arbeitsphasen
+1. Vorverarbeitung :: Das Eingangsbild wird mit einem Gaußfilter der Breite σ geglättet, durch das auch die Skalenebene des Kantendetektors spezifiziert wird. Aus dem geglätteten Bild wird für jede Position der x/y-Gradient berechnet sowie dessen Betrag und Richtung.
+2. Kantenlokalisierung :: Als Kantenpunkte werden jene Positionen markiert, an denen der Betrag des Gradienten ein lokales Maximum entlang der zugehörigen Gradientenrichtung aufweist.
+3. Kantenselektion und -verfolgung :: Im abschließenden Schritt werden unter Verwendung eines Hysterese-Schwellwerts zusammenhängende Ketten von Kantenelementen gebildet.
+*** Lokalisierung der Kanten
+Folien 5 - 21
+Die Bestimmung des zum Richtungsvektor q = (dx, dy) gehörigen Oktanten ist im herkömmlichen Schema (a) relativ komplex. In der alternativen Variante (b) wird q um π/8 nach q' = (dx', dy') rotiert, aus dessen Komponenten der Oktant (ohne Berechnung des Winkels) leicht ermittelt werden kann.
+
+
+*** Kantenverfolgung mit Hysterese-Schwellwert
++ benachbarte Kantenpunkte, die in der vorherigen Operation als lokale Maxima verblieben sind, zu zusammenhängenden Folgen verketten.
++ Dazu wird eine Schwellwertoperation mit Hysterese verwendet, mit zwei unterschied- lichen Schwellwerten thi,tlo, (wobei thi > tlo).
++ Das Bild wird nach Elementen mit Kantenstärke Enms(u, v) ≥ thi durchsucht.
++ Sobald ein solches (bisher nicht besuchtes) Pixel gefunden ist, wird eine neuer Kantenfolge angelegt und alle zusammenhängenden Positionen (u', v') angefügt, solange Enms(u', v') ≥ tlo.
++ Dadurch entstehen nur Kantenfolgen, die zumindest ein Element mit einer Kantenstärke größer als thi aufweisen und keinen Kantenpunkt mit Kantenstärke unter tlo.
+
+** Kantenschärfung – mit Laplace Filter
++ Grundidee :: Überhöhung der Kanten durch Subtraktion der zweiten Ableitung lässt das Bild schärfer erscheinen.
+** Kantenschärfung: Unscharfe Maskierung (unsharp masking - USM)
+1. Erzeugung einer geglätteten Version des Bildes (z.B. mit einem Gaußfilter)
+2. Subtraktion der geglätteten Version vom Originalbild: M = I - I*H Ergebnis heißt Maske.
+3. Addition der gewichteten Maske zum Originalbild
+   - a kontrolliert den Schärfungsgrad (a in [0.2; 4]),
+   - die Breite σ des Gaußfilters die Rauschempfindlichkeit.
+
+Oft zusätzlich Mindestwert für den lokalen Bildkontrast, ab dem eine Schärfung vorgenommen wird.
+- typischerweise gemessen durch den Betrag des Gradienten |∇I|, ab dem eine Schärfung an der Stelle (u, v) stattfindet.
