@@ -32,10 +32,21 @@ p535 - p543
 * 理解
 ** 目的
 这一阶段主要是理解课件里面的每个章节每个技术的运用理解，就比如伪码要理解每一段的具体作用和思路
-** 7个 Folien
+*** 7个 Folien
 7个 Folien 一页一页看下来，理解每个环节，并在 Pro 上记下笔记
 以每个知识点来记笔记，并伴着书本理解
+** 备注
+觉得重要的知识点要单列出来，并且要自己能解释
+** 02_Wahrnehmung und Bildakquise
+** 03_bildrepräsentation
+** 04_LineareFilter
+** 05_kantendetektion
+** 06_eckenkurvendetektio
+** 07_fourieranalyse
+** 08_jpeg_kompression
 * 记忆
 ** 目的
 考试应试为主，弥补语言表达上的不足，要做到用德语能解释出来，并记忆每个知识点重要的课件内容
 ** 7个 Folien 和 Notize里面的句子
+** 在重要的概念前面加上感叹号
+第一步先优先背出有感叹号的章节内容，有些繁杂的内容可以以理解为主

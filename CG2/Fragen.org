@@ -1,0 +1,223 @@
+* Auswändig lernen 重要问题 需记忆
+* 02_Wahrnehmung und Bildakquise
+** Was ist Licht?
+Das Licht ist sichtbarer Teil des elektromagnetischen Spektrums, 380-780nm, charakterisiert durch Lichtintensität(physikalische Größe) und Helligkeit(wahrgenommene Größe)
+** Lichtwahrnehmung erfolgt in zwei Schritten
+1. Reizaufnahme durch Rezeptoren auf der Retina(Netzhaut)
+   - Stäbchen:Schwarz-Weiß-Sehen uach bei geringerer Licht-Intensität(120Mi.)
+   - Zapfen:Farbwahrnehmung(ca.6.5 Mi.)
+2. Verarbeitung der Reize in mehreren Stufen
+   - Kontrastverstärkung am Ausgang der Retina
+   - Interpretation im visuellen Kortex des Gehirns.
+** Das menschliche Auge
+- schwarz/weiße Strukturen feiner auflösen als farbige, s/w ist optimiert für die Erkennung von Konturen.
+- farbige Flächen besser wahrnehmen als schwarz/weiße, Farbsehen ist optimiert für die Bewertung von Flächen.
+** !Lechners Gesetz
+- Die Beziehung zwischen der ins Auge einfallenden Lichtintensität und der vom Auge wahrgenommenen Lichtintensität ist nicht linear sondern annähernd logarithmisch.
+- Kleine Helligkeitsunterschiede in dunklen Regionen sind besser wahrnehmbar als vom Betrag her identische Unterschiede in hellen Regionen.
+** !Mach-Band-Effekt
++ Interaktion der Lichtrezeptoren im Auge betont "scharfe" Intensitätsänderungen.
++ Sobald das Auge bei der einfallenden Intensität solche Änderungen feststellt, addiert es zusätzlich Unterschwinger und Überschwinger zur wahrgenommenen Intensität, die den Übergang zusätzlich betonen.
++ Dieser unbewußte Mechnismus der Kantenbetonung bei Intensitätsübergängen verhilft unserer visuellen Wahrnehmung zu einer automatischen Konturenschärfe.
+** Beleuchtung
+*** Anordnung von Beleuchtung
+Anordnung von Beleuchtung und Kamerasystem in Bezug auf das zu betrachtende Objekt
+- Je nach Aufgabenstellung ist es nötig, eine geeignete Anordnung der verwendeten Komponenten Lichtquelle und Kamerasystem zu finden
+- Bei der Erstellung einer Lösung in der Technischen Bild verarbeitung ist oftmals die Anordnung der Komponenten entscheidender als die Komponenten selbst.
+*** Fall 1: Das zu betrachtende Objekt befindet sich zwischen Lichtquelle und Kamera
+- Das Licht wird im Bereich des Objekts "unterbrochen"
+- Es wird ein Schatten(Kontur) abgebildet.
+- Sehr gut bei Vermessungsaufgaben, da eindeutige Trennung von Objekt und Hintergrund. Die Oberfläche wird nicht abgebildet.
+- verwendung :: wenn die Silhouette des Objektes die entscheidende Information trägt.
+
+*** Fall 2:Lichtquelle und Kamera befinden sich in Bezug auf das zu betrachtende Objekt auf der gleichen Seite.
+- Das Licht wird von der Oberfläche des Objekts und des Hintergrunds reflektiert.
+- Es wird ein Abbild des Objektes in verschiedenen Grautönen erzeugt.
+- Die Oberfläche ist zu erkennen, die Kontur wird nicht so klar dargestellt.
+- Anwendung :: bei z.B. Oberflächeninspektionen.
+
+*** Fall 3:Die Lichtquelle strahlt das Licht in einer Vorzugsrichtung ab
+- Das Objekt wird aus einer Vorzugsrichtung beleuchtet.
+- Durch die Oberflächenstruktur(Erhöhung bzw. Vertiefung) des Objekts bilden sich Schatten bzw. hellere Bereiche, die bestimmte Merkmale deutlich hervortreten lassen.
+- Unterscheidung ::
+  + Hellfeld :: Wird ein Großteil des von der Probe gerictet reflektierten Lichts vom Objektiv eingefangen, so erscheint das Objekt in der Abbildung hell(Hellfeldbeleuchtung)
+  + Dunkelfeld :: Erfolgt die Beleuchtung jedoch so weit von der Seite, dass das gerichtet refletierte Licht am Objektiv vorbei strahlt, spricht man von Dunkelfeldbeleuchtung.
+- Fall 3a): Das Kamerasystem befindet sich im Strahlengang(Einfallswinkel = Ausfallswinkel) des reflektierten Lichts
+- Fall 3b) Dunkelfeld: Das Kamerasystem befindet sich nicht im Strahlengang(Einfallswinkel != Ausfallswinkel) des reflektierten Lichts
+  - Verstärkung von Unebenheiten bei Dunkelfeldaufnahmen
+  - glatte, Stark reflektierende Flächen erscheinen dunkel.
+  - Kanten und Oberflachendefekte wie Kratzer oder Auflagerungen leichten jedoch hell.
+*** Anordnung de Probe sipelt ggf. große Rolle
+
+** Wellenlängenabhängige Effekte - farbige Beleuchtung
++ Farbige Objekte reflektieren einen Teil des Lichtspektrums und absorbieren einen anderen Teil
++ Farbige Beleuchtung kann dazu verwendet werden, den Kontrast zwischen den Objekten und dem Hintergrund zu erhöhen.
+** Diffuses vs gerichtetes Licht
++ Diffuse Hellfeld-Auflichbeleuchtung
++ Verwendung:Vermeidugn von spiegelnden Reflexionen
+** Polarisierte Beleuchtung
++ Licht wird durch Reflexion an metallischen und dielektrischen Oberflächen polarisiert
++ Um die spiegelnden Reflexionen zu unterdrücken, kann eine Kombination aus zwei Polarisationsfiltern verwendet werden
+** !Objektive, Blende und Schärfe
++ Ziel: Erzeugung eines scharfen, unverzerrten, kontrastreichen Bildes
++ Objektive werden als eine Linse mit einer Blende betrachtet
++ Ein parallel zur optischen Achse einfallender Strahl verläuft hinter de rLinse durch den Brennpunkt F'
++ Ein Strahl, der durch den vor der Linse liegenden Brennpunkt F einfällt, verläuft hinter der Linse parallel zur optischen Achse.
++ Ein Strahl, der durch den Knotenpunkt N der Linse verläuft, verlässt die Linse durch N' und verändert seine Richtung nicht.
++ Strahlen, die von einem Punkt des Objektes ausgehen, schneiden sich hinter der Linse in einem Punkt
++ Die Entfernung des Objektes zur Mittelebene der Linse nennt man Gegenstandsweite
++ Die Entfernung dieser scharf abgebildeten Punkte zur Mittelebene der Linse nennt man Bildweite
++ Die Entfernung der Brennpunkte F und F' zu den Hauptebenen der Linse nennt man Brennweite f bzw. f'
++ 2 - 28 Gesetz
++ Die Lichtmenge pro Flächeneinheit, die auf den Sensor fällt, hängt von der Belichungsdauer t, von der Größe d der Blendenöffnung un d vom Abstand f' des Sensors von der Linse ab.
++ Schärfentiefe ::
+  - Die Bildweite, bei der ein Objekt exakt scharf abgebildet wird, lässt sich aus der Gegenstandsweite und der Brennweite ableiten
+  - Entferntere oder nähere Bildpunkte werden auf einen Zerstreuungskreis(blur circle) abgebildet
+  - Innerhalb eines gewissen Bereichs der Gegenstandsweite ist der Zerstreuungskreis so klein, dass keine merkliche Unschärfe auftritt
++ Chromatische Aberration ::
+  - Beschreibung: Lichtberechung einer ist Linse von der Wellenlänge des Lichts abhängig. Farben des Spektrums haben keinen gemeinsamen Brennpunkt. Es treten Unschärfen im Bild auf.
++ Sphärische Abberation ::
+  - Beschreibung:Sphärische Linsen haben im Zentrum und am Rand unterschiedliche Brennweiten
+  - Es treten Unschärfen im Bild auf
+  - Objektiv-Bauwese im Detail ändern
++ Verzeichung ::
+  - Beschreibung: Nichtsymmetrischer Aufbau der Optik mit Blende vor oder hinter dem optischen Zentrum der Optik
++ Telezentrische Objektive
+  - Telezentische Objektive bieten eine Parallelprojektion des Objektes
+  - Bildgröße ist unabhängig von der Gegenstandsweite
+  - Realisierung: Positionierung einer Blende im Brennpunkt
+    - Nur parallele Strahlen können die Blende passieren
+    - Durchmesser des Objektivs muss größer sein als das aufzunehmende Objekt
+* 03_Bildrepräsentation und Punktoperationen
+** Digitalisierung von Bildern
++ Natürliche Bilder sind stetig, d.h: es gibt unendlich viele "Bildpubkt",und unendlich viele Grauwerte.
++ Bilder müssen digitalisiert werden, um die Datenmengen zu begrenzen und ein Speichern/Verarbeiten im Rechner zu ermöglichen.
++ Digitalisierung =
+  - 1. Diskretisierung(stetig -> endliche Anzahl von Zuständen)
+  - 2. Codeirung (Bezeichnung der Zustände)
+
+** Was ist ein digitales (Grauwert)Bild?
++ Intensität wird nur an diskreten Punkten der Bildvorlage bzw. des Sensorfeldes gemessen
++ Bildbetrachtung :: Pixelgröße kleiner als räumliche Auflösung des visuellen Systems des beobachters bei gegebener Entfernung.
+** Sampling
++ Ziel: Möglichst wenig Speicherplatz pro Bild
++ Sampling :: Abtastung an so wenig Stellen wie möglich bei Erhaltung aller Details.
++ Grudsätzliche Idee:
+  - Mathematische Modellierung des Bildes mittels Reihenentwicklung periodischer Funktionen im Frequenzraum
+  - Addition verschiedener Frequenzen um originales Signal abzubilden
+  - Sampling muss kleinste Frequenz erfassen um Bild ohne Artefakte zu erstellen
++ Nyquit-/Shannon-Theorem
+  - Für eine Funktionen, die sich als Summe von Sinus-oder Kosinusschwingungen unterschiedlcher Amplitude udn Frequenz darstellen lässt gilt allgemein: Eine Funktion muss so abgestastet werden, dass das Abtastintervall x kleiner ist, als die Hälfte der kürzesten Wellenlänge r min, um ohne Informationsverlust rekonstruiert werden zu können
+** Quantisierung
++ Intensitätsbereich in endlich viele Intervalle zerlegen.
++ zu wenige Grauwerte -> falsche Kanten
++ Konflikt:bildqualität <-> Speicherbedarf/Rechenzeit
+** Digitale Topologie: Quadratisches Gitter
++ 4 - bzw. 8-Nachbarschaft eines Bildpunktes p = (r,c)
++ vier direkte Nachbarn:gemeinsame Kante mit p
++ vier in direkte Nachbarn:gemeinsame Ecke
+** Bildsensor:Modellvorstellung
+Aufbau und Funktionsweise des Bildsensors einer Digitalkamera
++ Oberfläche bedeckt von lichtempfindlichen Zellen, denen jeweils ein Farbfilter vorgeschaltet ist, der nur Licht bestimmter Wellenlänge durchlässt(z.B Rot, Grün oder Blau)
++ jede Zelle ist mit einem Zähler ausgestattet, der während der Belichtungszeit proportional zur einfallenden Lichintensitaät hochzählt. Bereich[0,255]
++ nach der Belichtung weisen Zellen, die kaum Licht empfinden, einen hohen Wert
++ Zellen, die einem starken Lichteinfall ausgesetzt waren, einen hohen Wert.
+** !Globale Charakterisierung von Bildern - Histogramm
++ Bildgröße MxN, Grauwertbereich [0..255]
++ Absolutes Grauwerthistogramm
+  - absolute Häufigkeit, mit welcher Grauwert k auftritt
++ Relatives Grauwerthistogramm
+  - Relative Häufigkeit, mit welcher Grauwert k auftritt
+  - Interpretation als Wahrscheinlichkeit des Ereignisses Grauwert = k
++ Mittlere Helligkeit
+  - Auskunft über allgemeine Helligkeit
++ Varianz und mittlere quadratische Abweichung
+  - Varianz ist Maß für Abweichungen der Grauwerte aller Pixel vom Mittelwert f und beschreibt den Kontrast
++ Kumulatives histogramm H(i)
+** !Eigenschaften und Nutzen von Histogrammen
++ Völlig unterschiedliche Bilder können identische Histogramme haben
+  - Aus dem Histogramm sind keine Rückschlüsse auf den Bildinhalt möglich, da der Ortsbezug der Grauwerte fehlt
++ Histogramm zeigt: Belichtung, Kontrast, Dynamik, Bildfehler
++ Das Histogramm eines Bildes kann Informationen über Über-bzw. Unterbelichtung geben(mittig, rechtslastig, linkslastig)
++ Rekonstruktion von Über- oder Unterbelichtung nicht komplett möglich
++ Kontrast
+  - genutzter Intensitätsbereich im Bild, d.h. K=(gmax-gmin)/(gmax+gmin),wobei gmin und gmax der Minimale bzw.maximale Grauwert im Bild ist.
++ Dynamik:Anzahl verschiedener Intensitätswerte im Bild
+  - Die maximale Dynamik wird dann erreicht, wenn alle zwischen Imin und Imax liegenden Grauwerte im Bild vorkommen
+  - Dynamik kann nicht nachträglcih erhöht werden
+  - Effekt von Quantisieurng im Histrogramm
++ Nutzen ziehen aus Über-bzw. Unterbelichtung
+  - Wenn Szenarien sehr unterschiedlich hell sind, kann eine korrekte Belichtung die alle Details wieder gibt schwierig sein
+  - Kombiniere mehrere Aufnahmen
+  - Helle Bereiche gut auflösen durch kurze Belichtung
+  - Dunkel Bereiche gut auflösen durch lange Belichtung
+** Histogramme für Bidler mit mehr als 8 Bit
++ Binning
+  - Zählung der Intensitätswerte in B intervallen [aj,a+1]
+  - Bei gleichgrossen Bins ergibt sich eine Intervallgröße K = K/B mit aj=j kB.
+** Histogramme für Farb-Bilder
+ + 1. Möglichkeit: Histogramm pro Farbkanal angeben
+ + 2. Möglichkeit: Farbbild in Graubild gleicher Helligkeiten überführen
+   - Dabei müssen r,g,b unterschiedlich gewichtet werden
+   - I = 0.299 * R + 0.587*G + 0.114*B
+ + Ergebnis ist ein Wert, der unabhängig von den Farben die Helligkeit des Bildpunktes wiedergibt
+ + Die prozentuale Verteilung der Farben hängt mit der entsprechenden Farbempfindlichkeit der Augen zusammen
+** !Punktoperationen
++ Punktoperation f :: jeder neue Pixelwert hängt ausschließlich vom alten Pixelwert ab, unabhängig von anderen Pixelwerten im Bild
+  + Beispiel: Grauverlaufsfilter
++ Homogene Punktoperation :: f ist unabhängig von den Bildkkordinaten
+  - Beipiele: Änderung von Kontrast und Helligkeit, Anwendung beliebiger Helligkeitskurven, Invertieren und Addieren von Bildern, Schwellwertbildung, Gammakorrektur
++ Punktoperationen:
+  + Kontraständerung: fc(a)=1.5 * a
+  + Helligkeitsänderung:fi(a)=a+10
+  + Beschränkung(clamping):if(a>255) a=255;bzw. if(a<0) a=0;
+  + Invertieren:f(a)=amax-a
+  + Schwellwert:fth(a)=a0 für a<ath fth(a)=a1 für a>=ath
+** Automatische Kontrastanpassung
++ Einfache Kontrastanpassung: Dehne und verschiebe Histogramm:
+  - dass dunkelster Pixel alow auf amin,
+  - hellster Pixel ahigh auf Maximalwert amax fällt
++ Problem:Einzelne Ausreißer können gesamtes Bild beeinflussen.
++ Robuste Kontrastanpassung mit Quantilen
+  + Sei Slow, Shigh der Anteil der Pixel, der in Dunkel-bzw. Hellsättigung übergehen darf, A ist die Fläche des Bildes in Pixeln.(p 3-30)
+** Linearer Histogrammausgleich
++ Ziel :: Bild durch homogene Punktoperation so verändern, dass es ein gleichverteiltes Histogramm aufweist.
++ Gleichverteilte Grauwerte haben theoretisch den höchsten Informationsgehalt
++ Homogene Punkoperationen können Histogrammeinträge nur verschieben oder zusammenfügen, nicht aber trennen
++ Die histogrammeinträge werden so verschoben, daß sich näherungsweise ein keilförmiges Histogramm ergibt
++ Bilder sehen unnatürlich aus, da die meisten natürlichen Bilder eher gaußverteilte Histogramme haben
++ Sinn von Histogrammausgleich
+  + Serie von Bildern, die etwa bei unterschiedlichen Aufnahmeverhältnissen oder mit verschiedenen Kameras entstanden sind, aber letztlich in der Reproduktion ähnlich aussehen sollen.
+  + Notwendig:Anpassung an eine beliebige Verteilung,etwa eine die durch ein Referenzbild gegeben ist
+** Anpassung des Histogramms an eine Referenzverteilung
++ Ziel :: Modifiziere Ausgangsbild IA durch homogene Punktoperation so, dass seine Verteilungsfunktion PA möglichst gut mitPr eines Referenzbildes Ir übereinstimmt.
++ Schritt 1: Histogramm wird durch linearen Histogrammausgleich in eine Gleichverteilung überführt
++ Schritt 2: Das Resultat wird über die Inverse Pr(a)-1 der Referenzverteilung transformiert.
+** Histogrammausgleich - Stückweise lineare Referenzverteilung
+Zwischen N vorgegebenen Stützstellen (ij,qj) wird linear interpoliert
+** Histogrammausgleich - Anpassung an Referenzverteilung
++ Problem: Natürliche Verteilungsfunktionen sind oft nicht invertierbar
++ Lösung: Schrittweises "Ausfüllen" der Referenzverteilung
+  + D.h.: für einen gegebenen Pixelwert a wird der minimale Wert a0 in Pr(a0) gesucht, bei dem PA(a)< PR(a0) ist.
+** Ausgleich oder Kontrast-Anpassung für Farb-Bilder
++ Problem: getrennter Histogrammausgleich oder Kontrast-Anpassung für die 3 Farb-Kanäle würde die relative Zusammensetzung der Farben im finalen Bild ändern.
++ Lösung: Konvertierung von rgb in ein Farb-Modell, bei dem Helligkeits- und Farbinformation getrennt gespreichert werden.
+  - Gesucht:Ein passendes Farb-Modell
++ Prozedere:
+  1. Konvertiere von rgb nach passendem Modell
+  2. Histogrammausgleich/Kontrastanpassung nur für die Helligkeiten durchführen
+  3. Rück-Konvertierung ins rgb Modell
+
++ Das YIQ- bzw. YUV Farbmodell iwrd in der Fernseh-/Videotechnik verwendet
+  - Luminanz-Signal(Helligkeit)
+  - Chrominanz Signale U und V (PAL)
+  - Chrominanz Signale I und Q (NTSC)
+** Gamma-Korrektur
++ Reale Aufnahmesysteme(Kameras, Scanner,..) setzen Intensitäten nicht 1:1 in Grauwerte um
+  - Die Abbildung von Intensitäten I in Grauwerte ist meist eine nichtlineare Funktion a = F(I)
++ Ebenso setzen Ausgabegeräte(z.B Bildschirme) Grauwerte nicht 1:1 in Helligkeiten um
+  - Auch hier gibts Nichtlineartität.
+
++ Grundidee der Gammakorrektur :: Bilder werden durch eine homogene Punktoperation so transfomiert, dass die geräteabhängige Nichtlinearität kompensiert wird.
++ Nach der Korrektur entprechen die Grauwerte nicht den absoluten Intensitäten, aber ihr relatives Verhältnis ist (idealerweise) gleich wie in der Wirklichkeit.
+
