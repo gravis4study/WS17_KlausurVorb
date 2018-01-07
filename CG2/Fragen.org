@@ -220,4 +220,153 @@ Zwischen N vorgegebenen Stützstellen (ij,qj) wird linear interpoliert
 
 + Grundidee der Gammakorrektur :: Bilder werden durch eine homogene Punktoperation so transfomiert, dass die geräteabhängige Nichtlinearität kompensiert wird.
 + Nach der Korrektur entprechen die Grauwerte nicht den absoluten Intensitäten, aber ihr relatives Verhältnis ist (idealerweise) gleich wie in der Wirklichkeit.
+* 04_LineareFilter
+** Filterung - Idee
++ Filtermerkmale
+  - Ergebnis wird nicht aus einem einzigen Pixel brechnet, sondern aus einer Menge von Pixeln.
+  - Die Koordinaten der Quellpixel habe eine feste relative Position zum Zielpixel und bilden i.A. eine zusammenhängende Region
++ Parameter
+  - Größe der Filterregion
+  - Form der Filterregion
+  - Gewichtung der Quellpixel(konstant oder ortsabhängig)
+** Lineare Filter
++ Lineare Filter:Wert des zielpixels wird als gewichtete Summe der Quellpixel berechnet
++ Größe und Form der Filterregion und Gewichte des Filter werden durch eine Matrix von Filterkoeffizienten spezifiziert, der Filtermatrix Hij oder Filtermaske.
++ Die Filtermatrix ist eine diskrete zweidimensionale Funtkion
++ Koordinaten werden meist relativ zum Zentrum angegeben
++ im Gegensatz zu punktoperationen ist bei Filtern keine "in place"-Verarbeitung möglich, da die Quellpixel mehrere Male benötigt werden
++ Zwei prinzipielle Varianten möglich:
+  - Ergebnis in ein Zwischenbild speichern, am Schluss komplettes Bild zurückschreiben
+  - Alternativ:erst Kopie erstellen und Ergebnisse direkt ins Original-Bild schreiben
++ Implementierungsfragen
+  - Oft ist es vorteilhafter, mit ganzzahligen Filterkoeffizienten zu arbeiten
+  - Umwandlung und Speicherung des Bildes in Gleitkommaformat nicth sinnvoll
+  - Realisierung über einen Skalierungsfaktor,nur eine double-Operation pro pixel
+  - Filtergröße kann sehr leicht generisch implementiert werden, typisch: ungeradzahlige Größe, zentriert.
++ Anwendung linearer Filter: Randbehandlung
+  1. nur Zentralbereich auswerten, bei dem die Filtermaske ganz ins Bild passt, Outputbild wird kleiner.
+  2. Zero padding: Inputbild wird um 0 oder Grauwert erweitert, In-und Outputbild gleich groß. Schwarz oder Grau führt bei Mittelwertbildung zu Artefakten am Rand, insbesondere in hellen Region
+  3. Konstante Randbedingung: Die Pixel außerhalb nehmen den Wert des jeweils nächstliegenden Randpixels an. Wenig Artefakte, einfach zu implementieren, haüfig verwendet.
+  4. Gespiegelte Randbedingung:Die Pixelwerte werden an der nächstliegenden Bildkante gespiegelt.
+  5. Zyklische Randbehandlung: Die pixelwerte wiederholen sich zyklisch in allen Richtungen
+  6. Fazit:
+     - Wahl der Rand-Methode abhängig vom verwendeten Filter
+     - Debugging ob ein Filter korrekt arbeitet schwierig, da nicht notwendigerweise ein Programmabsturz vorliegen muss
+     - Analyse der Funktionalität ein einfachen Muster-Beispielen notwendig
+** Lineare Filter - Formale Eigenschaften
++ Ziel :: Effiziente Implementierung und Einsparen von Rechenoperationen
++ Vorgehensweise/Methode :: Mathematische Analyse der Filteroperation
+Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Multiplikation ähnlich ist. Definition: 4-13.
++ Eigenschaften der Faltung
+  + Kmmutativität
+  + Linearität
+  + Assoziativität
++ Aus der Assoziativität ergibt sich, dass ein großer Filter H in mehrere kleine Filter Hi zerlegt werden kann, insbesonderer bei 2 eindimensionalen Filtern in x- und y-Richrung (x/y-Separabilität)
++ Zweidimensionale Filter sind separabel, wenn sie als äußeres Produkt geschrieben werden können:Hxy(i;j)=Hx(i)Hy(j),Beispiel:Gauss-Filter. Bei großen Filtern, da die Anzahl der Schreib-/Lese-Zugriffe und Multiplikationen quadratisch mit der Größe wächst
++ Weitere Eigenschaften der Faltung
+  - Die Impuls- oder Dirac-Funktion ist das neutrale Element der Faltung
++ Nutzen der Impulsfunktion
+  - Faltung mit der Impulsfunktion ergibt das ursprüngliche Bild
+  - Nützlicher:Die Impulsfunktion als Input eines linearen Filters liefert die Filterfunktion H als Ergebnis, d.h. ein unbekannter lin. Filter lässt sich durch Anwendung auf ein Bild mit einem weissen und sonst nur schwarzen Pixeln entschlüsseln. Es steht dann die Filtermatrix im Ergebnis-Bild.
++ Lineare Filter - Grenzen
++ Lineare Glättngsfilter reduzieren zwar Rauschen im Bild, aber gleichzeitig werden Kanten oder Linien verbreitert und im Kontrast reduziert. Lineare Filter bilden immer auf irgend eine Art und Weise Mittelwerte, daher ist die Funktionalität letztlich begrenzt.
+** Nicht-Lineare Filter
++ Nichtlieare Filter werden so wie lineare Filter über eine Umgebung R des Zielpixels mit einer nichtlinearen Funktion berechnet, z.B Minimum- und Maximumfilter
++ Minimum- und Maximumfilter auf Salt-Pepper-Rauschen
+  - Minimumfilter eliminiert weiße Punkte und verbreitert dunkle Regionen
+  - Maximumfilter macht das Gegenteil
++ Median-Filter
+  - Der Median-Filter ersetzt jeden Pixel durch den Median seiner Umgebung R
+  - bei 2k+1 aufsteigend sortierten Pixeln ist der Median definiert als median{p0,p1,...,pk,...p2k}=pk
+  - bei 2k aufsteigend sortierten Pixeln (pk-1 + pk)/2
++ Vergleich :: Linearer Glättungsfilter vs. Medianfilter
+  - Der lineare Filter dämpft das Rauschen, macht aber das Bild unscharf
+  - Der Medianfilter eliminiert Spitzen/Höhen, erzeugt örtlich Flecken mit konstanter Intensität
++ Erweiterung:gewichteter Median-Filter
+ - Grundidee:Wert wird in der sortierten Liste so oft wiederholt, wie sein Gewicht ist. Diese Länge ist die Summe von alle Element in Gewichtmatrix.
+* 05_ Kantendetektion
+** Movivation
++ Kanten sipelen eine dominante Rolle im menschlichen Sehen:Bildinhalt ist bereits erkennbar, wenn nur wenige Konturen sichtbar sind
++ Subjektiver Schärfeeindruck eines Bildes stht in direktem Zusammenhang mit seiner Kantenstruktur
++ Ein Bild kann beinahe vollständig aus Kanten rekonstruiert werden.
+** !Grundlagen
++ Kanten sind Bildorte, an denen sich die Intensität auf kleinem Raum stark verändert.
++ Die Intensitätsänderung bezogen auf die Bilddistanz wird durch die Ableitung der Bildintensität gemessen. In einer Dimension
++ für eine diskrete Funktion ist eine Ableitung nicht definiert
+  - Daher: Näheung schätzen
+  - Lege eine Gerade durch benachbarte Punkte und berechne die Steigung der Geraden
++ Auch möglich aber in der Bildverarbeitung nicht üblich sind vorwärts-und Rückwärts-Differenz
++ Symmetrische Differenz
++ Partielle Ableitung
+  - Ableitung einer mehrdimensionalen Funktion entlang einer der Koordinatenrichtung, d.h. verfolge die Intensitätsänderung entlang einer Zeile oder Spalte.
++ Den Vektor bezeichnet man als Gradient
++ Geometrisch ::
+  - Betrachtet man die Bildmatrix als Skalarfeld, so ist der Gradient an einem Punkt ein Vektor, der in Richtung des steilsten des Skalarfeldes weist
+  - Der Betrag des Vektors entspricht der Stärke das Anstiegs
++ Der Betrag des Gradienten ist rotationsinvariant
+  - d.h. Er ist unabhängig von der Orientierung von Bildstrukturen
+  - Diese Eigenschaft ist für die richtungsunabhängige(isotrope) Lokalisierng von Kanten wichtig und daher ist der Betrag auch die Grundlage vieler praktischer Kantendetektoren.
+** Ableitungsfilter
++ Realisierung der Symmetrischen Differenz als Filter [-0.5 0 0.5]
++ Anmerkung :: Den Gradienten selbst kann man nict als linearen Filter realisieren, da es sich um ein vektor-wertiges Ergebnis handelt
+** Einfache Kantenoperatoren - Prewitt
++ Prewitt-Operator ::
+  - verwende Ableitungsfilter, gemittelt über 3 Zeilen bzw. Spalten
+  - Mittelung notwendig wegen Rauchanfälligkeit des einfachen Gradientenoperators in x bzw. y Richtung
++ Prewitt-Operator ist separabel
+  - Es wird eine (Box-)Glättung gerechnet und dann eine Ableitung geschätzt
+  - Aufgrund der Kommutativität der Faltung auch umgekehrt möglich, d.h.,Glättung nach Berechnung der Abteilung
+** Einfache Kantenoperatoren - Sobel
++ Sobel-Operator ::
+  - Verwende Ableitungsfilter, gemittelt über 3 Zeilen bzw. Spalten mit stärkerer Gewichtung der mittleren Zeile bzw. Spalte.
+  - Der Sobel-Operator ist ebenfalls separabel.
+** Einfache Kantenoperatoren: Kantenstärke und -Richtng
++ F5-10
+** Einfache Kantenoperatoren: Roberts-Operator
++ einer der ältesten und einfachsten Kantenoperatoren, historisch interessant
++ Anmerkung :: Hier wird also eine Rückwärtsdifferenz in Diagonal-Richtung berechnet.
+** Kantendetektion mit der zweiten Ableitung
++ Problematisch sind dabei Kanten mit einem langsamen Helligkeitswechsel, die sich damit nicht genau lokalisieren lassen
++ Alternative :: Bestimmung des Nulldurchgangs der zweiten Ableitung.
+  - Da die zweite Ableitung noch empfindlicher gegen Rauschen ist, muss das Bild gleichzeitig geglättet werden
+** Laplace operator
++ Der Laplace-Operator ist definiert als Summe der zweiten partiellen Ableitung
++ Diskrete Näherung: [1 -2 1]
++ Addiert ergibt sich der Zweidimensionale Laplace Filter
+  - Nicht separabel
++ Nulldurchgang markiert genaue Kantenposition
++ Trotz der durch die kleinen Filterkerne ziemlich groben Schätzung der Ableitungen ist das Ergebnis fast perfekt isotrop
++ Summe der Koeffizienten ist null, so dass sich in Bildbereichen mit konstanter Intensität die Filterantwort null ergibt
 
+
+
+** !Kanten-Detektion:Canny
++ Ziel ::
+  - Gute Detektion:möglichst alle Kanten detektieren, ohne zu viel Clutter
+  - Gute Lokalisation: minimale Distanz zwischen detektierter und echter Kante
+  - Klare Antwort:nur eine Antwort pro Kante
++ Algoritmus in 3 Arbeitsphasen
+  + Vorverarbeitung :: Das Eingangsbild wird mit einem Gaußfilter der Breite σ geglättet, durch das auch die Skalenebene des Kantendetektors spezifiziert wird. Aus dem geglätteten Bild wird für jede Position der x/y-Gradient berechnet sowie dessen Betrag und Richtung.
+  + Kantenlokalisierung :: Als Kantenpunkte werden jene Positionen markiert, an denen der Betrag des Gradienten ein lokales Maximum entlang der zugehörigen Gradientenrichtung aufweist.
+  + Kantenselektion und -verfolgung :: Im abschließenden Schritt werden unter Verwendung eines Hysterese-Schwellwerts zusammenhängende Ketten von Kantenelementen gebildet.
+*** Details für Canny
+1. Gerichtet Non-Maximum Suppression der Kantenstärke. Als mögliche Kantenpunkte werden nur jene Elemente betrachetet, an denen das Kantenprofil in der Richtung S0 ein lokales Maximum ist. Die Kantenstärke aaler anderen Elemente wird auf Null gesetzt. (Die Position der Kanten präzise zu bestimmen)
+2. Bestimmung der diskreten Kantenrichtung. Trigonometrische Funktionen ist "teuer". Grundsätzlich könnte der zu q gehörige Oktant auch direkt aus den Vorzeichen und Beträgen der Komponenten dx,dy ermittelt werden.
+3. Kantenverfolgung mit Hysterese-Schwellwert
+   - benachbarte Kantenpunkte, die in der vorherigen Operation als lokale Maximal verblieben sind, zu zusammenhängenden Folgen verketten.
+   - Dazu wird eine Schwellwertoperation mit Hyserese verwendet, mit zwei unterschiedlichen Schwellwerten thi,tlo.
+   - Das Bild wird nach Elementen mit kantenstärke Enms(u,v)>thi durchsucht
+   - Sobald ein solches(bisher nicth besuchtes)Pixel gefunden ist, wird eine neuer Kantenfolge angelegt und alle zusammenhängenden Positionen(u',v') angefügt, solange Enms(u',v')>tlo
+   - Dadurch entstehen nur Kantenfolgen, die zumindest ein Element mit einer Kantenstärke größer als thi aufweisen und keien Kantenpunkt mit Kantenstärke unter tlo.
+** Kantenschärfung - mit Laplace Filter
++ Kantenschärfung mit dem Laplace-Filter
+  - Grundidee :: Überhöhung der Kanten durch Substraktion der zweiten Ableitung lässt das Bild schärfer erscheinen.
+  - Achtung :: Schärfung verstärkt auch das Bildrauschen
+** Kantenschärfung:Unscharfe Maskierung(unsharp masking -USM)
+1. Erzeugung einer gelätteten Version des Bildes
+2. Subtraktion der geglätteten Version vom Originalbild: Ergebnis heißt Maske
+3. Addition der gewichteten Maske zum Originalbild
+
++ Oft zusätzlich Mindestwert für den lokalen Bildkontrast, ab dem eine Schärfung vorgenommen wird.
+   - Typischerwerise gemessen durch den Betrag des Gradieten, ab dem eine Schärfung an der Stelle (u,v) stattfindet.
++ Laplace-Filter ist Spezialfall des USM-Filters

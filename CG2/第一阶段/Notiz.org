@@ -191,8 +191,6 @@ Der Medianfilter ersetzt jeden Pixel durch den Median seiner Umgebung R.
 **** gewichteter Median-Filter
 Grundidee: Wert wird in der sortierten Liste so oft wiederholt, wie sein Gewicht ist, d.h. die Liste wird dadurch
 
-
-
 * 5. Kantendetektion
 ** Motivation
 + Kanten spielen eine dominante Rolle im menschlichen Sehen: Bildinhalt ist bereits erkennbar, wenn nur wenige Konturen sichtbar sind (s. Karikaturen)
@@ -268,3 +266,24 @@ Die Bestimmung des zum Richtungsvektor q = (dx, dy) gehörigen Oktanten ist im 
 
 Oft zusätzlich Mindestwert für den lokalen Bildkontrast, ab dem eine Schärfung vorgenommen wird.
 - typischerweise gemessen durch den Betrag des Gradienten |∇I|, ab dem eine Schärfung an der Stelle (u, v) stattfindet.
+** Movivation
++ Kanten sipelen eine dominante Rolle im menschlichen Sehen:Bildinhalt ist bereits erkennbar, wenn nur wenige Konturen sichtbar sind
++ Subjektiver Schärfeeindruck eines Bildes stht in direktem Zusammenhang mit seiner Kantenstruktur
++ Ein Bild kann beinahe vollständig aus Kanten rekonstruiert werden.
+** !Grundlagen
++ Kanten sind Bildorte, an denen sich die Intensität auf kleinem Raum stark verändert.
++ Die Intensitätsänderung bezogen auf die Bilddistanz wird durch die Ableitung der Bildintensität gemessen. In einer Dimension
++ für eine diskrete Funktion ist eine Ableitung nicht definiert
+  - Daher: Näheung schätzen
+  - Lege eine Gerade durch benachbarte Punkte und berechne die Steigung der Geraden
++ Auch möglich aber in der Bildverarbeitung nicht üblich sind vorwärts-und Rückwärts-Differenz
++ Partielle Ableitung
+  - Ableitung einer mehrdimensionalen Funktion entlang einer der Koordinatenrichtung, d.h. verfolge die Intensitätsänderung entlang einer Zeile oder Spalte.
++ Den Vektor bezeichnet man als Gradient
++ Geometrisch ::
+  - Betrachtet man die Bildmatrix als Skalarfeld, so ist der Gradient an einem Punkt ein Vektor, der in Richtung des steilsten des Skalarfeldes weist
+  - Der Betrag des Vektors entspricht der Stärke das Anstiegs
++ Der Betrag des Gradienten ist rotationsinvariant
+  - d.h. Er ist unabhängig von der Orientierung von Bildstrukturen
+  - Diese Eigenschaft ist für die richtungsunabhängige(isotrope) Lokalisierng von Kanten wichtig und daher ist der Betrag auch die Grundlage vieler praktischer Kantendetektoren.
+* 6. Eckenkurvendetektion
