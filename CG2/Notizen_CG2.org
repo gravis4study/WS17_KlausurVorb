@@ -339,7 +339,6 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
 + Summe der Koeffizienten ist null, so dass sich in Bildbereichen mit konstanter Intensität die Filterantwort null ergibt
 
 
-
 ** !Kanten-Detektion:Canny
 + Ziel ::
   - Gute Detektion:möglichst alle Kanten detektieren, ohne zu viel Clutter
@@ -370,3 +369,4 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
 + Oft zusätzlich Mindestwert für den lokalen Bildkontrast, ab dem eine Schärfung vorgenommen wird.
    - Typischerwerise gemessen durch den Betrag des Gradieten, ab dem eine Schärfung an der Stelle (u,v) stattfindet.
 + Laplace-Filter ist Spezialfall des USM-Filters
+  

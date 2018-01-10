@@ -1,4 +1,8 @@
-* 纵览
+* DONE 纵览
+CLOSED: [2018-01-10 Wed 19:29]
+:LOGBOOK:
+- State "DONE"       from              [2018-01-10 Wed 19:29]
+:END:
 ** 目的
 先看一下总体的内容，课件+课外书，做到心中有数，做好粗略的内容筛选工作记录在 Notiz.org 中
 ** 看书的基本步骤
@@ -37,10 +41,26 @@ p535 - p543
 以每个知识点来记笔记，并伴着书本理解
 ** 备注
 觉得重要的知识点要单列出来，并且要自己能解释
-** 02_Wahrnehmung und Bildakquise
-** 03_bildrepräsentation
-** 04_LineareFilter
-** 05_kantendetektion
+** DONE 02_Wahrnehmung und Bildakquise
+CLOSED: [2018-01-10 Wed 19:29]
+:LOGBOOK:
+- State "DONE"       from              [2018-01-10 Wed 19:29]
+:END:
+** DONE 03_bildrepräsentation
+CLOSED: [2018-01-10 Wed 19:29]
+:LOGBOOK:
+- State "DONE"       from              [2018-01-10 Wed 19:29]
+:END:
+** DONE 04_LineareFilter
+CLOSED: [2018-01-10 Wed 19:29]
+:LOGBOOK:
+- State "DONE"       from              [2018-01-10 Wed 19:29]
+:END:
+** DONE 05_kantendetektion
+CLOSED: [2018-01-10 Wed 19:29]
+:LOGBOOK:
+- State "DONE"       from              [2018-01-10 Wed 19:29]
+:END:
 ** 06_eckenkurvendetektio
 ** 07_fourieranalyse
 ** 08_jpeg_kompression

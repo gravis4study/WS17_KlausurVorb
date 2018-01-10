@@ -1,0 +1,37 @@
+* Teil 1: Entwurf von Software
+** 1. Grundlagen des Software-Design
+** 2. Analysemuster
+** 3. Entwurfsmuster
+* Teil 2: Software Management
+** 4. Software-Entwicklungsprozesse
+** 5. Agile Software-Entwicklung
+** 6. Refactoring
+** 7. Projektmanagement
+** 8. Qualitätsmanagement
+** 9. Usability Engineering (Software Ergonomie)
+* 备注
++ 一半的分数都来自 Entwurfsmuster
+
++ SE1东西还是要看一下
+
++ Software-Entwicklungsprozesse 也很重要
+  - 一个 Pattern 的 vor 和 nachteil
+
+  - cleanroom 不考
+
++ Scrum
+
++ Kanban 的 Grundidee
+
++ Refactoring 也经常考
+
++ 许多 Ueb 上的题目都是老的 Klausur 问题
+
+  - 8.4 Prozessreifegradmodelle 不考
+
++ Normen 要会解释
+
++ 9.4 9.6 不考
+
++ 10以后不考
+

@@ -1,0 +1,276 @@
+* 02 Verwaltung des Hintergrundspeicher
+** Speicherhierarchie
++ Primärspeicher - Register/Cache-Speicher
++ Sekundärspeicher - Langsamer Sekundärspeicher mit wahlfreiem Zugriff
++ Tertiärspeicher - Offline-Tertiärspeicher
+** Sekundärspeicherorganisation
+*** Datensätze und Satztypen
++ Datensatz :: Folge von Datenfeldern mit je einem bestimmten Typ und einer bestimmenten(evtl.variablen) Länge.
++ Satztypen:
+  1. Feste Satzlänge oder variable Satzlänge
+  2. Datensätze mit variabler Satzlänge
+  3. "große" Satzlänge oder "kleine" Satzlänge
+     - groß: Datensätze sind größer als ein Block
+     - klein: Datensätze passen in einen Block
+*** Verwaltung von Datensätzen in Blöcken
++ Blockungsfaktor :: (durchschnittliche) Anzahl der Datensätze pro BlockSpannsätze oder Nichtspannsätze
++ Spannsätze :: Datensatz in mehreren Blöcken
++ Nichtspannsätze :: jeder Datensatz in maximal einem Block
+*** Adressierung von Datensätzen
+Indirekte Adressierung: "logische Adressierung", Adresse zeigt auf eine Zuordnungstablle, die die aktuelle physische Adresse enthält
+*** Seitenbezogene Adressierung
+Zeiger(Tupelidentifikator,TID) besteht aus einem Paar:(Seitennummer p, Position i im Zeigerfeld der Seite). Eintrag im Zeigerfeld:Position x des Satzes in der Seite an. Verschieben eines Datensatzes innerhalb der Seite: Nur x im Zeigerfeld verändern, alle Zeiger(p,i) auf den Satz bleiben unverändert.
+
+Verschiebung eines Satzes in eine andere Seite:In der Seite P wird anstelle des Satzes der Zeiger <q,j> gespeichert, <q,j> gibt an, wo sich der Satz befindet
+** Pufferverwaltung
+*** Puffer Überblick
+Ausgezeichneter Bereich des Hauptspeichers, in Pufferrahmen gegliedert. Jeder Pufferrahmen kann eine Seite der Platte aufnehmen.
+*** Qualitätsmaß für den Puffer
++ hit(Treffer)
++ miss(Fehlschlag)
++ hit ratio(Trefferrate)
+*** Seitenersetzungsstrategien
+**** Seitenersetzungsverfahren
++ Demand-Paging-Verfahren :: genau eine Seite im Pufferdurchangeforderte Seite ersetzen.
++ Prepaging-Verfahren :: auch weitere Seiten in den Puffer lesen, die eventuell in der Zukunft benötigt werden
+**** Oft genutzte Strategien
++ FIFO :: Seite, die am längsten im Puffer steht, wird ersetzt, Referenzen spielen keine Rolle
++ LFU :: (Least Frequently Used)Seite, die am seltensten referenziert wurde, wird ersetzt, Alter spielt keine Rolle
++ LRU :: (Least Recently Used)Seite, die am längsten nicht referenziert wurde, wird ersetzt Gesamtanzahl der Referenzen spielt keine Rolle.
++ GCLOCK :: Seite, die in jüngster Zeit am wenigsten häufig referenziert wurde, wird ersetzt
+*** Beispiel 1: LRU
+Realisierung durch doppelt verkettete Liste aller Seiten mit Zeigern auf
++ Kopf (most recently used oder MRU - Ende) und
++ Ende (least recently used oder LRU - Ende)
+Werden neue Objekte in den Puffer gestellt, so werden sie am Kopf der Liste eingefügt.
+Werden Objekte, die im Puffer sind, erneut benutzt, so werden sie ausgekettet und am Kopf wieder eingefügt.
+*** Modifikationen von Seitenersetzungsstrategien
+Standard – Seitenersetzungsstrategien von BS brauchen Modifikationen für Einsatz in DBS
++ Fixieren von Seiten: Seite, die in nächster Zeit wieder benötigt wird, kann im Puffer fixiert werden und ist damit von der Verdrängung ausgeschlossen
++ Freigeben von Seiten: Seite, die in nächster Zeit bestimmt nicht benötigt wird, kann zur Verdrängung freigegeben werden
++ Zurückschreiben einer Seite: DBS kann auslösen, dass veränderte Seiten in die Datendateien zurückgeschrieben werden
+* 03 Dateiorganisation und Zugriffspfade
+** Begriffsdefinitionen
++ Primärschlüssel :: ausgezeichnete identifizierende Attributmenge, wichtiger Kandidat für Zugriffsstruktur
++ Sekundärschlüssel :: beliebige andere Attributmenge (die durch eine Zugriffsstruktur unterstützt werden soll)
++ Index :: Zugriffsstruktur, die den Zugriff über Attributwerte unterstützt
++ Primärindex :: Zugriffsstruktur auf die Datensätze, die die Dateiorganisationsform ausnutzen kann, im Normalfall über Primärschlüsselattributen definiert
++ Sekundärindex :: Jeder weitere Zugriffspfad
+** Sequentielle Speicherung
++ Datei mit unsortierten Datensätzen, wird auch Heap(Haufen) genannt
++ Datei mit sortierten Datensätzen
+** Hash-Basierte Speicherung
++ bucket = Speicherbereich, der aus einer oder mehreren Seiten besteht
+*** Probleme des statischen Hashens
+Mangelnde Dynamik
++ Vergrößerung des Bildbereichs erfordert komplettes Neu-Hashen
++ Wahl der Hash-Funktion entscheidend
+** Cluster-Speicherung
+Übliche Speicherverfahren:
++ Tupel über Seiten verteilt ohne besondere Berücksichtigung des logischen Zusammenhangs
+Cluster – Bildung, Ballung:
++ gemeinsame Speicherung von Datensätzen, die in typischen Anfragen gemeinsam benötigt werden
++ Gruppierung nach:
+  - Schlüsselattributen in Sortierreihenfolge: zur Unterstützung von Bereichsanfragen
+  - oder Datensätzen mit demselben Attributwert: zur Unterstützung von Verbundanfragen
+Effizienzgewinn von der Art der Anfragen abhängig
+Indexierte Cluster
++ nutzen einen in Sortierreihenfolge aufgebauten Index (bspw. B+-Baum) über den Cluster-Schlüssel zum Zugriff auf die Cluster
+Hash-Cluster
+- bestimmen die Adresse eines Tupels mit Hilfe einer Hash-Funktion
+- Hash-Funktion kann beim Anlegen des Clusters vom Benutzer definiert werden (sonst default-Funktion)
+** Einstufige geordnete Indextypen
+*** Primärindex
+Geordnete Hauptdatai, Index nutzt diese Organisaionsform, Indexeintrag hat zwei Felder:Suchschlüssel und Blockverweis. Je 1 Indexeintrag pro Datenblock der zugehörigen Hauptdatei.
++ -> Nicht dichter Index
+*** Sekundörindex
+Dichter Sekundärindex nach nicht geordnetem Attribut. Doppelte Schlüsselwerte:
++ mehrfache Einträge
++ Verwendung von Buckets
+*** Definition
+Primärindex:
++ Zugriffsstruktur auf die Datensätze, der die Dataiorganisationsform ausnutzen kann, im Normalfall über Primärschlüsselattributen definiert
++ Ergänzung:Also z.B. auch ein Clusterindex
++ Alternative:Ein Primärindex ist ein Index, der die Position eines Datensatzes in der Datei bestimmt.
+Sekundärindex:
++ Jeder weitere Zugriffspfad
+
+** Mehrstufige Indexe
+Indexdatei plus Hauptdatei. Datensätze in Indexdatei:
++ (Primärschlüsselwert, Seitennummer)
+zu jeder Seite der Hauptdatei genau ein Index-Datensatz in der Indexdatei
+Wenn Hauptdatei groß wird, reicht ein Block für den Index nicht mehr aus.
+
+Mehrstufiger Index: Bei sehr großen Dateien weitere Stufen erforderlich.
+
+*** Probleme bei indexsequentiellen Dateien:
+Stark wachsende Dateien:
++ Zahl der linear verketteten Indexseiten wächst
++ Automatische Anpassung der Stufenanzahl nicht vorgesehen
+Stark schrumpfende Dateien:
++ nur zögernde Verringerung der Index- und Hauptdatei-Seiten
+Viele Änderungsoperationen:
++ Unausgeglichene Seiten in der Hauptdatei
++ Führt zu unnötig hohem Speicherplatzbedarf und zu langen Zugriffszeiten
+
+** Baum-basierte Indexe
+*** B-Bäume und Varianten
+B-Baum:ausgeglichener oder balancierter Suchbaum
++ Daten im Baum werden sortiert nach einem Zugriffsattribute gespeichert
++ Alle Pfade von der von der Wurzel zu den Blättern des Baumes gleich lang
+Datenbankbereich: Knoten der Suchbäume zugeschnitten auf Seitenstruktur des DBS
++ Mehrere Zugriffsattributwerte auf einer Seite
++ Mehrweg-Bäume (mehr als zwei Nachfolger für einen Indexeintrag)
++ Alle Suchschlüssel plus Verweise aus einem Knoten sollten auf eine Datenbankseite passen
+
+*** Knotenstruktur im B-Baum
++ Ein Knoten entspricht einer Seite
++ Auslastung ausgewogen, Anzahl der Seitenzugriffe bei einer Suche durch Baumhöhe begrenzt
++ Balanciert: jeder Weg von der Wurzel bis zu einem Blatt gleich lang
++ Zu jedem Eintrag gibt es einen Verweis auf Knoten mit kleineren Schlüsselwerten und auf Knoten mit größeren Schlüsselwerten
++ Ein Eintrag besteht aus dem Schlüssel und dem Datensatz, der zu diesen Schlüssel gehört bzw. der entsprechenden TID
+*** Einfügen in B-Baum
++ Falls passende Seite n<2m Elemente, w einsorteiren
++ Falls passende Seite n=2m Elemente, neue Seite erzeugen(split)
+  - ersten m Werte auf Originalseite
+  - letzten m Werte auf neue Seite
+  - mittleres Element auf entsprechende Indexseite nach oben
+
+*** Löschen in B-Baum
+Unterlaufbehandlung(bei weniger als m Elementen auf Seite)
++ Ausgleichen mit der benachbarten Seite (benachbarte Seite a Elemente
+  mit n > m;transfer)
++ Oder : Zusammenlegen zweier Seiten zu einer (Nachbarseite n=m Elemente;fusion)
+
+*** Verbesserung: B+-Bäume
+B+-Bäume:
++ Datensätze der Hauptdatei auf den Blattseiten
++ Innere Knoten enthalten Zugriffsattributwerte und Zeiger auf nachfolgende Knoten
+
+*** Eigenschaften von B+-Bäumen
++ Jeder Weg von der Wurzel zu einem Blatt hat die gleiche Länge.
++ Jeder Knoten außer Wurzeln und Blättern hat mindestens = und höchstens 2= Einträge.
++ Blätter haben mindestens a und höchstens 2a Einträge.
++ Die Wurzel hat entweder maximal 2= Einträge, oder sie ist ein Blatt mit maximal 2a Einträgen
++ Jeder Knoten mit c − 1 Einträgen, außer den Blättern, hat c Kinder
+Alle Operationen sind effizienter, da Baum breiter und damit weniger Ebenen!
+** Weitere Zugriffsverfahren
+*** Bitmap-Index
+Beispiel: Attribut Type in Tabelle Movie nimmt ausschließlich 5 verschiedene spezielle Werte an (C, G, S, T, V)
+* 04 In Memory Database Systems
+* 05 Recovery und Logging
+** Fehlerklassen
++ Transaktionsfehler
+  - lokaler Fehler einer Transaktion, z.B. Fehler im Anwendungsprogramm, Rollback-Kommando, Transaktionsabbruch durch das DBMS
++ Systemfehler
+  - Fehler, die das gesamte System betreffen, z.B. DBMS-Fehler, Betriebssystemfehler, Hardware-Fehler. Alle im Hauptspeicher befindlichen Daten sind anschließend zerstört.
++ Medienfehler
+  - Fehler, die den Verlust der Daten im stabilen Speicher nach sich ziehen, z.B. Plattencrash, Controllerfehler, Zerstörung der Festplatte durch äußere Gewalt
+
+** Aufbau des Logfiles
++ Physisches Logging
++ Logisches Logging
++ Kombiniertes Logging
+** Einbringstrategie
++ Direkt
+  - eine veränderte Seite wird direkt auf der Festplatte überschrieben
++ Indirekt
+  - Es gibt eine Seitentabelle, die zu jeder Seite die physische Adress auf der Festplatte beschreibt
+  - Geänderte Seiten werden auf neue Positionen geschrieben
+  - Dann wird die neue Zuordnungstabelle geschrieben
+  - Vorteil: Atomares einbrngen mehrerer Seiten
+  - Nachteil: Größerer Aufwand, Clustereffekte werden zerstört
+** Abhängigkeit zum Sperrverfahren
++ Das Log-Granulat muss kleiner oder gleich dem sperrgranulat sein
+Warum?
++ Wenn größere Einheiten geloggt werden, werden auch größere Einheiten zurückgesetzt oder wiederhergestellt.
++ Diese könnten auch von anderen Transaktionen parallel verändert worden sein, da sie ja nicht komplett gesperrt waren.
+** Abhängigkeit zum Ausschreiben
++ steal/no steal :: steal: Eine Seite darf noch vor dem Commit ausgeschreiben werden ("dirty" bzw. "schmutzig")
++ force / no force :: force: Eine Seite muss vor dem Commit ausgeschrieben werden no force: Eine Seite darf auch nach dem Commit ausgeschrieben werden
+** WAL-Prinzip und Commit-Regel
++ WAL (Write Ahead Log)-Prinzip
+  - Vor dem Einbringen einer schmutzigen Seite muss die Undo-Information im Log ausgeschrieben sein
++ Commit-Regel
+  - Vor dem Commit einer Transaktion müssen alle Logeinträge der Transaktion ausgeschrieben werden (für Redo)
+** Commit-Verarbeitung
++ Standard-Commit
++ Gruppen-Commit
++ Prä-Commit
+
+** Sicherungspunkt
+Sicherungspunkt (checkpoint): Zusicherung, dass bis zu einem Zeitpunkt alle Änderungen in den stabilen Speicher geschrieben wurden.
+
+** Unscharfe Sicherungspunkte
++ Es werden nur Statusinformationen geschrieben
++ Asynchron zum Checkpoint werden regelmäßig Seiten ausgeschrieben
++ Zu jeder Seite im Puffer wird die Log-Adresse(LSN) der ersten Änderung seit Einlesen der Seite gespeichert
++ Das Minimum dieser Werte ist die MinDirtyPageLSN
+** Wiederherstellung
+*** Analyse-Phase
++ Log wird vom letzten Checkpoint an gelesen
++ Menge der zum Checkpoint oder danach noch laufenden Transaktionen ermitteln
++ Gewinner-Transaktionen :: es wird ein Commit im Log gefunden
++ Verlierer-Transaktionen :: kein Commit oder ein Rollback im Log
++ Menge der Seiten, die zum Checkpoint-Zeitpunkt geändert im Puffer lagen
++ Menge der Seiten, die seit dem Checkpoint noch geändert wurden
+*** Redo-Lauf
+*** Undo-Lauf
+** Idempotenz von Undo und Redo
+Lösung: PageLSN
++ Dies ist immer die LSN der letzten Änderung auf der Seite
++ Kann als eine Versionsnummer verstanden werden
+** Compensation Log Records (CLR)
++ Undo-Operationen werden als CLRs protokolliert
++ Die Seite erhält eine neue, höhere PageLSN durch die Undo-Operation
++ Sowohl im Normalbetrieb als auch bei der Wiederherstellung
++ Diese Änderungen werden wie andere Änderungen protokolliert (WAL- Regel)
+* 06 Anfrageoptimierung
+** Grundprinzipien der Optimierung
+1. Selektionen so früh wie möglich
+2. Basisoperationen, die wie Selektion und Projektion
+3. Redundante Operationen, Idempotenzen oder leere Zwischenrelationen entfernen
+4. Zusammenfassen gleicher Teilausdrücke
+** Logische Optimierung
++ Komplexe Selektionsprädikate werden aufgelöst (Regel 4)
++ Mit Regel 11 werden kartesische Produkte mit anschließender Selektion in Verbunde verwandelt
++ Mittels der Regeln 5, 6, 7, 8 werden Selektionen möglichst weit in Richtung der Blätter verschoben
++ Gegebenenfalls müssen Selektionen gemäß Regel 4 vertauscht werden
++ Die Regeln 3, 5, 9 und 10 ermöglichen es, die Projektionen ebenfalls in Richtung Blätter zu verschieben
++ Die Einzelschritte werden in dieser Reihenfolge so lange ausgeführt, bis keine Ersetzungen mehr möglich sind
+** Interne Operationen
+*** Selektion
++ Full Table Scan
++ Operationen zur Verarbeitung von TID-Listen: Materialisierung-Operator 𝜇
+*** Projektion
+*** Verbund
++ DIRECT
++ SNGLOOP
++ MERGE
++ HASH
+** Nested-Loop-Join
+** Sort-Merge-Join
+Voraussetzung: beide Relationen sind physisch nach dem Verbund-Attribut sortiert gespeichert!
+Evtl. lohnt sich vorher eine externe Sortierung einer/beider Relationen, um dann dieses Verfahren nutzen zu können
+** Partition-Hash-Join
+Join-Phase ist wie nested loops join auf den Partitionen
+** Physische Optimierung
++ Beispiel Alternative 1: Nutzung Index auf Jahr
++ Beispiel Alternative 2: Nutzung mehrerer Indexe
+*** Pipelining von Operationen
+** Kostenbasierte Auswahl
+Einflussgrößen
++ Tatsächliche Größe der Datenbanktabellen
++ Existenz von Primär- und Sekundärindexen und ihre Größe
++ Clustering mehrerer Relationen
++ Selektivität eines Attributs, über das ein Index aufgebaut wurde
+*** Woher kommen die Informationen?
++ Statistiken über die Datenbankinhalte
+*** Histogramme für Attributwerte
+** Optimizer Hints
+Hint = Hinweis: der angegebene Zugriff muss nicht zwingend vom Optimierer verwendet werden
+*** Syntax:
+select /*+ hint */ <cols> from ...;
+
+* 07 Relational Database Systems with Column Oriented Storage
+* 08 extra(Bilder in Folien)
