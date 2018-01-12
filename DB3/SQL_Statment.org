@@ -1,0 +1,77 @@
+* 03 Dateiorganisation
+** Demo IOT und Hash-Speicherung Datei
+-- Statistiken abfragen
+
+SELECT table_name, blocks FROM all_tables WHERE owner = 'MOVIEDB' AND table_name in ('MOVIE', 'MOVIE_HASHED', 'MOVIE_IOT');
+SELECT index_name, table_name, leaf_blocks FROM all_indexes WHERE owner = 'MOVIEDB' AND table_name in ('MOVIE','MOVIE_HASHED','MOVIE_IOT');
+
+-- Beispielanfragen, messen Sie jeweils die Zeit und gucken Sie den Plan an (F10 im SQL Developer)
+SELECT * FROM moviedb.movie m WHERE title = 'Star Wars';
+SELECT * FROM moviedb.movie_iot m WHERE title = 'Star Wars';
+SELECT * FROM moviedb.movie_hashed m WHERE title = 'Star Wars';
+
+SELECT * FROM moviedb.movie m WHERE title like 'Star Wars%';
+SELECT * FROM moviedb.movie_iot m WHERE title like 'Star Wars%';
+SELECT * FROM moviedb.movie_hashed m WHERE title like 'Star Wars%';
+
+SELECT * FROM moviedb.movie m WHERE title like '%Star Wars%';
+SELECT * FROM moviedb.movie_iot m WHERE title like '%Star Wars%';
+SELECT * FROM moviedb.movie_hashed m WHERE title like '%Star Wars%';
+
+SELECT * FROM moviedb.movie m WHERE year = 1900;
+SELECT * FROM moviedb.movie_iot m WHERE year = 1900;
+SELECT * FROM moviedb.movie_hashed m WHERE year = 1900;
+
+SELECT count(*) FROM moviedb.movie m WHERE year = 1900;
+SELECT count(*) FROM moviedb.movie_iot m WHERE year = 1900;
+SELECT count(*) FROM moviedb.movie_hashed m WHERE year = 1900;
+** Demo IOT und Hash-Tabellen (Create Script)
+-- Gehashte Version aufbauen
+
+drop cluster moviedb.movie;
+CREATE CLUSTER moviedb.movie( 
+  title VARCHAR2(250 BYTE)
+) SIZE 40 SINGLE TABLE HASHKEYS 1100000;
+
+CREATE TABLE moviedb.movie_hashed(
+  id NUMBER(9,0) NOT NULL ENABLE, 
+  title VARCHAR2(250 BYTE), 
+  year NUMBER(4,0), 
+  type CHAR(1 BYTE)
+) CLUSTER moviedb.movie(title);
+
+INSERT INTO moviedb.movie_hashed SELECT * FROM moviedb.movie;
+
+-- IOT Version aufbauen
+
+CREATE TABLE moviedb.movie_iot(
+  id NUMBER(9,0) NOT NULL , 
+  title VARCHAR2(250 BYTE) not null, 
+  year NUMBER(4,0), 
+  type CHAR(1 BYTE),
+  CONSTRAINT pk_movie_iot PRIMARY KEY (title, id)
+) ORGANIZATION INDEX;
+
+INSERT INTO moviedb.movie_iot SELECT * FROM moviedb.movie;
+
+ANALYZE TABLE moviedb.movie_iot COMPUTE STATISTICS;
+ANALYZE TABLE moviedb.movie_hashed COMPUTE STATISTICS;
+ANALYZE TABLE moviedb.movie COMPUTE STATISTICS;
+
+ANALYZE INDEX moviedb.pk_movie COMPUTE STATISTICS;
+ANALYZE INDEX moviedb.IDX_MOVIE_TITLE COMPUTE STATISTICS;
+ANALYZE INDEX moviedb.PK_MOVIE_IOT COMPUTE STATISTICS;
+
+-- Indizes ueber Jahr aufbauen
+
+CREATE INDEX moviedb.idx_year ON moviedb.movie(year);
+CREATE INDEX moviedb.idx_iot_year ON moviedb.movie_iot(year);
+CREATE INDEX moviedb.idx_hash_year ON moviedb.movie_hashed(year);
+
+ANALYZE INDEX moviedb.idx_year COMPUTE STATISTICS;
+ANALYZE INDEX moviedb.idx_iot_year COMPUTE STATISTICS;
+ANALYZE INDEX moviedb.idx_hash_year COMPUTE STATISTICS;
+
+GRANT SELECT ON moviedb.movie_iot TO public;
+GRANT SELECT ON moviedb.movie_hashed TO public;
+

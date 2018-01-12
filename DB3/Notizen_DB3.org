@@ -13,7 +13,7 @@
      - groß: Datensätze sind größer als ein Block
      - klein: Datensätze passen in einen Block
 *** Verwaltung von Datensätzen in Blöcken
-+ Blockungsfaktor :: (durchschnittliche) Anzahl der Datensätze pro BlockSpannsätze oder Nichtspannsätze
++ Blockungsfaktor :: (durchschnittliche) Anzahl der Datensätze pro Block
 + Spannsätze :: Datensatz in mehreren Blöcken
 + Nichtspannsätze :: jeder Datensatz in maximal einem Block
 *** Adressierung von Datensätzen
@@ -24,31 +24,49 @@ Zeiger(Tupelidentifikator,TID) besteht aus einem Paar:(Seitennummer p, Position 
 Verschiebung eines Satzes in eine andere Seite:In der Seite P wird anstelle des Satzes der Zeiger <q,j> gespeichert, <q,j> gibt an, wo sich der Satz befindet
 ** Pufferverwaltung
 *** Puffer Überblick
-Ausgezeichneter Bereich des Hauptspeichers, in Pufferrahmen gegliedert. Jeder Pufferrahmen kann eine Seite der Platte aufnehmen.
+Ausgezeichneter Bereich des Hauptspeichers, in Pufferrahmen gegliedert. Jeder Pufferrahmen kann eine Seite der Platte aufnehmen
 *** Qualitätsmaß für den Puffer
 + hit(Treffer)
 + miss(Fehlschlag)
 + hit ratio(Trefferrate)
 *** Seitenersetzungsstrategien
 **** Seitenersetzungsverfahren
-+ Demand-Paging-Verfahren :: genau eine Seite im Pufferdurchangeforderte Seite ersetzen.
++ Demand-Paging-Verfahren :: genau eine Seite im Puffer durch angeforderte Seite ersetzen.
 + Prepaging-Verfahren :: auch weitere Seiten in den Puffer lesen, die eventuell in der Zukunft benötigt werden
 **** Oft genutzte Strategien
 + FIFO :: Seite, die am längsten im Puffer steht, wird ersetzt, Referenzen spielen keine Rolle
 + LFU :: (Least Frequently Used)Seite, die am seltensten referenziert wurde, wird ersetzt, Alter spielt keine Rolle
-+ LRU :: (Least Recently Used)Seite, die am längsten nicht referenziert wurde, wird ersetzt Gesamtanzahl der Referenzen spielt keine Rolle.
++ LRU :: (Least Recently Used)Seite, die am längsten nicht referenziert wurde, wird ersetzt. Gesamtanzahl der Referenzen spielt keine Rolle.
 + GCLOCK :: Seite, die in jüngster Zeit am wenigsten häufig referenziert wurde, wird ersetzt
 *** Beispiel 1: LRU
 Realisierung durch doppelt verkettete Liste aller Seiten mit Zeigern auf
 + Kopf (most recently used oder MRU - Ende) und
 + Ende (least recently used oder LRU - Ende)
-Werden neue Objekte in den Puffer gestellt, so werden sie am Kopf der Liste eingefügt.
+Werden neue Objekte in den Pufferst gestellt, so werden sie am Kopf der Liste eingefügt.
 Werden Objekte, die im Puffer sind, erneut benutzt, so werden sie ausgekettet und am Kopf wieder eingefügt.
 *** Modifikationen von Seitenersetzungsstrategien
 Standard – Seitenersetzungsstrategien von BS brauchen Modifikationen für Einsatz in DBS
 + Fixieren von Seiten: Seite, die in nächster Zeit wieder benötigt wird, kann im Puffer fixiert werden und ist damit von der Verdrängung ausgeschlossen
 + Freigeben von Seiten: Seite, die in nächster Zeit bestimmt nicht benötigt wird, kann zur Verdrängung freigegeben werden
 + Zurückschreiben einer Seite: DBS kann auslösen, dass veränderte Seiten in die Datendateien zurückgeschrieben werden
+** Logische Speicherorganisation in Orace
+*** Tablespaces
++ unterteilen die Datenbank logisch in verschiedene Bereiche
++ können mehrere Dateien auf verschiedenen Plattenlaufwerken umfassen
+*** Schema - Objekte
++ z.B Tabellen, indexe oder Stored Procedures
+*** Segment
++ Speicher für Schema-Objekte, i.d.R. ein Schema-Obket pro Segment
++ Typen: Daten-Segmente, Index-Segmente, Undo-Segmente und temporäre Segmente
+*** Extents
++ Werden dynamisch angefordert für die Speicherallokation für Segmente
++ Gesamter Speicher eines Extents wird gemeinsam reserviert und ist zusammenhängend
+*** Datenbankblöcke
++ aus einem oder mehreren BS-Blöcken gebildet
++ D.h. hier wieder Kopplung an physische Speicherstruktur
++ Bausteine der Extents mit definierter, aber nicht für alle konstanter Anzahl
+*** pctfree
+legt fest, wie groß der Datenblockanteil sein soll, der nicht für Einfügeoperationen genutzt werden kann
 * 03 Dateiorganisation und Zugriffspfade
 ** Begriffsdefinitionen
 + Primärschlüssel :: ausgezeichnete identifizierende Attributmenge, wichtiger Kandidat für Zugriffsstruktur
@@ -93,7 +111,7 @@ Primärindex:
 + Ergänzung:Also z.B. auch ein Clusterindex
 + Alternative:Ein Primärindex ist ein Index, der die Position eines Datensatzes in der Datei bestimmt.
 Sekundärindex:
-+ Jeder weitere Zugriffspfad
++ Jeder weitere ZugriffsPfad
 
 ** Mehrstufige Indexe
 Indexdatei plus Hauptdatei. Datensätze in Indexdatei:
@@ -117,7 +135,7 @@ Viele Änderungsoperationen:
 *** B-Bäume und Varianten
 B-Baum:ausgeglichener oder balancierter Suchbaum
 + Daten im Baum werden sortiert nach einem Zugriffsattribute gespeichert
-+ Alle Pfade von der von der Wurzel zu den Blättern des Baumes gleich lang
++ Alle Pfade von der Wurzel zu den Blättern des Baumes gleich lang
 Datenbankbereich: Knoten der Suchbäume zugeschnitten auf Seitenstruktur des DBS
 + Mehrere Zugriffsattributwerte auf einer Seite
 + Mehrweg-Bäume (mehr als zwei Nachfolger für einen Indexeintrag)
@@ -158,6 +176,41 @@ Alle Operationen sind effizienter, da Baum breiter und damit weniger Ebenen!
 *** Bitmap-Index
 Beispiel: Attribut Type in Tabelle Movie nimmt ausschließlich 5 verschiedene spezielle Werte an (C, G, S, T, V)
 * 04 In Memory Database Systems
+** Normale Idee
+lade hauptsächlich Datei in Hauptspeicher, um schneller lesen zu können
+** Konzept
++ Data Management Operations -> Änderung in Hauptspeicher wichtiger, in Persisitenze kommt später
++ Data Query Operations -> spezifische Algorithms für optimierte Prozess, spezifische Lesenstruktur, spezifische Storage organization
++ Data Backup -> Persistenz hängt nicht von Hauptspeicher ab, nur für Backup
+** !Most important aspects of IMDB
++ Dataiorganization basiert nicht auf Blcok
+  + Zugriffszeit drastisch reduzieren
+  + erfordet verschiedene Verarbeitungsalgorithmen
+  + bevorzugt verschiedene Datenorganisation
++ intensive Operationen rechnen
+  + erfordet verschiedene Verarbeitungsalgorithmen
+  + benötigen eine engere Integration mit Verarbeitungshardware
++ Persistenz Storage nur als "Backup"
++ Angenommen read-heavy Application
+** Main memory data processing
++ Vermeidung die Lücke von Zugriffszeit bietet großen Vorteil
++ Core, L1 Cache, L2 Cache, L3 Cache, Main Memory, Disk
++ je schneller die Cache ist, destor kleiner ist die.
+** Modification of data
++ zuerst verändert Datei in Hauptspeicher
++ Die Veränderung an Redo log anhängen, Redo log ist nur für Anhängen
++ Die Veränderung committen und dauerhaft
++ periodische Datei sind blockweise synchronisiert mit Festplatte.
+** Important sapects of Oracle In Memory Storage
++ beschleunigen die analytsiche Abfrage transparent für Benutzer
++ für OLAP besonders hilfreich
++ In-memory Datei wird an SGA in Hauptspeicher speichert
++ 2 unterschieliche Teil:
+  + "1MB Pool" für normale Datei
+  + "64KB Pool"für Metadatai
++ Die Größe wurde dynamisch vergrößert(reduziert nur nach Neustart)
++ Die Optionen können per Tablespace, Table und Column dynamisch verändert werden, und zwar, welche Teil soll in Hauptspeicher geladen werden.
++ Mehre Werte werden parallel in CPU-Register geladen
 * 05 Recovery und Logging
 ** Fehlerklassen
 + Transaktionsfehler
@@ -166,7 +219,6 @@ Beispiel: Attribut Type in Tabelle Movie nimmt ausschließlich 5 verschiedene sp
   - Fehler, die das gesamte System betreffen, z.B. DBMS-Fehler, Betriebssystemfehler, Hardware-Fehler. Alle im Hauptspeicher befindlichen Daten sind anschließend zerstört.
 + Medienfehler
   - Fehler, die den Verlust der Daten im stabilen Speicher nach sich ziehen, z.B. Plattencrash, Controllerfehler, Zerstörung der Festplatte durch äußere Gewalt
-
 ** Aufbau des Logfiles
 + Physisches Logging
 + Logisches Logging
@@ -197,10 +249,8 @@ Warum?
 + Standard-Commit
 + Gruppen-Commit
 + Prä-Commit
-
 ** Sicherungspunkt
 Sicherungspunkt (checkpoint): Zusicherung, dass bis zu einem Zeitpunkt alle Änderungen in den stabilen Speicher geschrieben wurden.
-
 ** Unscharfe Sicherungspunkte
 + Es werden nur Statusinformationen geschrieben
 + Asynchron zum Checkpoint werden regelmäßig Seiten ausgeschrieben
@@ -273,4 +323,72 @@ Hint = Hinweis: der angegebene Zugriff muss nicht zwingend vom Optimierer verwen
 select /*+ hint */ <cols> from ...;
 
 * 07 Relational Database Systems with Column Oriented Storage
+** Motivation
++ row-wise tables: Eine einzele Spalte zu lesen ist sehr aufwendig
++ größe Rows haben viele NUll Wert
+** Grundidee
++ Spaltenwerte können gut kompromiert werden
++ Zugriffszeiten reduzieren, indem nur erforderliche Spalten gelesen (geschrieben) werden
++ Spalten separat auf der Festplatte gespeichert
+** Column storage can be beneficial
++ Viele Leseoperationen verwenden nur eine kleine Teilmenge von Spalten
++ Write Operationen sind hauptsächlich Modifikation
++ Schemaänderungen durch Hinzufügen / Entfernen von Spalten sind wahrscheinlich
++ für Read-Heavy System
+** C-Store Projections
++ Projektion: Festplatte ist immer billiger, und es ist immer sinnvoller, die Performance durch redudante Datei zu verbesseren
++ Jede Spalte kann mehrmals gespeicert werden, in verschiedenen Reihnfolge
++ Gruppe von Spalten, die das gleiches Attribut speicheren, nennt Projektion
++ Index in Spaltenortierent Datenbank
++ Projektionen mit wenigen Spalten und anderen Sortierreihenfolgen werden genutzt, für eine bessere Leistung bei bestimmten Abfragen.
+** Vectorization
+How is a simple selection processed in a database system?
+Example: SELECT AVG(revenue) FROM sales WHERE revenue<100
+
+Vectorization kombiniert pipelining und full materialization:
++ nehmen erstmal 1000 Values, berechnen in Li Cache mit Full Materialization, und speichern diesen Durchschnitt als temporäres Ergebnis und Anzahl der Werte, die diesen Durchschnitt bilden
++ nehmen nächste 1000 Values weiter (Pipline)
++ bis alle Values geladen werden, temporöres Ergebnis ist finales Ergebnis
+*** Advantages of vectorization
+Reduzierte Anzahl von Funktionsaufrufen im Vergleich zu reinem Pipelining, Bessere Cache-Lokalität, Parallelisierung, mulitcore ausnutzen
+
+** Data Compression
+Daten in einer einzelnen Spalte sind homogen. Die hohe Leistung von Abfragen ist ein Hauptziel. Höhere Komprimierung bedeutet weniger Speicherplatz.
+*** Run-length encoding
+Stores values with start index and number of repetitions for each run Beneficial for columns with long values (e.g. strings) and with many repetitions. Also efficient for sorted/ordered columns
+*** Bit vector encoding
+For each distinct value in a column a bit-vector is created with one bit for each row, Bit is 1 if that row has this value, 0 otherwise
+*** Dictionary Encoding
+dea: replace long values by shorter ones and manage this mapping in separate dictionarr Works well with few frequent (potentially long) values.
+*** Frame of Reference
+Idea: store only one value per column and represent all others by difference from this reference value
+*** Read operations
+Compression technique particularly efficient, if decoding is not required to answer queries, z.B SUM, COUNT, AVG
+*** Management of NULL values
+Tables with large number of columns often contain many NULL values By not storing NULL values much space can be saved
+Three common options:
++ Position list
++ Position bit string
++ Position range
+
+** Late materialization
+Advanced implementations try to work with individual columns as long as possible in query execution,
+
+Main advantages of late materialization:
++ Selection and aggregation tend to reduce number of rows to reconstruct
++ Operations on compressed data can be used in query plan (not possible if tuples are reconstructed earlier [and thus columns decompressed])
++ Amount of data to be moved between memory and CPU is reduced if only relevant columns are there for operations
++ More operations can be executed on fixed width columns (more efficient); after materialization if any column is variable length then so is the whole row
+** Join Processing
+Late materialization can also efficiently be applied to joins, Obvious idea: only fetch columns required in the join predicate first and only materialize rows in the join result
+** Adaptive Indexing
+Database system automatically creates the indexes it needs, Creation is adaptive, partial and continuous
 * 08 extra(Bilder in Folien)
+
+* 09 Mögliche Fragen
+1. IMDB 的老师四个问题
+2. Log 的记录
+3. 算四种 Verbunde 方法的Kosten
+4. B树和B+树
+* 10
+我对每个以教书育人的老师都致以最崇高的敬佩，你爸爸虽然我接触不多，但绝对符合这个前提，所以每个这样的老师理应受到更多的赞美

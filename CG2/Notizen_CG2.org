@@ -1,3 +1,4 @@
+
 * Auswändig lernen 重要问题 需记忆
 * 02_Wahrnehmung und Bildakquise
 ** Was ist Licht?
@@ -338,7 +339,6 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
 + Trotz der durch die kleinen Filterkerne ziemlich groben Schätzung der Ableitungen ist das Ergebnis fast perfekt isotrop
 + Summe der Koeffizienten ist null, so dass sich in Bildbereichen mit konstanter Intensität die Filterantwort null ergibt
 
-
 ** !Kanten-Detektion:Canny
 + Ziel ::
   - Gute Detektion:möglichst alle Kanten detektieren, ohne zu viel Clutter
@@ -370,3 +370,55 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
    - Typischerwerise gemessen durch den Betrag des Gradieten, ab dem eine Schärfung an der Stelle (u,v) stattfindet.
 + Laplace-Filter ist Spezialfall des USM-Filters
   
+* 06_eckenkurvendetektion :work:
+** Algorithmen Idee
+ein Eckpunkt ist dort gegeben, wo der Gradient der Bildfunktion gleichzeitig in mehr als einer Richtung einen hohen Wert aufweist.
+** Ecken und Kurvendetektion - Rahmenbedingungen
++ Kanten:
+  - Bildbereiche, in denen der Gradient in einer Richtung hoch und senkrecht dazu niedrig ist.
++ Eckpunkte:
+  - Bildbereiche, in denen der Gradient in mehr als einer Richtung hoch ist.
++ Gewünschte Eigenschaften:
+  - Unterscheidung von wichtigen und unwichtigen Eckpunkten
+  - Zuverlässiges Auffinden von Eckpunkten unter Bildrauschen
+  - Genaue Lokalisierung der Eckpunkte
+  - Möglichst wenig Rechenaufwand
+  - Unabhängig von der Orientierung der Ecken
++ Ideal: Empfindlichkeit per Parameter steuerbar
+** Harris-Detektor: Strukturmatrix
++ Berechne wie bisher diskret genähert die partielle Bildableitung in horizontaler und vertikaler Richtung
++ Bilde daraus die so-genannte lokale Strukturmatrix
++ Dann Gewichtete Mittelung von M mit Gaußfilter H
++ Wenn (u,v) in einer strukturlosen Region des Bildes liegt (Intensitäts-"Gebirge" I ist flach, Plateau), dann sind sämtliche Ablei- tungen Ix=Iy=0, also ist M die Nullmatrix.
++ Wenn durch (u,v) eine Kante mit Kanten- vektor parallel zur x-Richtung verläuft, dann ist Ix2>0, also auch A>0, aber Iy=0, mit hin B=C=0. Wir haben also ein M in der Form
++ Wenn durch (u,v) eine Ecke verläuft (z.B. die Ecke eines Schachbrettmusters), dann messen wir an einigen Stellen in der Umgebung von (u,v) ein Ix2>0, an anderen Stellen ein Iy2>0.
+  - Evtl. ist die Summe aber alle Terme IxIy im Fensterbereich Null (Schachbrett),
+  - evtl. aber auch nicht (einseitige Ecke), wir haben also ein M in der Form
+** Eigenwert
++ Bekanntlich sind Eigenwert λ und Eigenvektor v einer Matrix M ja diejenigen Elemente, f9r die die Eigenwertgleichung Mv = λ v gilt.
++ Eigenvektoren sind also spezielle Richtungen im Raum, die die Abbildung M unverändert lässt.
++ Satz (ohne Beweis) :: jede reelle, symmetrische N*N-Matrix besitzt genau N reelle Eigenwerte mit N zueinander senkrechten Eigenvektoren.
+** Interpretation der Eigenwerte
+Eigenwerte codieren die Kantenstärke, Eigenvektoren die Kantenrichtung.
+1. Fall: Innerhalb einer gleichförmigen (flachen) Bildregion ist M = 0 und deshalb sind auch die Eigenwerte λ1 = λ2 = 0.
+2. Fall: Umgekehrt gilt auf einer perfekten Sprungkante λ1 > 0 und λ2 = 0, und zwar unabhängig von der Orientierung der Kante.
+3. Fall: An Eckpunkten ist der Gradient in mehr als einer Richtung größer als 0: λ1 > 0; λ2 > 0.
+** Hough Transformation
++ Kantendetektoren produzieren eine Vielzahl von irrelevanten Kanten, zusätzlich sind die wichtigen Kanten oft unzusammenhängend.
++ Mit der Hough-Transformation lassen sich beliebige, parametrisierbare Formen in Punktverteilungen lokalisieren (z.B.Geraden, Kreise, Ellipsen).
+*** Parametrisierbare Formen - Geraden
++ Zweidimensionale Geradengleichung: y = kx + d
++ 2 Parameter: Steigung k und y-Achsenabschnitt d.
++ Für eine Gerade, die durch 2 Punkte p1 = (x1; y1) und p2 = (x2; y2) gilt y=kx1+d und y2=kx2+d
++ Ziel :: Auffinden der Geraden mit Para- metern k und d, auf denen möglichst viele Punkte liegen.
+** Hough Transformation - Parameterraum
++ Die Hough-Transformation sucht im von k und d gebildeten zwei- dimensionalen Parameterraum alle Geraden, die durch einen gegebenen Punkt p0 = (x0; y0) laufen.
++ Sei Lj beliebige Gerade durch p0
++ Im Parameterraum ist die Menge aller Geraden durch p ebenfalls eine Gerade
++ Wenn sich n Geraden im Parameterraum an Position (k0; d0) schneiden, dann liegen auf der entsprechenden Geraden :y = k0x + d0 im Bildraum insgesamt n Bildpunkte.
++ Problem :: Vertikale Geraden haben Steigung k = ∞
++ Hessesche Normalform :: xcos0 + ysin0 = r
+
+** Hough Transformation – Diskreter Parameterraum
++ Akkumulator-Array :: Diskrete Repräsentation des Parameterraumes.
++ Grundidee der Hough-Transformation :: Für jeden gefundenen Bildpunkt p0 werden die Zähler im Akkumulator-Array entlang der Geraden dj = x0kj + y0 um 1 erhöht.

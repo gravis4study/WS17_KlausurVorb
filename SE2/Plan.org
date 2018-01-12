@@ -1,5 +1,9 @@
 * Teil 1: Entwurf von Software
-** 1. Grundlagen des Software-Design
+** DONE 1. Grundlagen des Software-Design
+CLOSED: [2018-01-11 Thu 13:39]
+:LOGBOOK:
+- State "DONE"       from "STARTED"    [2018-01-11 Thu 13:39]
+:END:
 ** 2. Analysemuster
 ** 3. Entwurfsmuster
 * Teil 2: Software Management
@@ -9,6 +13,8 @@
 ** 7. Projektmanagement
 ** 8. Qualitätsmanagement
 ** 9. Usability Engineering (Software Ergonomie)
+
+* Ueb 的题目要熟记，都是 AlteKlausur 里面的内容
 * 备注
 + 一半的分数都来自 Entwurfsmuster
 
@@ -35,3 +41,4 @@
 
 + 10以后不考
 
+  

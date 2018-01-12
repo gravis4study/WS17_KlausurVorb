@@ -1,0 +1,105 @@
+* 1. Grundlagen des Software-Design
+* 2. Analysemuster
+** 2.1 Grundidee
+*** Entwurfsmuster(Pattern)
++ beschreiben ein häufig auftretendes Problem
++ dokumentieren bekannte und erprobte Lösungen(wiederverwendbare Struktur)
+Bedeutung von Entwurfsmuster
++ liefern gemeinsames Vokabular für Entwirckler
++ klassifizieren die beim Entwurf von Software zu lösenden Probleme
++ ermöglichen es, von guten Software-Designern zu lernen
+*** Kategorien von Entwurfsmustern
++ Architekturmuster
++ Analysemuster(Analysis Patterns)
++ Entwurfsmuster(Design Patterns)
++ Idiome
+*** Beschreibung von Entwurfsmustern
++ erfolgt meist in strukturierter Form (es gibt aber kein Standardformat), z.B.
++ Kontext :: Beschreibung der (Entwurfs-)Situation in der ein Muster auftritt
++ Problem/Szenario :: Beschreibung der im Kontext wirkenden Kräfte
++ Lösung :: Beschreibung einer Lösung, die den Kräften Rechnung trägt,Klassenmodell mit Komponenten und Beziehungen
+
+** 2.2 Party-Pattern
+*** Kontext
++ Modellierung eines Adressbuchs
++ Adresse, Telefonnummern, E-Mails: mit Personen und Firmen verbunden
+*** Problem
+Redundanz
+*** Lösung
+Einführung einer (abstrakten) Klasse Party (Partei)
+*** Beispiel
+p30
+
+** 2.3 Organisationshierarchie-Pattern
+*** Kontext
+Strukturen in Organisationshierarchien abbilden
+*** Problem
+fehlende Flexibilität
+*** Lösung
+**** Lösung(a): Beziehungen zur (abstrakten) Klasse Organisation (Party-Pattern);
+beziehen sich auf beliebige Unterklasse!
+**** Lösung(b): Beziehungen als eigene Klasse abbilden
+** 2.4 Wissens-/Meta-Ebene-Pattern
+*** Kontext
+eine Partei(Person, Institution,...) besitzt Aufgaben(Verantwortungen), spezifiziert durch
++ Beschreibung
++ einen Anfangs- und Endtermin
++ ...
+*** Problem
+die mögliche Anzahl der Aufgaben ist unbegrenzt das Hinzufügen neuer Aufgaben soll Klassenhierarchie nicht ändern
+*** Lösung
++ Aufgabe: Klasse zur Abbildung der Beziehung zwischen AG u. AN ( = Anwendung des Organisationshierarchie-Patterns)
++ Aufgabentyp: Meta-Information
+
+*** Kontext
+(s.o.) aber zusätzlich: die Parteien können in verschiedene Parteitypen differenziert werden
+(natürliche Personen, Abteilungen, Geschäftsstellen, Lager, ...)
+
+*** Problem
++ Aufgabentypen sind nur für bestimmte Parteitypen zulässig –  d.h. Zuordnung Partei ⇔ Aufgabe unterliegt Regeln
++ Regeln sollen dynamisch zur Laufzeit angelegt / geändert werden können also nicht in den Zuordnungsmethoden „fest-verdrahtet“ werden
+*** Lösung:Meta-Ebene
++ Klassifizierung von Objekten: durch Typ-Klassen
++ Regeln: als Beziehungen zwischen Typ-Informationen modelliert
+  + d.h. können dynamisch geändert werden
+  + Beispiel: Beziehungen „darfAgSein“ und „darfAnSein“
+** 2.5 Zusammenfassung
++ Muster (Pattern) ist abstrakte Beschreibung einer erprobten Lösung wichtige Analysemuster
++ Party-Pattern
++ Organisationshierarchie-Pattern –  Wissens-/ Meta-Ebene-Pattern
++ Ziel: flexible und wiederverwendbare Strukturen
++ Verwendung von Analysemustern führt zu Standardisierung von Software
+Engineering und somit zur Erhöhung der Qualität der Software-Produkte
+* 3. Entwurfsmuster
+* 4. Software-Entwicklungsprozesse
+* 5. Agile Software-Entwicklung
+* 6. Refactoring
+* 7. Projektmanagement
+* 8. Qualitätsmanagement
+* 9. Usability Engineering (Software Ergonomie)
+* 备注
++ 一半的分数都来自 Entwurfsmuster
+
++ SE1东西还是要看一下
+
++ Software-Entwicklungsprozesse 也很重要
+  - 一个 Pattern 的 vor 和 nachteil
+
+  - cleanroom 不考
+
++ Scrum
+
++ Kanban 的 Grundidee
+
++ Refactoring 也经常考
+
++ 许多 Ueb 上的题目都是老的 Klausur 问题
+
+  - 8.4 Prozessreifegradmodelle 不考
+
++ Normen 要会解释
+
++ 9.4 9.6 不考
+
++ 10以后不考
+
