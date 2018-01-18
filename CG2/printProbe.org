@@ -1,0 +1,43 @@
+* 04_LineareFilter
+** Filterung - Idee
+**** Filtermerkmale
+Ergebnis wird nicht aus einem einzigen Pixel brechnet, sondern aus einer Menge von Pixeln. Die Koordinaten der Quellpixel habe eine feste relative Position zum Zielpixel und bilden i.A. eine zusammenhängende Region. Parameter:
+  - Größe der Filterregion
+  - Form der Filterregion
+  - Gewichtung der Quellpixel(konstant oder ortsabhängig)
+** Lineare Filter
++ Lineare Filter :: Wert des zielpixels wird als gewichtete Summe der Quellpixel berechnet
+Größe und Form der Filterregion und Gewichte des Filter werden durch eine Matrix von Filterkoeffizienten spezifiziert, der Filtermatrix Hij oder Filtermaske.
+Die Filtermatrix ist eine diskrete zweidimensionale Funtkion.
+Koordinaten werden meist relativ zum Zentrum angegeben.
+Im Gegensatz zu punktoperationen ist bei Filtern keine "in place"-Verarbeitung möglich, da die Quellpixel mehrere Male benötigt werden.
+
+Zwei prinzipielle Varianten möglich: Ergebnis in ein Zwischenbild speichern, am Schluss komplettes Bild zurückschreiben. Alternativ:erst Kopie erstellen und Ergebnisse direkt ins Original-Bild schreiben.
+
+*** Implementierungsfragen
+Oft ist es vorteilhafter, mit ganzzahligen Filterkoeffizienten zu arbeiten. Umwandlung und Speicherung des Bildes in Gleitkommaformat nicth sinnvoll. Realisierung über einen Skalierungsfaktor,nur eine double-Operation pro pixel. Filtergröße kann sehr leicht generisch implementiert werden, typisch: ungeradzahlige Größe, zentriert.
+*** Anwendung linearer Filter: Randbehandlung
+  1. nur Zentralbereich auswerten, bei dem die Filtermaske ganz ins Bild passt, Outputbild wird kleiner.
+  2. Zero padding: Inputbild wird um 0 oder Grauwert erweitert, In-und Outputbild gleich groß. Schwarz oder Grau führt bei Mittelwertbildung zu Artefakten am Rand, insbesondere in hellen Region
+  3. Konstante Randbedingung: Die Pixel außerhalb nehmen den Wert des jeweils nächstliegenden Randpixels an. Wenig Artefakte, einfach zu implementieren, haüfig verwendet.
+  4. Gespiegelte Randbedingung:Die Pixelwerte werden an der nächstliegenden Bildkante gespiegelt.
+  5. Zyklische Randbehandlung: Die pixelwerte wiederholen sich zyklisch in allen Richtungen
+  Fazit: Wahl der Rand-Methode abhängig vom verwendeten Filter. Debugging ob ein Filter korrekt arbeitet schwierig, da nicht notwendigerweise ein Programmabsturz vorliegen muss. Analyse der Funktionalität ein einfachen Muster-Beispielen notwendig
+** Lineare Filter - Formale Eigenschaften
++ Ziel :: Effiziente Implementierung und Einsparen von Rechenoperationen
+*** Nutzen der Impulsfunktion
+Faltung mit der Impulsfunktion ergibt das ursprüngliche Bild.
+Nützlicher:Die Impulsfunktion als Input eines linearen Filters liefert die Filterfunktion H als Ergebnis, d.h. ein unbekannter lin. Filter lässt sich durch Anwendung auf ein Bild mit einem weissen und sonst nur schwarzen Pixeln entschlüsseln. Es steht dann die Filtermatrix im Ergebnis-Bild.
+*** Lineare Filter - Grenzen
+Lineare Glättngsfilter reduzieren zwar Rauschen im Bild, aber gleichzeitig werden Kanten oder Linien verbreitert und im Kontrast reduziert. Lineare Filter bilden immer auf irgend eine Art und Weise Mittelwerte, daher ist die Funktionalität letztlich begrenzt.
+** Nicht-Lineare Filter
+Nichtlieare Filter werden so wie lineare Filter über eine Umgebung R des Zielpixels mit einer nichtlinearen Funktion berechnet, z.B Minimum- und Maximumfilter
+*** Minimum- und Maximumfilter auf Salt-Pepper-Rauschen
+  Minimumfilter eliminiert weiße Punkte und verbreitert dunkle Regionen.
+  Maximumfilter macht das Gegenteil.
+*** Median-Filter
+ Der Median-Filter ersetzt jeden Pixel durch den Median seiner Umgebung R
+**** Vergleich Linearer Glättungsfilter vs. Medianfilter
+Der lineare Filter dämpft das Rauschen, macht aber das Bild unscharf. Der Medianfilter eliminiert Spitzen/Höhen, erzeugt örtlich Flecken mit konstanter Intensität. Erweiterung:gewichteter Median-Filter.
+
+Grundidee:Wert wird in der sortierten Liste so oft wiederholt, wie sein Gewicht ist. Diese Länge ist die Summe von alle Element in Gewichtmatrix.
