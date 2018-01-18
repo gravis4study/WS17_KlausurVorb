@@ -71,6 +71,10 @@ die mögliche Anzahl der Aufgaben ist unbegrenzt das Hinzufügen neuer Aufgabe
 + Verwendung von Analysemustern führt zu Standardisierung von Software
 Engineering und somit zur Erhöhung der Qualität der Software-Produkte
 * 3. Entwurfsmuster
+** 3.2 Erzeugungsmuster: Factory, Abstract Factory
+** 3.3 Strukturierungsmuster: Decorator, Proxy
+** 3.4 Verhaltensmuster: Command, Template, State
+** 3.5 Pattern – Zusammenfassung
 * 4. Software-Entwicklungsprozesse
 * 5. Agile Software-Entwicklung
 * 6. Refactoring

@@ -140,7 +140,6 @@ Datenbankbereich: Knoten der Suchbäume zugeschnitten auf Seitenstruktur des DB
 + Mehrere Zugriffsattributwerte auf einer Seite
 + Mehrweg-Bäume (mehr als zwei Nachfolger für einen Indexeintrag)
 + Alle Suchschlüssel plus Verweise aus einem Knoten sollten auf eine Datenbankseite passen
-
 *** Knotenstruktur im B-Baum
 + Ein Knoten entspricht einer Seite
 + Auslastung ausgewogen, Anzahl der Seitenzugriffe bei einer Suche durch Baumhöhe begrenzt
@@ -167,7 +166,7 @@ B+-Bäume:
 
 *** Eigenschaften von B+-Bäumen
 + Jeder Weg von der Wurzel zu einem Blatt hat die gleiche Länge.
-+ Jeder Knoten außer Wurzeln und Blättern hat mindestens = und höchstens 2= Einträge.
++ Jeder Knoten außer Wurzeln und Blättern hat mindestens m und höchstens 2m Einträge.
 + Blätter haben mindestens a und höchstens 2a Einträge.
 + Die Wurzel hat entweder maximal 2= Einträge, oder sie ist ein Blatt mit maximal 2a Einträgen
 + Jeder Knoten mit c − 1 Einträgen, außer den Blättern, hat c Kinder
@@ -370,10 +369,8 @@ Three common options:
 + Position list
 + Position bit string
 + Position range
-
 ** Late materialization
 Advanced implementations try to work with individual columns as long as possible in query execution,
-
 Main advantages of late materialization:
 + Selection and aggregation tend to reduce number of rows to reconstruct
 + Operations on compressed data can be used in query plan (not possible if tuples are reconstructed earlier [and thus columns decompressed])
@@ -383,12 +380,8 @@ Main advantages of late materialization:
 Late materialization can also efficiently be applied to joins, Obvious idea: only fetch columns required in the join predicate first and only materialize rows in the join result
 ** Adaptive Indexing
 Database system automatically creates the indexes it needs, Creation is adaptive, partial and continuous
-* 08 extra(Bilder in Folien)
-
 * 09 Mögliche Fragen
 1. IMDB 的老师四个问题
 2. Log 的记录
 3. 算四种 Verbunde 方法的Kosten
 4. B树和B+树
-* 10
-我对每个以教书育人的老师都致以最崇高的敬佩，你爸爸虽然我接触不多，但绝对符合这个前提，所以每个这样的老师理应受到更多的赞美

@@ -1,0 +1,15 @@
+* 06_Funktion
+** c) Datenkapselung in C
+*** Speicherklassen
++ auto
++ static
++ (register)
++ extern
+** f) Zeiger auf Funktionen
+C-Syntax: int (*verarbFunc)(int i)
+* 10_Klassen_Objekt
+* 11_Vererbung
++ virtual void Move() = 0;
++ class Igel : public Teilnehmer
+
+

@@ -1,4 +1,3 @@
-
 * Auswändig lernen 重要问题 需记忆
 * 02_Wahrnehmung und Bildakquise
 ** Was ist Licht?
@@ -370,7 +369,7 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
    - Typischerwerise gemessen durch den Betrag des Gradieten, ab dem eine Schärfung an der Stelle (u,v) stattfindet.
 + Laplace-Filter ist Spezialfall des USM-Filters
   
-* 06_eckenkurvendetektion :work:
+* 06_eckenkurvendetektion
 ** Algorithmen Idee
 ein Eckpunkt ist dort gegeben, wo der Gradient der Bildfunktion gleichzeitig in mehr als einer Richtung einen hohen Wert aufweist.
 ** Ecken und Kurvendetektion - Rahmenbedingungen
@@ -394,8 +393,8 @@ ein Eckpunkt ist dort gegeben, wo der Gradient der Bildfunktion gleichzeitig in 
 + Wenn durch (u,v) eine Ecke verläuft (z.B. die Ecke eines Schachbrettmusters), dann messen wir an einigen Stellen in der Umgebung von (u,v) ein Ix2>0, an anderen Stellen ein Iy2>0.
   - Evtl. ist die Summe aber alle Terme IxIy im Fensterbereich Null (Schachbrett),
   - evtl. aber auch nicht (einseitige Ecke), wir haben also ein M in der Form
-** Eigenwert
-+ Bekanntlich sind Eigenwert λ und Eigenvektor v einer Matrix M ja diejenigen Elemente, f9r die die Eigenwertgleichung Mv = λ v gilt.
+** !Eigenwert
++ Bekanntlich sind Eigenwert λ und Eigenvektor v einer Matrix M je diejenigen Elemente, für die die Eigenwertgleichung Mv = λv gilt.
 + Eigenvektoren sind also spezielle Richtungen im Raum, die die Abbildung M unverändert lässt.
 + Satz (ohne Beweis) :: jede reelle, symmetrische N*N-Matrix besitzt genau N reelle Eigenwerte mit N zueinander senkrechten Eigenvektoren.
 ** Interpretation der Eigenwerte
@@ -422,3 +421,98 @@ Eigenwerte codieren die Kantenstärke, Eigenvektoren die Kantenrichtung.
 ** Hough Transformation – Diskreter Parameterraum
 + Akkumulator-Array :: Diskrete Repräsentation des Parameterraumes.
 + Grundidee der Hough-Transformation :: Für jeden gefundenen Bildpunkt p0 werden die Zähler im Akkumulator-Array entlang der Geraden dj = x0kj + y0 um 1 erhöht.
+** Hough Transformation – Pseudocode
+** Hough Transformation: Details und Probleme
++ Problem :: Die Sinuskurven schneiden sich nicht genau an einem Punkt, sondern in einer Region. Die Lokalisierung der Maxima ist daher der schwierigste Teil der Hough-Transformation.
+
++ Ansatz A :: Schwellwerte. Alle Akkumulatorzellen unterhalb eines Schwellwertes werden verworfen. Die 9brigen werden mit einer morphologischen Closing-Operation bereinigt (ggf. später) und anschließend der Schwerpunkt der Regionen bestimmt.
++ Ansatz B :: Non-Maximum-Supression. Alle Nicht-Maxima werden verworfen, d.h. alle Zellen, deren Einträge nicht größer als die aller Nachbarn sind. Anschließend werden die größten Werte mit einer Schwellwertoperation gefunden.
++ Problem :: Gewicht einer Geraden bestimmt sich ausihrer Länge, aber weit vom Bildzentrum hat es oft zuwenig Platz f9r lange Geraden ) bestimmte Teile des Akkumulator-Arrays haben nicht die gleiche F9llwahrschein- lichkeit wie andere (Bias).
++ Ansatz :: Normierung mit der Anzahl nmax[θ; r] der überhaupt möglichen Geraden
+
+* 06_Fourier-Analyse
+** Fourier-Analyse - Motivation
++ Warum Transformationen?
++ Transformationen sollen gegebene Daten so umwandeln, dass
+  - eine Bearbeitung weniger aufwendig ist oder überhaupt erst möglich wird
+  - und eine eindeutige Wiederherstellung durch Rücktransformation möglich ist.
++ Fourier-Transformation ::
+  - Übergang vom Ortsbereich (der uns vertrauten Darstellung) in den Frequenzbereich
+  - Bildinformation bleibt identisch, Blickwinkel der Betrachtung ändert sich.
+** Fourier-Transformation - Grundlagen
++ Zunächst Zerlegung des Bildes in Farbkanäle, dann sind nur noch Intensitäten der einzelnen Anteile zu untersuchen.
++ Intensitätswerte(bzw. Helligkeit) der einzelnen Pixel zeilenweise als Werte einer (kontinuierlichen) Funktion auffassen
++ Idee :: Repräsentiere eine Funktion als gewichtete Summe aus Sinus und Cosinus Termen.
+*** Frage 1
+ Welchen Vorteil bietet diese Frequenz-Zerlegung für die Bildverarbeitung bzw. Darstellung?
+*** Antwort zu Frage 1
++ Die Koeffizienten der Consinus und Sinus Terme sind eine eindeutige Repräsentation des Bildes und geben an, aus welchen Frequenzanteilen sich das Bild zusammensetzt.
++ Während im Ortsraum ein Bild durch die Grauwerte seiner Pixel definiert wird, wird im Frequenz- raum ein Bild durch die in ihm vorkommenden periodischen Strukturen dargestellt.
++ Skalierung der Koeffizienten betont entsprechende Eigenschaften.
+
+*** Frage 2:
+Ist dies immer möglich, bzw. unter welchen
+Bedingungen ist es möglich?
+
+*** Antwort zu Frage 2: Fourier-Analyse
++ Fourier-Reihen :: Periodische Funktionen können als endliche Summe von sinus/Cosinus Funktionen dargestellt werden
+  - Definitionsgebiet: Signal sit stetig auf Intervall, periodisch
+  - Frequenzspektrum: Diskret
++ Fourier-Transformation :: Nicht-peridische Funktionen können als Integral von Sinus-/Cosinus Funktionen dargestellt werden
+  – Definitionsgebiet: Signal ist stetig, aperiodisch.
+  – Frequenzspektrum: stetig
++ Diskrete Fourier-Transformation(DFT,FFT) :: Endliche Folgen können als endliche Folge von Sinus-/Cosinus-Funktionen dargestellt werden
+  - Definitionsgebiet: Signal ist diskret, endlich, periodisch fortgesetzt
+  - Frequenzspektrum: Diskret, endlich
+*** Formel der Fourier-Analyse
++ [ ] p 7-9
++ [ ] p 7-10
+** Fourieranalyse - Komplexe Schreibweise
++ [ ] p 7-11
+** Fourier-Koeffizienten
++ [ ] p 7-12
++ [ ] p 7-13
+** Abtastung und diskrete Signale mathematisch
++ Wir nehmen an die Zeile eines Bildes ist eine Periode einer diskret abgetasteten kontinuierlichen periodischen Funktion
++ Ideale Abtastung von n Werten einer Funktion f innerhalb einer Periode mit gleichmäßigen Abständen
++ Nehme das Integral für die Koeffizienten nicht über das gesamte Signal sondern nur über eine Periodenlänge (= Länge der Bildzeile) und nehme also damit das Signal als periodisch an.
++ Durch das Sampling wird aus dem Integral auch rechnerisch eine Summe.
+  - Das ist jetzt implementierbar: Denn sowohl das Integral für die Koeffizienten-Berechnung als auch die Rekonstruktion des Signals aus den Koeffizienten sind endliche Summen.
+** Diskrete Fourier-Transformation
+
+* Zusammenfassung
+CG2 Nachschreibeklausur WS 2016/17
+** Wahrnehmung + Bildacquise (6 + 4)
+*** a)Prinzip von Hell- und Dunkelfeldaufnahmen erläutern
+**** Nennen von Eigenschaften mit Begründung, warum diese gelten
+**** Jeweils Skizze mit Beschriftung
+*** b)Kurz erläutern + Korrekturmöglichkeit:
+**** chromatische + sphärische Aberration
+**** Distorsion
+
+** 10 Aufgaben für 10 Punkte (Ankreuz?)
+** Kantendetektion (3 + 5)
+
+*** Funktionsweise, Vor- und Nachteile der Detektion über 2te Ableitung
+*** Canny-Edge-Kantendetektion und -Verfolgung erklären
+*** Welche Parameter als Eingabe notwendig
+
+** Eckendetektion (2 + 4 + 6)
+*** 4 gewünschte Eigenschaften
+*** ausführlich Funktionsweise der Strukturmatrix beim Harris-Detektor
+*** Detalliert Arbeitsweise eines Harris-Detektors (inhaltlich vollständig aber ohne Formeln)
+**** Welche Dinge in welcher Reihenfolge
+**** Falls Subroutinen verwendet, diese auch erklären
+** Fourier + Cosinus-Transformation (2 + 4 + 4)
+
+*** Wie kann man einen Hochpassfilter mit DFT bauen?
+*** Prinzipiell erklären wie DFT zu DCT erweitert werden kann
+*** Vorteile von DCT gegenüber DFT
+
+** JPEG (3 + 3 + 6)
+
+*** Grundprinzip Run Length Encoding
+*** Grundprinzip Huffman-Kodierung
+*** Wesentliche Eigenschaften erklären
+*** ausführlich wie Koeffizienten der DCT weiterverarbeitet werden
+  und wie verlustfreie Kompression erreicht wird. (?)

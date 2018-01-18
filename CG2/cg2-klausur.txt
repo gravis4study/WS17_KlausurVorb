@@ -1,0 +1,43 @@
+CG2 Nachschreibeklausur WS 2016/17
+
+1. Wahrnehmung + Bildacquise (6 + 4)
+
+a)
+* Prinzip von Hell- und Dunkelfeldaufnahmen erläutern
+* Nennen von Eigenschaften mit Begründung, warum diese gelten
+* Jeweils Skizze mit Beschriftung
+
+b)
+* Kurz erläutern + Korrekturmöglichkeit:
+** chromatische + sphärische Aberration
+** Distorsion
+
+2. 10 Aufgaben für 10 Punkte (Ankreuz?)
+
+3. Kantendetektion (3 + 5)
+
+* Funktionsweise, Vor- und Nachteile der Detektion über 2te Ableitung
+* Canny-Edge-Kantendetektion und -Verfolgung erklären
+** Welche Parameter als Eingabe notwendig
+
+4. Eckendetektion (2 + 4 + 6)
+
+* 4 gewünschte Eigenschaften
+* ausführlich Funktionsweise der Strukturmatrix beim Harris-Detektor
+* Detalliert Arbeitsweise eines Harris-Detektors (inhaltlich vollständig aber ohne Formeln)
+** Welche Dinge in welcher Reihenfolge
+** Falls Subroutinen verwendet, diese auch erklären
+
+5. Fourier + Cosinus-Transformation (2 + 4 + 4)
+
+* Wie kann man einen Hochpassfilter mit DFT bauen?
+* Prinzipiell erklären wie DFT zu DCT erweitert werden kann
+* Vorteile von DCT gegenüber DFT
+
+6. JPEG (3 + 3 + 6)
+
+* Grundprinzip Run Length Encoding
+* Grundprinzip Huffman-Kodierung
+** Wesentliche Eigenschaften erklären
+* ausführlich wie Koeffizienten der DCT weiterverarbeitet werden
+  und wie verlustfreie Kompression erreicht wird. (?)
