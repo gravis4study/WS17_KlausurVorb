@@ -3,13 +3,21 @@
 Das Licht ist sichtbarer Teil des elektromagnetischen Spektrums, 380-780nm, charakterisiert durch Lichtintensität(physikalische Größe) und Helligkeit (wahrgenommene Größe)
 ** Physiologie des Sehens
 *** Lichtwahrnehmung erfolgt in zwei Schritten
-+ Reizaufnahme durch Rezeptoren auf der Retina(Netzhaut),Stäbchen: Schwarz-Weiß-Sehen nach bei geringerer Licht-Intensität (120Mi.), Zapfen: Farbwahrnehmung(ca.6.5 Mi.)
-+ Verarbeitung der Reize in mehreren Stufen, Kontrastverstärkung am Ausgang der Retina, Interpretation im visuellen Kortex des Gehirns.
+1. Reizaufnahme durch Rezeptoren auf der Retina(Netzhaut),Stäbchen: Schwarz-Weiß-Sehen nach bei geringerer Licht-Intensität (120Mi.), Zapfen: Farbwahrnehmung(ca.6.5 Mi.)
+2. Verarbeitung der Reize in mehreren Stufen, Kontrastverstärkung am Ausgang der Retina, Interpretation im visuellen Kortex des Gehirns.
 *** Das menschliche Auge
 schwarz/weiße Strukturen feiner auflösen als farbige, s/w ist optimiert für die Erkennung von Konturen. farbige Flächen besser wahrnehmen als schwarz/weiße, Farbsehen ist optimiert für die Bewertung von Flächen.
-*** !Lechners Gesetz
+*** Objektive Farbmerkmale
++ Dominante Wellenlänge
++ Reinheit
++ Luminanz: Strahlungsenergie
+*** Subjektive Farbmerkmale
++ Farbton
++ Sättigung
++ Helligkeit: Lightness, Brightness
+** !Lechners Gesetz
 Die Beziehung zwischen der ins Auge einfallenden Lichtintensität und der vom Auge wahrgenommenen Lichtintensität ist nicht linear sondern annähernd logarithmisch. Kleine Helligkeitsunterschiede in dunklen Regionen sind besser wahrnehmbar als vom Betrag her identische Unterschiede in hellen Regionen.
-*** !Mach-Band-Effekt
+** !Mach-Band-Effekt
 Interaktion der Lichtrezeptoren im Auge betont "scharfe" Intensitätsänderungen. Sobald das Auge bei der einfallenden Intensität solche Änderungen feststellt, addiert es zusätzlich Unterschwinger und Überschwinger zur wahrgenommenen Intensität, die den Übergang zusätzlich betonen. Dieser unbewußte Mechnismus der Kantenbetonung bei Intensitätsübergängen verhilft unserer visuellen Wahrnehmung zu einer automatischen Konturenschärfe.
 ** Beleuchtung
 *** Anordnung von Beleuchtung
@@ -400,3 +408,5 @@ CG2 Nachschreibeklausur WS 2016/17
 *** Wesentliche Eigenschaften erklären
 *** ausführlich wie Koeffizienten der DCT weiterverarbeitet werden
   und wie verlustfreie Kompression erreicht wird. (?)
+* Hauptteile
+

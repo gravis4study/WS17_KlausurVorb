@@ -1,0 +1,27 @@
+* 02_Wahrnehmung und Bildakquise
+*** Was ist Licht?
+** Lichtwahrnehmung erfolg in 2 Schritte
+** Lechners Gesetz
+** !Mach-Band-Effekt
+*** Typische Anforderungen von Beuchtung
+*** Fall 1
+*** Fall 2
+*** Fall 3
+** Hellfeld
+** Dunkelfeld
+*** farbige Beleuchtung
+**** Diffuse Hellfeld-Auflichtbeleuchtung
+*** Polarisierte Bleuchtung
+** Schärfentiefe
+** Chromatische Aberration
+** Sphärische Aberration
+** Verzeichnung
+
+* 04_Kantendetektion
+*** Prewitt
+** Laplace
+** Canny
+* 08_jpeg_kompression
+** RLE und Huffman
+** JPEG - Vor- und Nachteile
+** JPEG - 4.Schirtt

@@ -116,13 +116,13 @@ Anordnung von Beleuchtung und Kamerasystem in Bezug auf das zu betrachtende Obje
 + 4 - bzw. 8-Nachbarschaft eines Bildpunktes p = (r,c)
 + vier direkte Nachbarn:gemeinsame Kante mit p
 + vier in direkte Nachbarn:gemeinsame Ecke
-** Bildsensor:Modellvorstellung
+** Bildsensor: Modellvorstellung
 Aufbau und Funktionsweise des Bildsensors einer Digitalkamera
 + Oberfläche bedeckt von lichtempfindlichen Zellen, denen jeweils ein Farbfilter vorgeschaltet ist, der nur Licht bestimmter Wellenlänge durchlässt(z.B Rot, Grün oder Blau)
 + jede Zelle ist mit einem Zähler ausgestattet, der während der Belichtungszeit proportional zur einfallenden Lichintensitaät hochzählt. Bereich[0,255]
-+ nach der Belichtung weisen Zellen, die kaum Licht empfinden, einen hohen Wert
++ nach der Belichtung weisen Zellen, die kaum Licht empfinden, einen kleinen Wert auf
 + Zellen, die einem starken Lichteinfall ausgesetzt waren, einen hohen Wert.
-** !Globale Charakterisierung von Bildern - Histogramm
+** Globale Charakterisierung von Bildern - Histogramm
 + Bildgröße MxN, Grauwertbereich [0..255]
 + Absolutes Grauwerthistogramm
   - absolute Häufigkeit, mit welcher Grauwert k auftritt
@@ -134,7 +134,7 @@ Aufbau und Funktionsweise des Bildsensors einer Digitalkamera
 + Varianz und mittlere quadratische Abweichung
   - Varianz ist Maß für Abweichungen der Grauwerte aller Pixel vom Mittelwert f und beschreibt den Kontrast
 + Kumulatives histogramm H(i)
-** !Eigenschaften und Nutzen von Histogrammen
+** Eigenschaften und Nutzen von Histogrammen
 + Völlig unterschiedliche Bilder können identische Histogramme haben
   - Aus dem Histogramm sind keine Rückschlüsse auf den Bildinhalt möglich, da der Ortsbezug der Grauwerte fehlt
 + Histogramm zeigt: Belichtung, Kontrast, Dynamik, Bildfehler
@@ -430,7 +430,7 @@ Eigenwerte codieren die Kantenstärke, Eigenvektoren die Kantenrichtung.
 + Problem :: Gewicht einer Geraden bestimmt sich ausihrer Länge, aber weit vom Bildzentrum hat es oft zuwenig Platz f9r lange Geraden ) bestimmte Teile des Akkumulator-Arrays haben nicht die gleiche F9llwahrschein- lichkeit wie andere (Bias).
 + Ansatz :: Normierung mit der Anzahl nmax[θ; r] der überhaupt möglichen Geraden
 
-* 06_Fourier-Analyse
+* 07_Fourier-Analyse
 ** Fourier-Analyse - Motivation
 + Warum Transformationen?
 + Transformationen sollen gegebene Daten so umwandeln, dass
@@ -480,6 +480,60 @@ Bedingungen ist es möglich?
   - Das ist jetzt implementierbar: Denn sowohl das Integral für die Koeffizienten-Berechnung als auch die Rekonstruktion des Signals aus den Koeffizienten sind endliche Summen.
 ** Diskrete Fourier-Transformation
 
+* 08_jpeg_kompression
+** Bildspeicherung - Grundlagen
+Zu beachtende Aspekt:
+1. Kompression: verlustfrei, verlustbehaftet
+2. Streaming-geeignet: bei langsamer Datenübertragung allmählicher Bildaufbau
+3. Animation-geeignet: Nicht nur für Einzelbilder sondern auch Bildfolgen (Animationen)
+4. Container-Format: unterstützt verschiedene Bild-Codierung
+** Run-Length-Encoding
+Idee: Jede Sequenz von identischen Symbolen durch deren Anzahl ersetzen. D.h. es werden nur die Stellen markiert, an denen sich das Symbol in der Nachricht ändert. Da die Längenangabe im Vergleich zur Länge der Sequenz nur logarithmisch wächst, spart man insbesondere bei langen Wiederholungssequenzen erheblich Speicherplatz. Umgekehrt ist die Einsparung umso geringer, je kürzer die Wiederholung sind. (Beispiel)
+** Bildspeicherung - JPEG
+*** Vorteile
++ Hohe Kompressionsrate
++ Wird von fast allen Rechnerplattformen unterstützt
++ Kann in fast jeder Bildbearbeitung verarbeitet werden.
+*** Nachteile
++ Schlechte Kompression bei harten Kanten.
++ Nicht geeignet für Strichzeichnung mit wenigen Farben und harten Kanten.
++ Verlustbehaftete Kompression
++ Schärfe- und Farbverluste durch die Komprimierung
++ Block-Artefakte
+** JPEG - Farbraumwechsel
+*** RGB - Modell
+Grundfarben Rot, Grün, Blau zur additiven Farbmischung. Im Rechner: z.B 8 Bit pro Grundfarbe, d.h. 0≤R,G,B≤255. Menge aller spezifizierbaren Farben wird im 3D-Raum durch einen Würfel repräsentiert ("Farbkörper"). Dieser deckt nicht den gesamten wahrnehmbaren Farbraum ab.
+*** JPEG-Kompression - 1.Schritt
+Transformation ins YCbCr Farbmodell, Tiefpassfilterung und Subsampling der Cb, Cr Kanäle.
++ Abtastverhältnis A:B:C :: In einem (2A)-Feld von Weten werden B Werte in der ersten zeile und C Werte in der zweiten Zeile abgetastet.
+Grund: Menschliche Farbwahrnehmung geringer aufgelöst als Helligkeitsempfinden.
+** JPEG - Blockbildung, DCT und Quantisierung
+*** JPEG-Kompression - 2.Schritt: Blockbildung & DCT
+Jeder Farbkanal wird in 8x8 Blöcke zerlegt. Diskrete Cosinus Transformation, wende die 2D-DCT auf die 8x8 Blöcke an. Die resultierenden Werte spiegeln den geometrischen Aufbau des Bildes wieder. Verlustbehaftet durch Rundungsfehler.
+*** JPEG-Kompression - 3.Schritt: Quantisierung
+Die Quantisierungsintervallbreite variiert je DCT-Koeffizient gemäß wahrnehmungsoptimierter Quantisierung, und zwa so, dass viele (unwichtige) Koeffizienten zu Null werden. Verlustbehafteter Kompressionsschritt.
+** JPEG - verlustlose Kompression
+*** JPEG-Kompression - 4. Schritt: Verlustlose Kompression
+Umsortierung der Koeffizienten.
++ Kodierung der DC-Komponenten: Huffman Kodierung der Differenzen der DC-Komponenten
++ Kodierung der AC-Komponenten: RLE und anschließende huffman oder arithmetische Kodierung
+Verlustlose Kompressionsschritte
+** JPEG - Huffman Codierung
+*** Grundidee
+Codiere die auftretenden Symbole gemäß ihrer Häufigkeit. Häufige Symbole erhalten kurze Codes, seltene Symbole lange Codes. In Summe ergibt sich eine Ersparnis.
+
+!Beispiel
+*** Eigenschaften
++ Entwerder optimale Codierung gemäß der Häufigkeit auftretender Symbole berechnen, Algorithmisch Code Baum erstellen, präfixfreie Codierung
++ Oder mit empirisch ermittelten Tabellen arbeiten (bei JPEG gängig)
++ Unterschiedliche Tabellen für Luminanz und Chrominanz
++ Code-Tabellen und Quantisierungs-Tabellen werden mit in die Datei gespeichert
+
+*** Bildspeicherung
+Wie gut ist die Kompression? Abhäangig von dem zu codierenden Bild, Strichzeichnungen ungeeignet. Hohe Frequenzen werden gefiltert, d.h. Probleme wird es an scharfen Kanten geben.
+
+Was sind die JPEG-Artefakte, die häufig zu sehen sind? Blockartefakt, deutlich sichtbare Blockbildung. Überschwingen, in Bereichen mit hohem Kontrast treten "Wellen" im Bild auf. Unschärfe, durch das Entfernen hoher Frequenzanteile.
+
 * Zusammenfassung
 CG2 Nachschreibeklausur WS 2016/17
 ** Wahrnehmung + Bildacquise (6 + 4)
@@ -491,11 +545,11 @@ CG2 Nachschreibeklausur WS 2016/17
 **** Distorsion
 
 ** 10 Aufgaben für 10 Punkte (Ankreuz?)
-** Kantendetektion (3 + 5)
 
+** Kantendetektion (3 + 5)
 *** Funktionsweise, Vor- und Nachteile der Detektion über 2te Ableitung
 *** Canny-Edge-Kantendetektion und -Verfolgung erklären
-*** Welche Parameter als Eingabe notwendig
+**** Welche Parameter als Eingabe notwendig
 
 ** Eckendetektion (2 + 4 + 6)
 *** 4 gewünschte Eigenschaften
@@ -504,15 +558,12 @@ CG2 Nachschreibeklausur WS 2016/17
 **** Welche Dinge in welcher Reihenfolge
 **** Falls Subroutinen verwendet, diese auch erklären
 ** Fourier + Cosinus-Transformation (2 + 4 + 4)
-
 *** Wie kann man einen Hochpassfilter mit DFT bauen?
 *** Prinzipiell erklären wie DFT zu DCT erweitert werden kann
 *** Vorteile von DCT gegenüber DFT
 
 ** JPEG (3 + 3 + 6)
-
 *** Grundprinzip Run Length Encoding
 *** Grundprinzip Huffman-Kodierung
 *** Wesentliche Eigenschaften erklären
-*** ausführlich wie Koeffizienten der DCT weiterverarbeitet werden
-  und wie verlustfreie Kompression erreicht wird. (?)
+*** ausführlich wie Koeffizienten der DCT weiterverarbeitet werden und wie verlustfreie Kompression erreicht wird.
