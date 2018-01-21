@@ -1,0 +1,140 @@
+** [#A] Lechners Gesetz
+Die Bezihung zwischen des einfallenden Lichtsintensität und des wahrgenommenen Lichtsintensität ist nicht linear, sonder annähernd logrithmisch. Man kann den Intensitätsunterschied in dunkel Region besser wahrnehmen
+** [#A] Cannys
+1. Vorarbeitung: Das Eingangsbild wird mit Gaußfilter das Breite lamda geglättet. Dann berechnet man die Gradient von jedem Pixelin  x/y-Richtung und dessen Betrag sowie Richtung.
+2. Kantenlokalisierung: Es werden nur jene Punkte markiert, an denen der Gradient ein lokales Maximum entlang der Gradientrichtung ist.
+3. Kantenselektion und -Verfolung: Nach 2.Schritt hat man eine Liste. Dann sucht man da durch. Sobald ein unmarkierter Punkt, dessen Gradient > hti ist, gefunden ist, wird eine Zusammenhängende Ketten von Kantenelement gebildet, und zwar, prüft, ob der benachbart Punkt > hlo ist, wenn ja, wird als Punkt in dieser Kante betrachtet.
+
+Kantenverfolgung mit Hystrese-Schwellwert
+Schwellwertoperation mit Hysterese verwendet 2 unterschiedliche Schwellwerten thi, tlo. Das Bild wird nach Element mit Kantenstärke > hi durchgesucht. Sobald ein solches Pixel gefunden ist, wird eine neue Kantenfolge angelegt und alle zusammenhängenden Postionen (u',v') angefügt, solang Stärke an (u',v') > tlo ist.
+** [#A] Erwünschte Eigenschaften
+1. Untersuchung wichtiger Ecken und unwichtiger Ecken
+2. zuverlässiges Auffinden von Ecken und Bildrauschen
+3. weniger Rechenaufwand
+4. genaue Lokalisierung der Eckpunkte
+5. unabhängig von der Orientierung von Ecke
+** [#A] Harris-Detektion - Strukturmatrix
+Ix Gradient in x-Richtung...
+Jede reelle und symmetrische Matrix hat genau N Eigenvektor. Eigenvektor ist eine Richtung für eine Matrix, die die Richtung im Raumbildung nicht verändert. Mit Formel kann man 2 lamda Eigenvektor aus Strukturmatrix berechnen.
+
+1. beide 0: in einer Fläche
+2. 1 > 0 und 2 =0: Eine Kantepunkt unabhängig von Richtung
+3. 1 > 0 und 2 >0: An Eckepunkte
+** [#A] Harris-Detektion - Arbeitweise
+1. Das Originalbild wird mit Prefilter geglättet.
+2. erzeugt Strukturmatrix, jede Komponente wird mit Gaußfilter geglättet. Dann brechnet man die Cornor response function Q(u,v)
+3. Suche Eckpunkt: In einer Liste werden jene Eckpunkte gespeichert, an den Q(u,v) > th und als Localmaximum ist. Danach wird diese Liste sortiert. Abschließend wird einmal CleanupNeibgbor in dieser Liste durchgeführt, um die Non-Maximum in einer Region löschen.
+
+LocalMaximum: Falls ein Eckepunkt mit Q(u,v) kleiner als einer von benachbarnden Punkten mit Q(u',v'), wird dann dieser Eckepunkt nicht in der Liste gespeichert.
+
+CleanUpNeighbors: Einer Eckepunkte wird nur so behaltet, dessen Q(u,v) größt in der Region mit bestimmtem Durchmesser.
+
+** [#A] Vorteile von DCT
++ Speicherplatz
++ schneller Rechnen
++ keine künstliche Übergang, die extra transformieren muss.
+** [#A] Hochpassfilter und Tiefpassfilter
++ Tiefpassfilter: unterdrückt hohe Ortsfrequenz in der Fourier-Transformatieren. Kanten werden abgeschwächt und das Ergbnis entpricht einer Glättung.
++ Hochpassfilter: unterdrückt niedrige Ortsfrequenz in der Fourier-Transformatieren. Kanten werden hervorheben. Das entsprecht Kanten detektion
+** [#A] RLE
+Jede Sequenz von identischen Symbolen durch deren Anzahl ersetzen. D.h. es werden nur die Stellen markiert, an denen sich das Symbol in der Nachricht ändert.
+** [#A] Huffman
+Grundidee: Codere die auftretenden Symbole gemäß ihrer Häufigkeit. Häufige Symbole erhalten kurze Codes, seltene Symbole lange Codes. Entwerder optimale Codierung gemäß der Häufigkeit auftretendener Symbole brechnen oder mit empirisch ermittelten Tabllen arbeiten.
+** [#A] JPEG - 4.Schirtt
+1. Transformation ins YCrCb Farbmodell, Tiefpassfilterung und Subsampling der Cb, Cr Kanäle, Grund: Menschliche Farbwahrnehmung geringer als Helligkeitswahrnehmung
+2. Blockbildung & DCT: Jeder Farbkanal wird in 8x8 Blöcke zerlegt, Diskrete Cosinus Funtion wende auf die 8x8 Blöcke an. Verlustbehaftet durch Rundungsfehler.
+3. Quantisierung
+4. Verlustlose Kompression: Umsortierung der Koeffizienten, Kodierung der DC-Komponenten - Huffman Kodierung der Differenzen der DC - Komponenten. Kodierung der AC-Componenten durch REL und anschließende Huffman oder arithmetische Kodierung. Verlustlose.
+** [#A] Mach-Band-Effekt
+Das Auge betont scharfe Intensistätsänderung, Sobald das Auge eine Intensitätsänderung feststellt, addiert es zusätzlich ein Überschwinger oder Unterschwinger zu wahrgenommenen Intensität, die den Übergang betonen.
+** [#B] Typische Anforderungen von Bleuchtung
+1. Kontur oder Struktureingenschaft
+2. weniger Reflexion
+3. Vertiefung und Auftragung
+4. Hervorheben bestimmte Merkmale
+*** Hellfeld
+Das Kamerasystem befindet sich im Strahlengang. Einfallswinkel = Ausfallswinkel. Das großen reflektierten Licht wird eingefangen, so erscheint das Objekt in der Abbildung hell. Glatte, stark reflektierende Oberflächen erscheinen hell.
+*** Dunkelfeld
+Das kamerasystem befindet sich nicht im Strahlengang. !=. Das großen reflektiererten Licht ist an Kamera vorbei. Glatte, stark reflektierende Oberflächen erscheinen dunkel, Kanten oder Oberfächedefekte wie Kratzer erscheinen hell wegen der Diffus-Strahlung
+*** Fall 1
+Das zu betrachende Objekt befindet sich zwischen Kamerasystem und Lichtquelle. Das Licht wird von Objekt unterbrochen. -> Kontur wissen wollen, wenn die Sihlouette entscheidende Information trägt
+*** Fall 2
+Kamerasystem und Lichtquelle befinden sich bezog auf zu betrachenden Objekt in einer Seite. Das Licht wird von der Oberfläche des Objekts und Hintergund reflektiert. Die Oberfläche ist zu erknnen, die Kontur wird nicht so klar dargestellt. -> Oberflöcheinspektion
+*** Fall 3
+Kamerasystem befindet sich in einer Vorzugsrichtung.
+** [#B] Chromatische Aberration
+Lichtbrechnung einer Linse ist von der Wellenlänge des Lichts abhängig. Farben des Spektrums haban keinen gemeisamen Brennpunkt. Es treten Unschärfen im Bild auf.
+
+Beseitigung: optimierte Objektiv, Abblenden, Schmaillichquelle (LED)
+** [#B] Sphärische Aberration
+Die Brennweiten von der sphärischen Linse sind unterschiedlich am Rand und in Zentrum. Es treten Unschärfe auf.
+
+Beseitigung: Objektiv-Bauweise im Detail ändern
+** [#B] Verzeichnung
+Nichtsymmetirsche Aufbau der Optik mit Blende vor oder hinter dem optischen Zentrum der Optik. Beseitigung bzw. Optimierung: Objektiv-Bauweise im Detail ändern. Geometrische Entzerung mittels Bildverarbeitung.
+** [#B] Lichtwahrnehmung erfolgt in 2 Schritte
+1. Reizaufnahme durch Rezeptor auf der Retina, Stäbchen: s/w-Wahrnehmung, Zapfen: Farbwahrnehmung
+2. verarbeitet in mehrer Stufe: 1. Ausgang von Retina verstärket die Intensitätänderung 2. Abschließend wird in viesuelle Kartox des Gehirns verarbeitet
+** [#B] Laplace Filter
+Überhöhung der Kanten durch Substraktion der Zweiten Ableitung, lässt das Bild schärfer scheinen. Achtung: Schärfung verstärkt auch das Bildrauschen
+** [#B] USM
+1. Erzeugung einer geglätteten Version von OriginalBild
+2. Substraktion der geglätteten Version von Originalbild, Ergebnis heißt Maske
+3. Addition der gewichteten Maske zum Originalbild.
+** [#B] Hough-Transformation
+Ziel: Auffinden der Geraden mit Parametern k und d, auf den möglichst viele Punkte liegen. 
+*** 2 Schwellswertoperationen
+** [#B] Weclchen Vorteil bietet diese Frequenz-Zerlegung?
+Skalierung der Koeffizienten betont entsprechende Eigenschaften. Für Kompression.
+** [#B] Periodizität
+Der Übergang an den Grenzen zwischen den Repliken des Bild sind auch Teil des Signals, genau wie der Bildinhalt selbst. Ein hoher Intensitätsunterschied bedeutet: Man benötigt viele Frequenzen, um eine solche Diskontinuität zu transformieren.
+** [#B] JPEG - Vor- und Nachteile
+Vorteile:
+1. hohe Komprpmissrate
+2. von viele Rechnerplattform unterstützt
+3. kann fast alle Bildarbeitung verarbeiten
+
+Nachteile:
+1. Schlechte Kompression bei harten Kanten
+2. Nicht geeignet für Strichzeichnung mit weinigen Farben und harten Kanten
+3. Verlustbehaftete Kompression
+4. Schärfe- und Farbverlust durch die Komprimierung
+5. Block-Artefakte
+** [#C] Was ist Licht?
+Sichtbarer Teil der eletromagnetische Spektrum, 380 - 460 nm
+** [#C] farbige Beleuchtung
+Farbige Oberfäche reflektieren ein Teil von Spektrum und absorbieren anderen Teil.
+Hervorheben das Kontrast zwischen Oberfläche und Hintergrund.
+** [#C] Diffuse Hellfeld-Auflichtbeleuchtung
+Typischerweise Lichtquellen mit Diffusoren oder internen diffusen Reflektionen. Vermeidung von spiegelnden Reflexionen.
+** [#C] Polarisierte Bleuchtung
+Licht wird durch Reflexion an metalischen oder dieletronischen Oberfläche polariesiert. Um zu unterdrücken, kann eine Kombination von Polarsator und Analysator nuzten. Polarisator: vollständig polariesieren. Analysator: unterdrücken das durch die Reflexion polarisiert Licht.
+** [#C] Schärfentiefe
+Die Bildweite wurden von Gegenstandweite und Brennweit abgebildet. Entferntere oder nähere Bildpunkt werden auf einen Zerstreuungskreis abgebildet. Unschärfe treten dadurch auf. Innerhalb eines gewissen Bereichs ist der zerstreuungskreis so klein, dass keine merkliche Unschärfe auftritt.
+** [#C] Prewitt
+3 Zeilen und Spalten
+** [#C] Laplace
+2-te Ableitung
+** [#C] Grundidee
+Übergang vom Ortsbereich in den Frequnzbreich, Bildinformation bleibet identisch, Blickwindel der Betrachtung ändert sich. Repräsentiere eine Funktion als gewichtete Summe aus Sinus und Cosinus Termen.
+** [#C] Form der Transformation
++ Fourier-Reihen: Periodische Funktionen können als endliche Summe von Sinus/Cosinus Funktionen dargestellt werden.
+  - Definitionsgebiet: Signal ist stetig auf Intervall, periodisch
+  - Frequenzspektrum: Diskret
++ Fourier-Analyse: Nicht-Peridische Funktionen können als unendliche Summe von Sinus/Cosinus  Funktionen dargestellt werden.
+  - Signal ist stetig und aperiodisch
+  - stetig
++ Diskrete Fourier-Transformation: Endliche Folgen können als endliche Folge von Sinus/Cosinus-Funktionen dargestellt werden
+  - Signal ist diskret und periodisch
+  - Diskret, endlich
+** [#C] Nachteile von Fourier-Transformation
+1. Aus einer reellen Funtkion wird eine komplexes Fourier-Spektrum gemacht.
+2. Signale werden als periodisch angesehen.
+3. Durch die periodischen Wiederholungen der Muster entstehen an den Grenzen der Bilder häufig Unstetigkeitsstellen, die sich im Fourier-Spektrum als hohe Frequenzanteil niederschlagen.
+** [#C] Gerade Funktion
+Eine funktion f heißt gerade, wenn f(t)=f(-t), Idee: Erzeuge künstlich eine gerade Funktion durch Verdopplung der Daten
+** [#C] Kompromission Aspekte:
+1. Kompression: verlustlose/verlustbehaftet
+2. Steaming-geeignet: bei langsamer Datenübertragung allmählicher Bildaufbau
+3. Animation-geeignet: nicht nur für einzelbilder
+4. Container-Format: unterstützt verschiedene Bild-Codierung

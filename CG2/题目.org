@@ -1,0 +1,51 @@
+* 02_Wahrnehmung und Bildakquise
+** Was ist Licht?
+** Lichtwahrnehmung erfolgt in 2 Schritte
+** Lechners Gesetz
+** !Mach-Band-Effekt
+** Typische Anforderungen von Beuchtung
+*** Fall 1
+*** Fall 2
+*** Fall 3
+*** Hellfeld
+** Dunkelfeld
+** farbige Beleuchtung
+*** Diffuse Hellfeld-Auflichtbeleuchtung
+** Polarisierte Bleuchtung
+** Schärfentiefe
+** Chromatische Aberration
+** Sphärische Aberration
+** Verzeichnung
+* 04_Kantendetektion
+** Prewitt
+** Laplace
+** Cannys
+*** Verarbeitsweise und Eingabesparameter
+** USM
+*** Grundidee
+* 06_Eckenkurvendetektion
+** Erwünschte Eigenschaften
+** Harris-Detektion - Strukturmatrix
+** Harris-Detektion - Arbeitweise
+** Hough-Transformation
+*** GrundIdee
+*** 2 Schwellswertoperationen
+* 07_Fourier-Anaylse
+** Grundidee
+** Vorteile von DCT
+** Hochpassfilter und Tiefpassfilter
+* 08_jpeg_kompression
+** RLE und Huffman
+** JPEG - Vor- und Nachteile
+** JPEG - 4.Schirtt
+** Aspekte:
+** Run-Length-Encoding
+** Huffman-Encoding
+
+** JPEG
+*** Vorteile:
+*** Nachteile:
+
+** JPEG - Arbeitsschritt
+
+
