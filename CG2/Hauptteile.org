@@ -1,27 +1,97 @@
 * 02_Wahrnehmung und Bildakquise
-*** Was ist Licht?
-** Lichtwahrnehmung erfolg in 2 Schritte
+** Was ist Licht?
+** Lichtwahrnehmung erfolgt in 2 Schritte
 ** Lechners Gesetz
 ** !Mach-Band-Effekt
-*** Typische Anforderungen von Beuchtung
-*** Fall 1
-*** Fall 2
-*** Fall 3
+** Typische Anforderungen von Beuchtung
+** Fall 1
+** Fall 2
+** Fall 3
 ** Hellfeld
 ** Dunkelfeld
-*** farbige Beleuchtung
-**** Diffuse Hellfeld-Auflichtbeleuchtung
-*** Polarisierte Bleuchtung
+** farbige Beleuchtung
+*** Diffuse Hellfeld-Auflichtbeleuchtung
+** Polarisierte Bleuchtung
 ** Schärfentiefe
 ** Chromatische Aberration
 ** Sphärische Aberration
 ** Verzeichnung
-
 * 04_Kantendetektion
-*** Prewitt
+** Prewitt
 ** Laplace
 ** Canny
+1. Vorverarbeitung: Das Eingangsbild wird mit Gaußfileter der Breite σ geglättet, durch das auch die Skaklenebne spezifiert wird. Aus dem geglätteten Bild wird für jede Postion der x/y-Gradient berechnet sowie dessen Betrag und Richtung.
+2. Kantenlokalisierung: Als Kantenpunkte werden jene Position makiert, an denen der Betrag des Gradienten ein lokales Maximum entlang der zugehörigen Gradientenrichtung aufweißt.
+3. Kantenselektion und -verfolgung: Verwendung eines Hysterese-Schwellwerts mit 2 Parameter thi,tlo. Erstmal sucht man ein Punkt mit Gradient > thi. Sobald ein solches Pixel, der bisher nicht besucht wird, gefunden ist, wird eine neue Kantenfolge angelegt und alle zusammenhängenden Positionen (u',v') angefügt, wo Gradient > tlo ist. Es wird immer so durchgesucht, bis kein Punkt mehr, dessen Gradient > hti ist.
+Eingabeparament: Breite von Graußfilter σ, Hti, Hlo
+** USM
+1. Erzeugung einer geglätteten Version des Bildes
+2. Substraktion der geglätteten Version von OriginalBild. Das Ergebnis ist eine Maske.
+3. Addition der gewichteten Maske zum Originalbild
+* 06_Eckenkurvendetektion
+** Erwünschte Eigenschaften
+1. Untersuchung von wichtigen und unwichtigen Ecken
+2. zuverlässiges Auffinden von Ecken und Rauschen
+3. weiniger Rechnenaufwand
+4. gute Lokalisierung von Eckepunkt
+5. unabhängig von der Orientierung zur Ecken
+** Harris-Detektion - Strukturmatrix
+把 Matrix 写出来，声明各个代表的含义. Aus Strukturmatrix kann man 2 Eigenwert berechnen. Eigenvektoren sond als spezielle Richtng im Raum, die die Abbildung M unverändert lässt. Jede reelle, symmetrische N*N Matrix besitzt genau N reelle Eigenwert mit N zueinander senkrechten Eigenvektoren.
+1. Fall: Innerhalb einer Fläch ist M=0 und λ1=λ2=0
+2. Fall: λ1>0 und λ2 = 0: unabhängig von der Richtung der Kante
+3. Fall: λ1>0 und λ2 > 0: An Eckpunkten ist der Gradient in mehr als einer Richtung größer als 0
+** Harris-Detektion - Arbeitweise
+1. Das OriginalBild wird mit Prefilter geglättet.
+2. berechne die Gradient der x/y-Richtung, erzeugt Strukturmatrix, für jede Komponenten wird mit Gaußfilter geglättet. Dann berechnen man die Corner Pesponse function Q(u,v)
+3. Suche Eckepunkte: In einer Liste werden jene Eckepunkt gespeichert, an denen das Q(u.v) > tH und ein lokalmaximum ist. Dann wird diese Liste sortiert. Abschließend löschen die non-Maximum in einer Region, für eine bestimmente Region nur Ein Eckpunkt behaltet.
+
+LocalMaximum: Falls Q(u,v) einer Eckpunt kleiner als benachbarteten Punkten, wird dann nicht gespeichert.
+
+non-Maximum suppresion (CleanUpNeighbors): In der sortierten Liste, kriegen man eienen Punkte, der vorner in der List liegt. Seine Region mit angegebener Länge wird geprüft, ob in der Liste noch Punkte dahinter in diesen Region vorliegt, wenn ja, wird direkt in der Liste gelöscht.
+
+** Hough-Transformation
++ Die Hough-Transformation sucht im von k und d gebildeteten zwei- dimensionalen Parameterraum alle Geraden, die durch einen gegebenen Punkt p0 = (x0; y0) laufen.
++ Im Parameterraum ist die Menge aller Geraden durch p ebenfalls eine Gerade.
++ Wenn sich n Geraden im Parameterraum an Position (k0; d0) schneiden, dann liegen auf der entsprechenden Geraden :y = k0x + d0 im Bildraum insgesamt n Bildpunkte.
+
++ Ansatz A :: Schwellwerte. Alle Akkumulatorzellen unterhal eines Schwellwertes werden verworfen. Die übrigen werden mit einer Closing-Operation bereinigt und anschlißend der Schwerpunkt der Regionen bestimmt.
+
++ Ansatz B :: Non-Maximum-Supression. Alle Nicht-Maximal werden verworfen, d.h. alle Zellen, deren Einträge nicht größer als die aller Nachbarn sind. Anschließnd werden die größer als die aller Nachbarn sind. Anschließend werden die größten Werte mit einer Schwerllwertoperation gefunden.
+
++ Ansatz B :: Normierung mit der Anzahl nmax[θ; r] der überhaupt möglichen Geraden.
+
+* 07_Fourier-Anaylse
 * 08_jpeg_kompression
 ** RLE und Huffman
 ** JPEG - Vor- und Nachteile
 ** JPEG - 4.Schirtt
+** Aspekte:
+1. Kompression: verlustfrei/verlustbehaft
+2. Streaming-geeignet: bei langsamer Datenübertragung allmählicher Bildaufbau
+3. Animation-geeignet: Nicht für Einzelbilder sonder auch Bildfolgen
+4. Container-Format: unterstützt verschiedene Bild-Codierung
+** Run-Length-Encoding
++ Idee :: Jede Sequenz von identischen Symbolen durch deren Anzahl ersetzen, d.h. es werden nur die Stellen markiert, an denen sich das Symbol in der Nachricht ändert, spart man insbesondere bei langen Wiederholungssequenzn erheblich Speicherplatz.
+** Huffman-Encoding
++ Idee :: Codere die auftretenden Symbole gemäß ihrer Häufigkeit. Häufige Symbole erhalten kurze Codes, seltene Symbole lange Codes.
+
+** JPEG
+*** Vorteile:
+1. Hohe Kompresionsrate
+2. wird von fast allen Rechnerplattform unterstützt
+3. kann in fast jeder Bildarbeitung verarbeitet werden
+*** Nachteile:
+1. schlechte Kompression bei harten Kanten
+2. Nicht geeignet für Strichzeichnung mit wenigen Farben und harten Kanten
+3. Verlustbehaft Kompression
+4. Schärfe- und Farbverlust durch die Komprimierung
+5. Block-Artefakte
+
+** JPEG - Arbeitsschritt
+1. Transformation ins YCrCb Farbmodel, Tiefpassfilterung und Subsampling der CbCr Kanäle. Grund: Menschliche Farbwahrnehmung geringer aufgelöst als Helligkeitsempfinden.
+2. Blockbildung & DCT, Jeder Farbkanal wird in 8x8 Blöcke zerlegt, Diskrete Cosinus Transformation wende die 2D-DCT auf die 8x8 Blöcke an. verlustbehaftet durch Rundungsfehler. Zerlegt das Signal in den Mittelwert (DC-Komponent) oben lins und 63 AC-Components
+3. Quantisierung. Die Quantisierungsintervallbreite variiert je DCT-Koeffiziente gemäß wahrnehmungsoptimierter Quantisierung, und zwar so, dass viele unwichtige Koeffizienten zu Null werden. Jedes Pixel wird gemäß des Elements in Quantisierungstabelle berechnet. Verlustbehafteter Kompressionsschritt.
+4. Verlustlose Kompression, Umsortierung der Koeffizienten. Kodierung der DC-Komponenten: Huffman Kodierung der Differenzen der DC-Komponenten. Kodierung der AC-Kompnenten - RLE und anschließend Huffman oder arithmetische Kodierung.
+
+
+

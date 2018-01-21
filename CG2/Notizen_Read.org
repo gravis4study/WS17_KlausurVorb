@@ -1,4 +1,3 @@
-* Auswändig lernen 重要问题 需记忆
 * 02_Wahrnehmung und Bildakquise
 ** Was ist Licht?
 Das Licht ist sichtbarer Teil des elektromagnetischen Spektrums, 380-780nm, charakterisiert durch Lichtintensität(physikalische Größe) und Helligkeit(wahrgenommene Größe)
@@ -76,11 +75,12 @@ Anordnung von Beleuchtung und Kamerasystem in Bezug auf das zu betrachtende Obje
   - Innerhalb eines gewissen Bereichs der Gegenstandsweite ist der Zerstreuungskreis so klein, dass keine merkliche Unschärfe auftritt
 + Chromatische Aberration ::
   - Beschreibung: Lichtberechung einer ist Linse von der Wellenlänge des Lichts abhängig. Farben des Spektrums haben keinen gemeinsamen Brennpunkt. Es treten Unschärfen im Bild auf.
+  - Beseititung: Optimierte Objektive, Abblenden, verwenden von schmalbandigen Lichtquelle
 + Sphärische Abberation ::
   - Beschreibung:Sphärische Linsen haben im Zentrum und am Rand unterschiedliche Brennweiten
   - Es treten Unschärfen im Bild auf
   - Objektiv-Bauwese im Detail ändern
-+ Verzeichung ::
++ Verzeichung(Distorion) ::
   - Beschreibung: Nichtsymmetrischer Aufbau der Optik mit Blende vor oder hinter dem optischen Zentrum der Optik
 + Telezentrische Objektive
   - Telezentische Objektive bieten eine Parallelprojektion des Objektes
@@ -284,7 +284,7 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
   - Der Medianfilter eliminiert Spitzen/Höhen, erzeugt örtlich Flecken mit konstanter Intensität
 + Erweiterung:gewichteter Median-Filter
  - Grundidee:Wert wird in der sortierten Liste so oft wiederholt, wie sein Gewicht ist. Diese Länge ist die Summe von alle Element in Gewichtmatrix.
-* 05_ Kantendetektion
+* 05_Kantendetektion
 ** Movivation
 + Kanten sipelen eine dominante Rolle im menschlichen Sehen:Bildinhalt ist bereits erkennbar, wenn nur wenige Konturen sichtbar sind
 + Subjektiver Schärfeeindruck eines Bildes stht in direktem Zusammenhang mit seiner Kantenstruktur
@@ -349,7 +349,7 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
   + Kantenselektion und -verfolgung :: Im abschließenden Schritt werden unter Verwendung eines Hysterese-Schwellwerts zusammenhängende Ketten von Kantenelementen gebildet.
 *** Details für Canny
 1. Gerichtet Non-Maximum Suppression der Kantenstärke. Als mögliche Kantenpunkte werden nur jene Elemente betrachetet, an denen das Kantenprofil in der Richtung S0 ein lokales Maximum ist. Die Kantenstärke aaler anderen Elemente wird auf Null gesetzt. (Die Position der Kanten präzise zu bestimmen)
-2. Bestimmung der diskreten Kantenrichtung. Trigonometrische Funktionen ist "teuer". Grundsätzlich könnte der zu q gehörige Oktant auch direkt aus den Vorzeichen und Beträgen der Komponenten dx,dy ermittelt werden.
+2. Bestimmung der diskreten Kantenrichtung. Trigonometrische Funktionen ist "teuer". Grundsätzlich könnte der zu q gehörige Oktant auch direkt aus den Vorzeichen und Beträgenc der Komponenten dx,dy ermittelt werden.
 3. Kantenverfolgung mit Hysterese-Schwellwert
    - benachbarte Kantenpunkte, die in der vorherigen Operation als lokale Maximal verblieben sind, zu zusammenhängenden Folgen verketten.
    - Dazu wird eine Schwellwertoperation mit Hyserese verwendet, mit zwei unterschiedlichen Schwellwerten thi,tlo.
@@ -368,7 +368,6 @@ Die Faltung f*g zweier Funktionen ist eine mathematische Operation, die der Mult
 + Oft zusätzlich Mindestwert für den lokalen Bildkontrast, ab dem eine Schärfung vorgenommen wird.
    - Typischerwerise gemessen durch den Betrag des Gradieten, ab dem eine Schärfung an der Stelle (u,v) stattfindet.
 + Laplace-Filter ist Spezialfall des USM-Filters
-  
 * 06_eckenkurvendetektion
 ** Algorithmen Idee
 ein Eckpunkt ist dort gegeben, wo der Gradient der Bildfunktion gleichzeitig in mehr als einer Richtung einen hohen Wert aufweist.
@@ -417,16 +416,14 @@ Eigenwerte codieren die Kantenstärke, Eigenvektoren die Kantenrichtung.
 + Wenn sich n Geraden im Parameterraum an Position (k0; d0) schneiden, dann liegen auf der entsprechenden Geraden :y = k0x + d0 im Bildraum insgesamt n Bildpunkte.
 + Problem :: Vertikale Geraden haben Steigung k = ∞
 + Hessesche Normalform :: xcos0 + ysin0 = r
-
 ** Hough Transformation – Diskreter Parameterraum
 + Akkumulator-Array :: Diskrete Repräsentation des Parameterraumes.
 + Grundidee der Hough-Transformation :: Für jeden gefundenen Bildpunkt p0 werden die Zähler im Akkumulator-Array entlang der Geraden dj = x0kj + y0 um 1 erhöht.
 ** Hough Transformation – Pseudocode
 ** Hough Transformation: Details und Probleme
 + Problem :: Die Sinuskurven schneiden sich nicht genau an einem Punkt, sondern in einer Region. Die Lokalisierung der Maxima ist daher der schwierigste Teil der Hough-Transformation.
-
-+ Ansatz A :: Schwellwerte. Alle Akkumulatorzellen unterhalb eines Schwellwertes werden verworfen. Die 9brigen werden mit einer morphologischen Closing-Operation bereinigt (ggf. später) und anschließend der Schwerpunkt der Regionen bestimmt.
-+ Ansatz B :: Non-Maximum-Supression. Alle Nicht-Maxima werden verworfen, d.h. alle Zellen, deren Einträge nicht größer als die aller Nachbarn sind. Anschließend werden die größten Werte mit einer Schwellwertoperation gefunden.
++ Ansatz A :: Schwellwerte. Alle Akkumulatorzellen unterhalb eines Schwellwertes werden verworfen. Die übrigen werden mit einer morphologischen Closing-Operation bereinigt (ggf. später) und anschließend der Schwerpunkt der Regionen bestimmt.
++ Ansatz B :: Non-Maximum-Supression. Alle Nicht-Maximal werden verworfen, d.h. alle Zellen, deren Einträge nicht größer als die aller Nachbarn sind. Anschließend werden die größten Werte mit einer Schwellwertoperation gefunden.
 + Problem :: Gewicht einer Geraden bestimmt sich ausihrer Länge, aber weit vom Bildzentrum hat es oft zuwenig Platz f9r lange Geraden ) bestimmte Teile des Akkumulator-Arrays haben nicht die gleiche F9llwahrschein- lichkeit wie andere (Bias).
 + Ansatz :: Normierung mit der Anzahl nmax[θ; r] der überhaupt möglichen Geraden
 
@@ -441,13 +438,13 @@ Eigenwerte codieren die Kantenstärke, Eigenvektoren die Kantenrichtung.
   - Bildinformation bleibt identisch, Blickwinkel der Betrachtung ändert sich.
 ** Fourier-Transformation - Grundlagen
 + Zunächst Zerlegung des Bildes in Farbkanäle, dann sind nur noch Intensitäten der einzelnen Anteile zu untersuchen.
-+ Intensitätswerte(bzw. Helligkeit) der einzelnen Pixel zeilenweise als Werte einer (kontinuierlichen) Funktion auffassen
++ Intensitätswerte (bzw. Helligkeit) der einzelnen Pixel zeilenweise als Werte einer (kontinuierlichen) Funktion auffassen
 + Idee :: Repräsentiere eine Funktion als gewichtete Summe aus Sinus und Cosinus Termen.
 *** Frage 1
  Welchen Vorteil bietet diese Frequenz-Zerlegung für die Bildverarbeitung bzw. Darstellung?
 *** Antwort zu Frage 1
 + Die Koeffizienten der Consinus und Sinus Terme sind eine eindeutige Repräsentation des Bildes und geben an, aus welchen Frequenzanteilen sich das Bild zusammensetzt.
-+ Während im Ortsraum ein Bild durch die Grauwerte seiner Pixel definiert wird, wird im Frequenz- raum ein Bild durch die in ihm vorkommenden periodischen Strukturen dargestellt.
++ Während im Ortsraum ein Bild durch die Grauwerte seiner Pixel definiert wird, wird im Frequenzraum ein Bild durch die in ihm vorkommenden periodischen Strukturen dargestellt.
 + Skalierung der Koeffizienten betont entsprechende Eigenschaften.
 
 *** Frage 2:
