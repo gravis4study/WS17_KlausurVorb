@@ -1,0 +1,19 @@
+* Filteroperation
+1. Filter durch welche Eigenschaft charaktiert
+2. pseudocode von Filter
+3. pseudocode von spiegeltn Randbediengung
+
+* Kantendetektion
+1. Canny localmaximun und getOrietentsector, welche eingabe und Rückwerts
+2. wieso um pi/8 rotieren
+3. 2-te Ableitung grundidee, vor und nach teile
+
+* Fourier-Transformation
+1. anschaulich Grundidee der Fourier-Transformation erklären mit Skizze
+2. DFT nach DCT
+3. Vorteile von DFT
+
+* JPEG
+1. Quantisierung
+2. RLE und Huffman
+

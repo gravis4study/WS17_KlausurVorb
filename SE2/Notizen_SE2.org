@@ -71,16 +71,592 @@ die mögliche Anzahl der Aufgaben ist unbegrenzt das Hinzufügen neuer Aufgabe
 + Verwendung von Analysemustern führt zu Standardisierung von Software
 Engineering und somit zur Erhöhung der Qualität der Software-Produkte
 * 3. Entwurfsmuster
-** 3.2 Erzeugungsmuster: Factory, Abstract Factory
+** 3.2 Erzseugungsmuster
+*** Factory
+用 Abstract 的 Factory 类来代替生成类的功能
+**** Vorteile:
+1. Flexibilität
+2. Erweiterbarkeit/Änderbarkeit
+3. Konsistenz
+**** Nachteile
+1. Fehlende Flexibilität bei neuen Produkten
+für ein neues Produkt, z.B. Fahrzeug, muss die Schnittstelle der Factory geändert werden
 ** 3.3 Strukturierungsmuster: Decorator, Proxy
+*** Decorator 装饰
+p63    :Pro:
+**** Vorteile:
++ Flexibilität
++ lose Kopplung
++ verbesserte Kohäsion
+**** Nachteile:
++ bei vielen zusätzlichen Funktionen entsteht auch beim Decorator eine unübersichtliche Klassenstruktur
++ es wird ein große Anzahl von Objekten erzeugt
+*** Proxy 代理
+p68    :Pro:
+**** Vorteile:
++ Kohärenz
++ lose Kpplung
+**** Nachteile
++ Indirektion über das Proxy verursacht Overhead
++ kompexere Struktur
 ** 3.4 Verhaltensmuster: Command, Template, State
+*** Command Pattern
+p74,75    :Pro:
+**** Vorteile
++ Lose kopplung
++ Flexibilität
+**** Nachteile
+die Anzahl der Klassen steigt
+*** Template
+p80    :Pro:
+**** Vorteile
++ Wiederverwendung
++ Kohäsion
++ Eigenschaften
+  - einfach zu konfigurieren
+  - das Template Pattern führt zu einem invertierten Verhalten
+*** Strategy Pattern
+**** Vorteile
++ Lose Kopplung
++ Flexibilität
+**** Nachteile
++ enge Kopplung zwischen Client und Strategie
+*** State
+p92    :Pro:
+**** Vorteile
++ Wartbarkeit/Erweiterbarkeit
++ Kohäsion
+**** Nachteile
+hohe Anzahl von Klassen, dadurch kein kompakter Code
 ** 3.5 Pattern – Zusammenfassung
+*** Positive Aspekte von Pattern
+1. Pattern verbessern die strukturellen Eigenschaften der Software
+   - führen zu mehr Flexibilität
+   - verbessern nicht-funktionale Eigenschaften: Änderbarkeit, Erweiternarkeit, Kopplung
+2. Pattern repräsentieren erprobte Standardlösungen/-vokabular, die jeder kennen muss
+3. Pattern betrachten ein bestimmtes Problem isoliert
+   - in realem Einsatz müssen oft verschiedene Pattern kombiniert werden
+4. ein Problem lässt sich ggf. durch verschiedene alternative Muster lösen
+*** Kritische Aspekte von Pattern
++ jedes Pattern hat Vor-und Nachteile: Flexibilität vs. Overhead
++ Pattern führen i.d.R. aber auch zu mehr Komplexität/ Overhead
++ manche Pattern werden inzwische nauch kritisch gesehen
 * 4. Software-Entwicklungsprozesse
-* 5. Agile Software-Entwicklung
+** 4.1 Was ist ein Software-Entwicklungsprozess?
++ Software-Entwicklungsprozess beinhaltet
+  1. Vorgehensmodell
+  2. durchzuführende Aktivitäten und resultierende Produkt
+  3. Rollen: Verantwortlichkeiten und Kompetenzen
+  4. anzuwendende Standard, Richtlinien, Methoden und Werkzeuge
+
++ Wem nutzt ein definierter Entwicklungsprozess
+  1. für Software-Entwickler und Projektleiter
+  2. für Manager und Kunden
+
++ Arbeitsschritte:
+Anforderngsanalyse -> Analyse -> Entwurf -> Implementierung -> Test -> Inbetribnahme
+** 4.2 Klassische Vorgehensmodelle
+*** Wasserfallmodel
+Das Wasserfallmodell ist sequentiell, stufenweise, dokumentenorientiert
+**** Vorteile
+1. extrem einfaches Modell, das strukturiertes Vorgehen erzwingt
+2. "geringer" Managementaufwand
+3. disziplinierter, kontrollierter und sichtbarer Prozessablauf
+4. "einfach" Vertragsgestaltung
+**** Nachteile
++ strenge Sequentialität oft nicht sinvoll/ machbar
++ große Systeme zu komplex für fehlerfreie Gesamtanalyse/ Spezifikation
++ Kundenanforderungen ändern sich
++ Erkennen von Problemen erst sehr spät
++ sehr hoher Dokumentationsaufwand
+*** V-Modell
+**** Charakteristika
++ sequentielle Abfolge der Schritte
++ Beziehung zwischen Systementwicklung und Qualitätssicherung
++ Testfälle werden frühzeitig spezifiziert
+**** Vorteile
++ Qualitätssicherung integraler Aspekt
++ integriert Konzept der Teststufen
++ V-Modell 97
+  - integriert Projektmanagement, Qualitätssicherung, Konfigurationsmanagement
+  - Anpassung an projektspezifische Anforderungen möglich
+  - sehr ausführliche Darstellung
+**** Nachteile
++ wesentliche Nachteile des Wasserfallmodells bleiben erhalten
++ V-Modell 97
+  - sehr bürokratisch
+  - Handbhabung schwierig ohne Werkzeugunterstützung
+  - V-Modell 97 nicht mehr auf Stand der Technologie
+
+*** Spiral
+**** Charakteristika
+1. Risikominimierung als oberstes Ziel
+2. Softwareprozess als Spiral veranschaulicht
+3. jede Windung der Spirale ist eine Phase des Projektes, z.B. 1. Machbarkeit des Systems, 2. Anforderungen definieren, 3. System entwerfen, 4. System realisieren und einführen
+4. Jede Windung (=Iteration ) geliedert sich in 4 Segmente
+   + Zile aufstellen
+   + Risiken einschätzen und verrigern
+   + Entwicklung der Ergebnisse
+   + Planung
+**** Vorteile
++ Unterteilung in (Projekt-)Phasen
++ regelmäßige Risikoüberprüfung
++ Prototypen zur Risikominimierung
++ keine Festlegung auf ein Vorgehensmodell
++ Fehler und ungeeignete Alternativen werden frühzeitig eliminiert
+**** Nachteile
+- hoher Managementaufwand
+- i.d.R. Systementwicklung erst spät im Projekt
+- für kleine und mittlere Projekte weniger gut geeignet
+** 4.3 Inkrementelle Vorgehensmodelle
+*** Idee
+Basieren auf Idee der evolutionären Entwicklung
+**** Charakteristika
+1. System entsteht stufenweise/inkrementell (eine Stufe heißt Build)
+2. jede neue Systemstufe erweitert die vorhergehende Stufe
+3. Arbeitsschritte werden iteriert
+4. lauffähige Version für den Auftraggeber schon nach kurzer Zeit
+5. Realisierung der nächsten Ausbaustufe berücksichtigt die Erfahrungen mit der laufenden Version
+*** Stichtagsumstellung ("big bang")
+*** stufenweise Einführung ("no bang")
+Stufung reduziert das Risiko und macht Projekt besser steuerbar, erhöht aber tendenziell den Aufwand
+*** Vorteile
++ Spezifikation wird gemeinsam mit Software entwickelt.
++ frühzeitiges Erkennen der Projektrisiken.
++ Benutzerbeteiligung zentral
++ frühzeitig einsatzfähige Versionen
++ überschaubare Projektgröße
+*** Nachteile
+- evtl. Änderung der Architektur in späteren Versionen
+- ggf. wird zu schnell mit Programmierng begonnen
+- tendenziell höherer Aufwand durch Implementierung von Provisorien, Mehrfachtests, permanente Überarbeitung aller Modelle
+- vertragliche Gestaltung schiweriger
+** 4.5 V-Modell XT
+*** V-Modell XT
+**** Charakteristika
++ Anpassbarkeit (Tailoring) und Skalierbarkeit für verschiedene Projekte (Projekttyp, -gegenstand, -größe, -kritikalität)
++ Betrachtung des gesamten Systemlebenszyklus
++ Berücksichtigung von Normen und des neuesten Stands der Technologie
++ regelt Komminikation zwischen Auftraggeber und Auftragnehmer
++ Verbesserungsprozess für Vorgehensmodell in Vorgehensmodell integriert
++ sehr große Informationsmenge: Spezifikation von Aktivitäten..
+*** V-Modell XT – Konzepte (I): Projekttypen u. -varianten
+Modell soll für unterschiedliche Projektkonstellationen nutzbar sein:
+1. Projekttypen: Auftraggeber-, Auftragnehmer-, AG/AN-Projekt
+2. mit unterschiedlichen Varianten: Neu-, Weiterentwicklung, Migration, Pflege u. Wartung
+*** V-Modell XT – Konzepte (II): Produkte, Aktivitäten, Rollen
+1. Projektergebnisse stehen im Mittelpunkt (produktzentriertes Vorgehensmodell)
+2. Produkte sind alle (Zwischen-)Ergebnisse eines Projekts
+3. Produkte werden in Aktivitäten erstellt, dafür ist eine Rolle verantwortlich
+
+V-Modell XT definiert, was zu tun ist (welche Produkte zu erstellen u. welche Aktivitäten dazu durchzuführen sind) und wer etwas zu tun hat (welche Rolle ist für welches Produkt verantwortlich)
+*** V-Modell XT – Konzepte (III): Entscheidungspunkt
+1. Entscheidungspunkt ist Meilenstein im Projektablauf
+2. markieren Qualitätsmesspunkte (Quality Gates) an denen Projektfortschritt evaluiert und über Fortgang entschieden wird
+3. Entscheidungspunkte und Projektdurchführungsstrategie definieren Struktur des Projektverlaufs
+4. jedem Entscheidungspunkt ist Menge der Produkt zugeordnet, die am Ende der Projektforschrittsstufe fertig sein müssen.
+*** V-Modell XT – Konzepte (V): Projektdurchführungsstrategie
+legt Reihenfolge der Entscheidungspunkte fest, d.h. wann muss welches Produkt durch welche Aktivität erstellt werden. für Projekttyp sind verschiedene Projektdurchführungsstrategien vordefiniert.
+*** V-Modell XT – Konzepte (VI): Vorgehensbaustein
+Vorgehensbaustein fasst zu erstellende Produkte, durchzuführende
+Aktivitäten und einzunehmende Rollen zu Disziplinen zusammen.
+
+4 obligatorische Vorgehensbausteine:
+  1. Projektmanagement
+  2. Qualitätsmanagement
+  3. Problem- und Änderungsmanagement
+  4. Konfigurationsmanagement
+
+*** V-Modell XT – Tailoring
+Anpassung des Prozessmodells an ein spezifisches Projektvorhaben durch
+
+1. Bestimmung Projekttyps, -variante, Projektmerkmale
+2. Auswahl der Projektdurchführungsstrategie mit dazugehörigen Entscheidungspunkten
+3. Auswahl der anzuwendenden VOrgehensbausteine (Produkte, Aktivitäten, Rollen)
+
+*** Vorteile
++ generischer Vorgehensstandard
++ Varianten abgeleitet
++ sehr gute Anpassbarkeit für unterschiedliche Projekttypen
++ behandelt gesamten Lebenszyklus
++ Auftragnehmer und -gebersicht
++ reflektiert aktuellen Stand der Technologie
++ permanente Weiterentwicklung
++ Werkzeuge für Tailoering und Erweiterung verfügbar
+*** Nachteile
+- gewisse Rerfahrung in Handhabung notwendig
+- große Inhaltsmenge führt zu Unübersichtlichkeit
+- Aufwand für Tailoring
+- Eignung für kleinere/ mittlere Projekte fraglich
+* 5. Agile Softwarwe-Entwicklung
+** 5.1 Agiles Manifest (Werte und Prinzipien)
++ Beschränkung auf das Wesentliche: funktionierende, schnell einsetz– bare Software (codezentriert)
++ enge Zusammenarbeit mit Kunden
++ Kommunikation ersetzt Dokumentation
++ flexible Reaktion auf Änderungen
++ kleine, selbst organisierende Teams
+** 5.2 eXtreme Programming
+*** Charakteristika
++ Kunde ist Teil des Projektteams
++ Konsequente Orientierng des Projektes an Kundenanforderungen
++ wenig Overhead
++ Entwicklung und AUslieferung sehr kleiner Teilsysteme (kurze Release-Zyklen)
++ integriertes Testen
+*** XP-Konzepte
+1. Kunde vor Ort
+   + Kundenvertreter muss in Projekträumen permanent zur Verfügung stehen
+2. Plannungsspiel
+   + Festlegung des Inhalts des nächsten Inkrements in Planungsspiel über "User Stories"
+   + Kunden priorisieren Funktionalität und Entwickler schätzen Aufwand der Stories
+   + Sortieren der Stories nach Risiko, Nutzen, Zeitdauer
+   + Iteraionszyklus von 1 - 3 Wochen
+3. Metapher
+   + gemeinsame Terminologie und Sicht für das Gesamtsystem zur Vereinfachung der Kommunikation
+4. Kurze Auslieferungszyklen (Short Releases)
+   + in kurzen Abständen (3-12 Wochen) lauffähige Version (Release) fertig stellen
+5. Testgetriebene Entwicklung
+   + Testen geht vor Implementieren
+   + zu jeder Funktionaltät gibt es automatische Tests
+   + erhöhen Zuversicht, dass man fehlerfrei arbeitet, beschleunigen Entwicklung
+6. Einfaches Design
+   + keine Annahmen über die Zukunft
+7. Refactoring
+   + kontinuierliche Verbesserung der Software unter Beibehaltung der Funktionalität für einfaches Design und Redundanzfreiheit
+8. Programmieren in Paaren (Pair Programming)
+   + zwei Entwickler arbeiten vor einem Rechner (4-Augen-Prinzip)
+9. Kontinuierliche Integration
+10. Programmierstandards
+** 5.3 Scrum
+*** Charakteristika
+1. selbst orgnisierende Teams
+2. Produktentwicklung über Sprints
+3. alle Aktivitäten sind zeitlich fest beschränkt
+4. Anforderungen in Liste gesammelt (Product Backlog)
+5. geänderte Anforderungen werden begrüßt
+6. Metamodell, es sind keine spezifischen Entwicklungsmethoden
+*** Scrum – Prozess
++ Sprint (Entwicklungszyklus) :: zentrales Element mit fest vorgegebener Zeitdauer
++ Increment :: Prozess iteriert über mehrere Sprints, in jedem Sprint entsteht ein Inrement der Software, spätestens der zweite Sprint muss lauffähiges System liefern
++ Daily Scrum :: tägliche Beschsprechung
++ Sprint Review :: zum Abschluss eines Sprints nach außen (Ergebnisse diskutieren) und nach innen (Verbesserungspotenzial identifizieren)
+*** Scrum – Artefakte
++ Product Backlog :: wichtigstes Dokument eines Scrum-Projekts, priorisierte Liste aller Anforderungen, die im Projekt umgesetzt werden sollen
++ Sprint Backlog :: alle Anforderungen (aus Product Backlog), die im nächsten Sprint umgesetzt werden sollen
++ Sprint Burndown Chart ::
+  - tagesaktuelle Aufwandsschätzungen für aktuellen Sprint
+  - i.d.R grafische Darstellung
+  - dokumentiert bereits geleistete und noch zu leistende Aufwände
+  - Kontrolle ob Sprint-Ziel realistisch bzw. bei Abweichungen ergreifen von Maßnahmen (z.B. Anforderungen aus Sprint Backlog streichen)
+*** Scurm - Rollen
++ Product Owner :: vertritt Interessen des Auftraggebers
++ Scrum Team :: arbeitet selbst organisierend und autonom; es gibt keinen Teamleiter
++ Scrum Master :: verantwortlich für Einhaltung der Grundsätze und Regeln von Scrum, beseitigt Hindernisse, schützt das Team vor äußeren Einflüssen
+*** Bewertung
++ gut für kleine Teams, die am selben Ort arbeiten und wenn sich das Produkt inkrementell entwicklen lässt
++ Scrum als Managementansatz lässt sich gut mit anderen agilen Techniken verbinden
+** 5.4 Kanban
+*** Charakteristika
++ Prozessabläufe transparent darstellen, dadurch Probleme schnell sichtbar machen, um kontinuierliche Verbesserung zu ermöglichen
++ möglichst schnell Geschäftswert für Auftraggeber schaffen
++ gleichmäßiger Fluss von Anforderungen durch Wertschöpfungskette
++ (nur) drei grundlegende Prinzipen:
+  1. Visualize workflow
+  2. Pull and limit Wip (限制的卡片数量)
+  3. Continuous improvement
+
+*** Kanban – Prinzipien: 1. Visualize workflow
+1. Visualisierung des Arbeitsablaufs (workflow) auf „Kanban Board“
++ Kanban Board ::
+  + Spalten = Arbeitsschritte des Prozesses
+  + Anforderungen = Tickets
+
+*** Kanban – Prinzipien: 2. Pull and Limit WiP
+Pull-Prinzip und Begrenzung WiP (Work in Progress)
+1. Pull-System: Arbeit wird genommen, nicht zugewiesen: Mitarbeiter/innen (eines Arbeitsschritts) „ziehen“ sich Tickets aus Vorgängerschritt sobald Kapazitäten frei sind
+2. Begrenzung WiP: Anzahl Tickets (Aufgaben), die ein Prozessschritt zugleich bearbeitet, ist limitiert.
+
+*** Kanban – Prinzipien: 3. Continuous improvement
+kontinuierliche Verbesserung (Kaizen = small change for the better)
++ Standup Meetings :: tägliche Besprechungen (im Stehen, damit kurz), bei dem der Status/ Fortschritte der Tickets auf dem Board diskutiert wird
++ Operations Reviews/ Retrospektiven :: regelmäßige Treffen, um Verbesserungspotenziale zu identifizieren und umzusetzen
++ Messung :: der Prozesseigenschaften (u.a. durchschnittlichen Durchlaufzeit eines Tickets, Durchsatz, Fehlerrate) zeigt Qualität des Prozesses bzw. Optimierungspotenzial
+** 5.5 Zusammenfassung Agile Prozesse
+*** Vorteile
++ keine Bürokratie, sondern Konzentration auf Source Code
++ unmittelbares Feedback von Benutzern
++ schnellere Ergebnisse durch kurze Releases
++ gut für Projekte mit vagen Anforderungen und hoher Änderungsrate
+*** Nachteile
++ reicht Verzicht auf umfangreiche Analyse in komplexen Projekten zum Verständnis der Fachlichkeit.
++ keine ausführliche Dokumentation des Systems
++ schwierige Vertagsgestatlung
++ erfordern erfahrenes und engagiertes Team
+** 5.6 Zusammenfassung SW-Entwicklungsprozesse
+unterschiedliche Projektarten, -eigenschaften, -risiken, Firmenkulturen, Kunde-zu-SW-Firma-Beziehungen erfordern unterschiedliche Vorgehensweisen (= Prozessmodelle)
 * 6. Refactoring
+** 6.1 Refactoring: Idee
+Ziele:
+– Code (u. Modelle) in strukturierter und effizienter Weise aufräumen
+– Verbesserung der internen Struktur von SW ohne deren Funktionalität zu ändern!!!
+
+Vorgehen:
+immer nur eine einfache Änderung + direkter Test
+** 6.2 Refactoring-Methoden
+*** Redundanter Code ⇒ Extract Method
++ verwandle ein zusammenhängendes Code-Fragment in eigene Methode
++ Motivation/ Einsatz
+  - Code-Fragment, das einer Kommentierung bedarf
+  - Extrahieren oft genutzter Funktionalität in eigene Methode –  sehr kurze Methoden mit treffendem Namen (sehr wichtig!) –  vereinfacht komplexe Methoden!
+*** Große Klassen ⇒ Extract Class
+Refactoring-Methode: Extract Class
++ wenn eine Klasse Arbeit für 2 Klassen erledigt, wird die Klasse geteilt –  die relevanten Attribute und Methoden werden in die neue Klasse verschoben
+
+*** Nur Teilmenge einer Klasse relevant ⇒ Extract Interface
+Refactoring-Methode: Extract Interface
+
+*** Methoden mit vielen Parametern ⇒ Preserve whole Object
+statt atomare Parameter eigene Parameterklasse verwenden
+
+*** Feature Envy ⇒ Move Method
+verschiebe eine Methode, die meist Dienste einer anderen Klasse nutzt, in die andere Klasse
+*** Switch Statements ⇒ Replace Conditional with Polymorphism
+Polymorphie, falls switch auf Typ-Information basiert
+
+*** Navigation in Klassenhierarchien ⇒ Hide Delegate
+*** Navigation in Klassenhierarchien ⇒ Remove Middle Man
+** 6.3 Zusammenfassung
+Refactoring vs. Redesign
+
+Refactoring:
++ viele kleine Einzeländerungen mit jeweils Test
++ Software jederzeit lauffähig
++ Wahrscheinlichkeit für Fehler gering
+Redesign:
++ substantielle Änderung der Software-Struktur und/oder –Architektur
++ große Änderungen als eigenes Projektvorhaben
++ Wahrscheinlichkeit für Fehler hoch
+
+Refactoring zur kontinuierlichen Verbesserung der Code-Qualität, ohne dabei die Funktionalität zu verändern
++ jeweils nur kleine Änderungen
++ Vorgehen: Ändern – Testen, Ändern – Testen, ...
 * 7. Projektmanagement
+** 7.1 Was ist Projektmanagement?
++ Projektmanagement :: Gesamtheit aller planerischen, organisatorischen und steuernden Aufgaben in einem (Software-)Projekt
+
+p-209 记住    :Pro:
+
++ Magisches Dreieck
+** 7.2 Projektplanung
+*** Planung des Projekts
+1. zentrale Aktivität bei Projektstart (Ergebnis: Soll-Werte)
+   a. Planung der Aufgaben
+   b. Planung der Ressourcen
+   c. Planung der Termine
+2. kontinuierliche Überprüfung (und bei Bedarf Anpassung) des Plans bei Projektdurchführung
+   + Planaktualisierungen aufgrund von signifikanten Abweichungen wert des realen Stands des Projekts (Ist-Werte) vom geplanten
+
+*** Planung der Aufgaben
+1. Aktivitätenplanung
+   + Identifizierung der zu bearbeitenden Aufgaben
+   + Aufstellung einer vollständigen Liste aller Aktivitäten/ Aufgaben
+
+2. Aufwandsplanung/ -schätzung
+   + möglichst exakte Schätzung des Aufwandes für ein zukünftiges Projektvorhaben
+   + Methoden der Aufwandsschätzung
+     - Kalkulationsmethoden
+     - Expertenschätzung
+3. Projektablaufplan
+   + Aktivitätenplan und Aufwandsschätzung werden in Projektablaufplan zusammengeführt
+
+   + Projektablaufplan legt fest:
+     - logische Reihenfolge der Bearbeitung der Arbeitspakete
+     - ggf. welche Arbeitspakete gleichzeitig bearbeitet werden können und
+     - welcher Ressourcen- und Zeitbedarf notwendig ist
+   + Projektablaufpläne werden i.d.R. mit Balkendiagrammen (Gantt-Charts) und Netzplänen (PERT-Charts) dargestellt
+
+*** Terminplanung
++ Ziel :: Arbeitspakete (Aktivitäten) den Mitarbeitern zuordnen und auf Zeitachse planen
++ Zeitplan :: Darstellungsmöglichkeiten sind vielfältig und vom Projekt abhängig, u.a. Gantt-Diagramm, Excel-Sheet
++ Meilensteinplanung :: fixiert den groben Zeitablauf des Projekts, in dem geschätzte Termine aller Meilensteine festgehalten werden
+
+Meilensteine helfen
++ Abhängigkeiten zwischen Arbeitspaketen sichtbar zu machen
++ kritische Pfade zu erkennen
++ Erfolgserlebnisse für Team zu schaffen
+** 7.3 Projektorganisation
+*** Aufgaben
+Projektorganisation regelt Teamaufbau und Spielregeln für Projektablauf
++ Verteilung der Verantwortlichkeiten und Rollen
++ Entscheidungsgremien
++ Meetingstruktur
++ Berichtswesen
+*** Kommunikation
++ Kommunikation zwischen allen Beteiligten: entscheidender Erfolgsfaktor
++ effiziente Projektorganisation notwendig für Kommunikationsstruktur
+
+** 7.4 Projektkontrolle und –steuerung
+*** Aufgaben
+Aufgabe des Projektmanagers ist Verfolgung des aktuellen Projektfortschritts und Maßnahmen für künftigen Verlauf
+
+Kontrolle/ Steuerung ist ein iterativer Prozess
+1. ständige Aufwandsverfolgung (Ist-Aufwand)
+2. Restaufwandsschätzungen zu bestimmten Zeitpunkten, z.B.
+   - bei größeren Abweichungen
+   - Erreichen von Meilensteinen oder Phasenübergängen
+   - feste Zeitpunkte, z.B. quartalsweise oder halbjährlich
+3. kontinuierlicher Ist- und Soll-Vergleich; bei Differenz
+   + Neuplanung bei signifikanten Planabweichungen
+   + steuernde Maßnahmen für gewünschten Projektverlauf
+** 7.6 Zusammenfassung
 * 8. Qualitätsmanagement
+** 8.1 Was ist Qualitätsmanagement?
+Gesamtheit von Eigenschaften und Merkmalen eines Produkts oder einer
+Dienstleistung, die sich auf deren Eignung zur Erfüllung festgelegter oder
+orausgesetzter Erfordernisse beziehen.
+
+Erfordernisse ergeben sich aus "magischem Dreieck"
+
+p256    :Pro:
+
+*** zwei Qualitätsdimensionen
+1. Produktqualität (= Softwarequalität)
+   + Qualitätsmerkmale der Software
+
+2. Prozessqualität
+   + Qualitätsmerkmale (Termin, Kosten) des Entwicklungsprozesses
+*** Softwarequalität – Qualitätsfaktoren
+1. Funktionalität
+   - inhaltliche Übereinstimmung zwischen Anforderungen und Funktionalität der Software
+   - Kriterien: Angemessenheit, Richtigkeit, Interoperabilität, Sicherheit, Ordnungsmäßigkeit
+2. Zuverlässigkeit
+   - Aufrechterhaltung eines Leistungsniveaus über Zeitraum
+   - Kriterien: Reife, Fehlertoleranz, Robustheit, Wiederherstellbarkeit, Konformität
+3. Benutzbarkeit
+   - erforderlicher Aufwand und Belastung der Benutzer bei Einsatz der Software
+   - Kriterien: Verständlichkeit, Erlernbarkeit, Bedienbarkeit, Attraktivität, Konformität
+4. Effizienz (Efficiency)
+   - Verhältnis von Leistungsniveau und eingesetzten Betriebsmitteln (z.B. Speicher, Prozessorkapazität)
+   - Kriterien: Zeitverhalten, Verbrauchsverhalten, Konformität
+
+5. Änderbarkeit (Maintainability)
+   - Aufwand für Durchführung vorgegebener Änderungen
+   - Kriterien: Analysierbarkeit, Modifizierbarkeit, Stabilität, Testbarkeit
+
+6. Übertragbarkeit (Portability)
+   - Aufwand für Übertragung auf andere Systemumgebung
+   - Kriterien: Anpassbarkeit, Installierbarkeit, Koexistenz,
+     Austauschbarkeit, Konformität
+
+*** Prozessqualität
++ effektiv
++ effizient
+
+hohe Prozessqualität wird erreicht durch:
+1. kontrollierter, wiederholbarer Entwicklungsprozess
+2. kontinuierliches Qualitätsmanagement
+3. kontinuierliche Anpassung und Verbesserung des Entwicklungsprozesses
+*** Fehlervermeidung statt Fehlerbehebung
+Kosten der Fehlerbeseitigung steigen mit Projektfortschritt
+Gründe, z.B:
+  + keine 2. Chance, d.h. von Anfang an alles richtig machen
+  + falsche Funktionalität implementiert
+  + Größe des Systems erschwert Fehlerlokalisation/ -behebung
+** 8.2 Konstruktive QS-Maßnahmen
+*** Ziel der konstruktiven QS
+Vermeidung von Qualitätsmängeln durch organisatorische Maßnahmen, Methoden, Prinzipien etc. (wirken qualitätslenkend)
+*** QS-Vorgehensweise
+1. Rollen und Verantwortlichkeiten klären
+2. klare Qualitätsziele vereinbaren und konkretisieren
+3. QS-Maßnahmen einplanen und durchführen
+4. Erfolg überprüfen
+
+*** QS-Vorgehen: 1. QS-Rollen in einem Projekt
++ Qualitäts-Manager
++ QS-Verantwortlicher (PL)
++ QS-Beauftragter
++ QS-Prüfer
+
+*** QS-Vorgehen: 2. Qualitätsziele vereinbaren
+Qualitätsziele: Richtigkeit, Zeitverhalten, Fehlertoleranz
+
+*** Vorgehen: 3. QS-Maßnahmen planen und durchführen
+Maßnahmen:
++ zum Erreichen der Q-Kriterien (konstruktiv)
++ zum Prüfen der Ergebnisse (analytisch)
+*** Vorgehen: 4. Erfolg überprüfen
++ verzahnt mit Projekt-Controlling
++ Querverbindung zu Risikomanagement
++ Fertigstellung und (interne) Freigabe koppeln
+** 8.3 Analytische QS-Maßnahmen
+*** Ziel
+Erkennung und Lokalisierung von Qualitätsmängeln (= Fehler oder Mängel) (durch Prüfmaßnahmen)
+
+*** Review
+formal geplanter und strukturierter Analyse- und Bewertungs- prozess, in dem Projektergebnisse einem Team von Gutachtern präsentiert und von diesem kommentiert oder genehmigt werden
++ Gegenstand (der Prüfung) :: Projektergebnisse
++ Durchführung :: von Personen die in Entwick- lungsablauf integriert sind (Projekt-intern)
++ Dauer :: meist nur einige Stunden
+
+*** Audit
+Aktivität, bei der sowohl die Angemessenheit und Einhaltung vorgegebener Vorgehensweisen, Anweisungen und Standards als auch deren Wirksamkeit und Sinnhaftigkeit geprüft werden
+
++ Gegenstand (der Prüfung) :: Projektstandards/- Vorgehensweise
++ Durchführung :: von (externen) Personen die nicht an der Entwicklung beteiligt sind
++ Dauer :: mitunter tage-/ wochen-/ monatelanger Prozess
+** 8.4 Prozessreifegradmodelle (CMM/I)
+*** CMM/I
++ Ziel :: Bewertung (Assessment) und Verbesserung der Qualität des Software-Entwicklungsprozesses von Unternehmen
++ CMM/I ist ein Prozessreifegradmodell, d.h. welchen Reifegrad (= Qualitätsstufe) hat Software-Entwicklung eines Unternehmens
+** 8.5 Zusammenfassung
++ Qualitätssicherung: Gesamtheit der Maßnahmen zur Sicherstellung einer definierten Qualität
++ Qualitätsmanagement: Management der Qualitätssicherung
 * 9. Usability Engineering (Software Ergonomie)
+** 9.1 Usability – Einleitung
+*** Definition
+Usability eines Produktes ist das Ausmaß, in dem es von einem bestimmten Benutzer verwendet werden kann, um bestimmte Ziele in einem bestimmten Kontext effektiv, effizient und zufriedenstellend zu erreichen
++ Effektivität
++ Effizienz
++ Zufriedenheit
+** 9.2 Normen zur Systemgestaltung
+gut benutzbare Systeme müssen 7 Gestaltungsgrundsätze der Dialoggestaltung erfüllen
+
+*** 1. Grundsatz: Aufgabenangemessenheit
+*** 2. Grundsatz: Erwartungskonformität
+*** 3. Grundsatz: Selbstbeschreibungsfähigkeit
+*** 4. Grundsatz: Steuerbarkeit
+*** 5. Grundsatz: Fehlertoleranz
+*** 6. Grundsatz: Individualisierbarkeit
+*** 7. Grundsatz: Lernförderlichkeit
+** 9.3 Benutzerzentriertes Vorgehen
+*** User-Centered Design
++ benutzerzentrierter Ansatz zur Gestaltung interaktiver Systeme
++ Grundprinzipien
+  + Benutzer muss aktiv im Entwicklungsprozess eingebunden sein
+  + Angemessene Aufteilung von Tätigkeiten zwischen Benutzern und System
+  + Iterative Weiterentwicklung von Design-Entscheidungen
+  + Interdisziplinäres Design ist notwendig (Informatiker, Designer, Arbeitswissenschaftler, Psychologen etc.)
+*** User-Centered Design-Prozess
+1. Anforderungen
+2. Desion
+3. Prototyping
+4. Evaluierung
+** 9.5 Accessibility
+*** Motivation
+Accessibility (Barrierefreiheit): barrierefreier Zugang zu einer Sache (z.B. zu einem interaktiven System)
+*** Maßnahmen bzw. technische Hilfsmittel
++ Schriftgröße, Farben, Kontraste anpassbar
++ alternative Ausgabemöglichkeiten
++ z.B. Screenreader oder Braillezeilen
++ z.B. Alternativtext für Sounddateien etc.
++ alternative Eingabemöglichkeiten, z.B. Navigierbarkeit per Tastatur
+*** Sieben Säulen der Barrierefreiheit
+1. Textorientierung
+2. Kontraste und Farben
+3. Skalierbarkeit
+4. Linearisierbarkeit
+5. Geräteunabhängigkeit u. Dynamik
+6. Verständlichkeit, Navigation u. Orientierung
+7. Strukturierte Inhalte
 * 备注
 + 一半的分数都来自 Entwurfsmuster
 

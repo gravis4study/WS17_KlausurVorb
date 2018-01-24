@@ -1,0 +1,24 @@
+* 1. Lechners Gesetz
+* Canny
+1. Vorarbeitung: mit Gaußfilter den Berete lamda geglättet. Dann berechnet man die Gradient von jedem Pixel in x/y-Richtung und dessen Betrag sowie Richtung.
+2. Kantenlokalisierung: Es werden nur jene Punkte markiert, an denen der Gradient ein lokales Maximum entlang der Gradientrichtung ist.
+3. Kantenselektion und -Verfolung mit Hystrese-Schwellwert: Schwelloperation mit Hystrese verwendet 2 unterschiedliche Schwellwerten thi, tlo. Das Bild wird nach Element mit Kantenstärke > hi durchgesucht. Sobald ein solches Pixel gefunden ist, wird eine neue Kantenfolge angelegt und alle zusammenhängenden Positionen (u',v') angefügt, solang Stärke an (u',v') > tlo ist
+* Erwünschte Eigenschaften
+1. Untersuchung des wichtigen und unwichtigen Eckepunkte
+2. zuverlässiges Auffinden des Eckepunkte und Rauschen
+3. unabhängig von Orintierung der Ecke
+4. weniger Rechnenaufwand
+5. genaue Lokalisierung
+
+* Hochpassfilter und Tiefpassfilter
++ Hochpassfilter: unterdrückt niedrige Ortsfrequenzen in der Fourier-Transformierten. Kanten werden hervorgehoben.
++ Tiefpassfilter: unterdrückt hohe Ortsfrequenzen in der Fourier-Transformierten. Kanten werden abgeschwächt und das Ergebnis entspricht Glättung.
+* REL
+Jede Sequenz von identischen Symbolen durch deren Anzahl ersetzen. D.h. es werden nur die Stellen markiert, an denen sich das Symbol in der Nachricht ändert.
+* Huffman
+Kodierung die auftretentenden Symbole gemäß ihrer Häufigkeit. Häufige Symbole erhalten kurze Codes, seltene Symbole lange Codes. Entwerder optimale Codierung gemäß der Häufigkeit auftretendender Symbole brechnen oder mit empirisch ermittelten Tableen arbeiten
+* Hough-Transformation
+Die Hough-Transformation sucht im von k und d gebildeten zweidimensionalen Parameterraum alle Geraden, die durch einen gegebenen Punkt p laufen. Für jeden gefundenen Bildpunkt po werden die Zähler im Akkumulator-Array entlang der Geraden d=xk+y um 1 erhöht
+Hessesche Normalform : x sin + ycos = d
+Ansatz A: Schewllwert. Alle Akkumulatorzellen unterhalb eines Schwellwerts werden verworfen. Die übrigen werden mit einer Closing-Operation bereinigen und anschließend der Schwerpunkt der Region bestimmt.
+Ansatz B: Non-Maximum-Supression. Alle Nicht Maximum werden wervorfen, d.h. alle Zellen, deren Einträge nicht größer als die aller Nachbarn sind. Anschließend werden die größten Werte mit einer Schwellwertoperation gefunden.

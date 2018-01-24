@@ -27,7 +27,7 @@ Anordnung von Beleuchtung und Kamerasystem in Bezug auf das zu betrachtende Obje
 *** Fall 1: Das zu betrachtende Objekt befindet sich zwischen Lichtquelle und Kamera
 Das Licht wird im Bereich des Objekts "unterbrochen". Es wird ein Schatten(Kontur) abgebildet. Sehr gut bei Vermessungsaufgaben, da eindeutige Trennung von Objekt und Hintergrund. Die Oberfläche wird nicht abgebildet. verwendung: wenn die Silhouette des Objektes die entscheidende Information trägt.
 *** Fall 2:Lichtquelle und Kamera befinden sich in Bezug auf das zu betrachtende Objekt auf der gleichen Seite.
-Das Licht wird von der Oberfläche des Objekts und des Hintergrunds reflektiert. Es wird ein Abbild des Objektes in verschiedenen Grautönen erzeugt. Die Oberfläche ist zu erkennen, die Kontur wird nicht so klar dargestellt.
+Das Licht wird von der Oberfläche des Objekts und des Hintergrunds reflektiet. Es wird ein Abbild des Objektes in verschiedenen Grautönen erzeugt. Die Oberfläche ist zu erkennen, die Kontur wird nicht so klar dargestellt.
 Anwendung: bei z.B. Oberflächeninspektionen.
 
 *** Fall 3:Die Lichtquelle strahlt das Licht in einer Vorzugsrichtung ab
@@ -51,7 +51,7 @@ Die Lichtmenge pro Flächeneinheit, die auf den Sensor fällt, hängt von der Be
 + Chromatische Aberration :: Beschreibung: Lichtberechung einer ist Linse von der Wellenlänge des Lichts abhängig. Farben des Spektrums haben keinen gemeinsamen Brennpunkt. Es treten Unschärfen im Bild auf.
 + Sphärische Abberation :: Beschreibung:Sphärische Linsen haben im Zentrum und am Rand unterschiedliche Brennweiten. Es treten Unschärfen im Bild auf Objektiv-Bauwese im Detail ändern
 + Verzeichung :: Beschreibung: Nichtsymmetrischer Aufbau der Optik mit Blende vor oder hinter dem optischen Zentrum der Optik
-+ Telezentrische Objektive :: Telezentische Objektive bieten eine Parallelprojektion des Objektes. Bildgröße ist unabhängig von der Gegenstandsweite. Realisierung: Positionierung einer Blende im Brennpunkt. Nur parallele Strahlen können die Blende passieren. Durchmesser des Objektivs muss größer sein als das aufzunehmende Objekt
++ Telezentrische Objektive :: Telezentische Objektive bieten eine Parallelprojektion des Objektes. Bildgröße ist unabhängig von der Gegenstandsweite. Realisierung: Positionierung einer Blende im Brennpunkt. Nur parallele Strahlen können die Blende passieren. Durchmesser des Objektivs muss größer sein als das aufzunehmende Objek
 * 03_Bildrepräsentation und Punktoperationen
 ** Digitalisierung von Bildern
 Natürliche Bilder sind stetig, d.h: es gibt unendlich viele "Bildpubkt",und unendlich viele Grauwerte. Bilder müssen digitalisiert werden, um die Datenmengen zu begrenzen und ein Speichern/Verarbeiten im Rechner zu ermöglichen. Digitalisierung = Diskretisierung(stetig -> endliche Anzahl von Zuständen), Codeirung (Bezeichnung der Zustände)
