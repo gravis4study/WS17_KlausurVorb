@@ -1,0 +1,99 @@
+
+* Uebs
+** Sprialmodell und Unified Process
+相同点:
+1. Die beide basieren auf Iteration
+2. Das Ziel ist Risko verringern/minimieren
+3. Eine Windung in Spiralmodell entpricht eine Iteration in UP
+
+不同点:
+1. UP früher codieren
+2. UP: Es gibt keine exakte Begrenz zwischen jedem Schritt
+3. Spiral: es gibt keinen Schritt für Test
+4. Spiral: nicht inkrementell
+5. UP basiert auf Use-Case
+
+
+** "big bang" und "no bang"
++ "big bang":
+  + schnell Entwicklung
+  + geringer Aufwand
+  + großes Risiko
++ "no bang"
+  + Problem früher erkennbar
+  + sicherheit
+  + kommunition zwischen AN/AG
+
+  - aufwendig
+  - dauert lange Zeit, höhere Anforderung von Entwickler
+
+
+** V-Modell XT
+1. Projektdurchführungsstrategie
+   + legt die Reihenfolge von Entscheidungspunkte fest, d.h. wann muss welches Produkt durch welche Aktivität erstellt werden
+2. Entscheidungspunkt
+   + Entscheidungspunkt ist als Meilstein in Projektablauf, markieren Qualitätsmesspunkte an den Projektforschritt evaluiert und über Fortgang entschieden wird
+3. Vorgehensbaustein
+   + fasst zu erstellende Produkte, durchführende Aktivitäten und einzunehmende Rolle zu Diszipline zusammen
+4. Tailoring
+   + Anpassung des Prozessmodells an ein spezifisches Projektvorhaben durch
+     1. Bestimmung Projekttyps, -variante, Projektmermale
+     2. Auswahl der Projektdurchführungsstrategy mit dazugehörigen Entscheidungspunkte
+     3. Auswahl der anzuwendenden Vorgehensbausteine
+
+
+** Scrum und Kanban
++ "Timeboxing": alle Aktivitäten sind zeitlich fest
++ "Task-Boxing": Beschränkung der Anzahl der Aufgaben, an denen gleichzeitig gearbeitet oder ausgeliefert werden können. vermeiden, dass ein Teil besonders schnell fertig wird.
+
++ Unterschiede zwischen einem Sprint Burndown Chart und einem Kanban Board?
+  1. die Aktivitäten in Scrum ist zwingend zeitlich fest, Aktivitäte sind flexibel
+  2. bei Kanban ist alle Aktivitäten übersichtlich
+
+
+** Qualitätsmanagement
+1. Funktionalität
+   + inhaltliche Überprüfung zwischen Anforderungen und Funktionalität der Software
+2. Zuverlässigkeit
+   + Aufrechterhaltung eines Leistungsniveaus über Zeitraum
+3. Benutzbarkeit
+   + erforderlicher Aufwand und Belastung der Benutzer bei Einsatz der Software
+4. Effizienz
+   + Verhältnis von Leistungsniveau und eingesetzten Betriebsmitteln
+5. Änderbarkeit
+   + Aufwand für Durchführung vorgegebener Änderung
+6. Übertragbarkeit
+   + Aufwand für Übertragung auf andere Systemumgebung
+
+
+** Regelkreis des Projektmanagements
++ Projektplanung :: erstellt neue Soll-Wert, die in der Projektdurchführung geaubeitet werden soll.
++ Projektkontrolle :: wecheslt den Stand von Wert (soll -> ist)
++ Projektsteuerung :: wird es geprüft, entscheidet, was ist Nächstes. Wenn es zuwenige Soll-Werte gibt, soll die Projekt planung aktualiert werden, und zwar, erstellt neue Soll-Plan
+
+
+** Magisches Dreieck
+1. Zeit: Projektlaufzeit
+2. Kosten: Budget
+3. Leistung: Qualität
+
+wird eine der drei Größen verändert, so hat dies direkte Auswirkungen auf die beiden anderen Größen
+
+
+** Review und Audits
++ Review ::
+  1. Projektergebnisse
+  2. von Personen die in Entwicklungsablauf integriert sind (Projekt-intern)
+  3. dauert kurz
+
++ Audits ::
+  1. Projektstandars/ Vorgehensweise
+  2. von Peronen, die nicht an der Entwicklung beteiligt sind
+  3. lange dauert
+
+
+** Funktional und nichtfunktional
+1. funktional: beschreiben gewünschte Funktionalitäten, (was soll das System tun) eines Systems, dessen Daten oder Verhalten
+2. nicht funktional: die Qualität in welcher die geforderte Funktionalität zu erbringen ist, wie die Funktionlität ausgeführt werden soll
+
+
