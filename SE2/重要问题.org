@@ -1,5 +1,16 @@
+** Analysemuster
+1. Party-Pattern
+2. Organisationshierarchie-Pattern
+3. Wissens-/Meta-Ebene-Pattern
 
-* Uebs
+** Entwurfsmuster
+1. Factory
+2. Decorator
+3. Proxy
+4. Command Pattern
+5. Template
+6. Strategy
+7. State
 ** Sprialmodell und Unified Process
 相同点:
 1. Die beide basieren auf Iteration
@@ -12,7 +23,6 @@
 3. Spiral: es gibt keinen Schritt für Test
 4. Spiral: nicht inkrementell
 5. UP basiert auf Use-Case
-
 
 ** "big bang" und "no bang"
 + "big bang":
