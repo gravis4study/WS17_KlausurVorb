@@ -619,7 +619,6 @@ Usability eines Produktes ist das Ausmaß, in dem es von einem bestimmten Benutz
 + Zufriedenheit
 ** 9.2 Normen zur Systemgestaltung
 gut benutzbare Systeme müssen 7 Gestaltungsgrundsätze der Dialoggestaltung erfüllen
-
 *** 1. Grundsatz: Aufgabenangemessenheit
 *** 2. Grundsatz: Erwartungskonformität
 *** 3. Grundsatz: Selbstbeschreibungsfähigkeit
