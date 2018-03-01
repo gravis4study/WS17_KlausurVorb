@@ -1,0 +1,18 @@
+* 简介
+WS17-18 BSN1 考试 Verbesserung
+时间: 06.03.2018
+还剩8天
+* 大纲
+** Shell
+** Prozesse
+** RAM
+** Dateisysteme
+** Netze
+** Layer2
+** IP
+** IPv6/TCP
+** DNS
+** Email
+** Http
+
+* 备注

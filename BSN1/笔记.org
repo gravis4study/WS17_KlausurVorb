@@ -1,0 +1,200 @@
+* 1. Shell
+** Aufgaben von Betriebssystemen
+*** Rechnerhardware
++ Prozessor :: Assembler-Befehle ausführen
+
++ Die CPU kann im Benutzermodus(user mode) oder im Systemmodus(system mode) arbeiten.
+
++ Hauptspeicher(RAM), in dem Bytes an bestimmten Adressen gespeichert werden können
+
+*** Adressräume
++ RAM, eine Speicherzelle ist ein Byte groß und sie wird durch eine Nummer(Adresse) angesprochen
+
++ Betriebssysteme stellen jedem Prozess einen virtuellen Adressraum (virtual address space) zur Verfügung
+
++ Spezielle Hardware (memory management unit(MMU)): die virtuellen Adressräume der Prozesse in das reale RAM abzubilden
+
+*** Dateien und Dateisysteme
++ sector -> block
+
++ Blöcke sind meist 512 Bytes groß und werden durchnummeriert.
+
++ hierarchische Struktur (Baum)
+*** Benutzer und Gruppen
++ Jeder Benutzer hat einen Benutzernamen(user name) und meist dazu eine Benutzernummer(user id)
+
+** Interrupts und Systemaufrufe
+*** Rechneraufbau nach von Neumann
++ CPU, RAM und Geräte sind an einen zentralen Transportbus angeschlossen.
+
+**** Ablauf bei Programmausführung
+1. In spez. CPU Register(PC) steht die Adresse des nächsten Befehls. Lade RAM(PC) in CPU
+2. CPU führt diesen Befehl aus, d.h. sie lädt ggf. Operanden aus dem RAM, berechnet das Ergebnis und schreibt es ggf. zurück ins RAM
+3. Falls der Befehl ein Sprungbefehl war, dann PC = Sprungadresse, sonst PC = PC+1
+
+*** Interrupts
+Immer wenn ein Ereignis eintritt wird die CPU von einem Teil des Rechners unterbrochen. Nach einer Unterbrechung wird eine spezielle Routine ausgeführt, die nach dem Ereignis schaut und es verarbeitet.
+
+*** Auslöser von interrupts
+1. Hardware-Ereignisse
+2. Software-Ereignisse
+   - exception
+   - system call
+
+** Shell
+*** Kommandotypen:
+1. Internes Kommando: Wird von Shell selbst ausgeführt, d.h. Shell ruft direkt Bibliotheksfunktion auf.
+2. Externe Kommando: Ist ein auf dem System installiertes Programm. Das Shell startet das Programm und wartet auf seine Beendigung.
+
+Mit dem internen Kommando "type" findet man heraus, ob ein Kommando inern oder nicht ist.
+
+"Which", wo ein installiertes Programm im Dateisystem steht.
+
+*** Shell-Skript
+Parameter übergeben
+$0 ist der Name der Skript-Datei
+$1: erster Parameter
+** Shell-Skript学习
+
+* 2. Prozesse
+** Programm und Prozess
+Programm:
+1. Statische Beschreibung eines Algorithmus
+2. Formuliert in einer Sprache, die vom Computer verarbeitet werden kann(Assembler)
+3. Normalerweise auf Festplatten gespeichert.
+
+Prozess
+1. Dynamische Ausführung eines Programms auf einem Computer
+2. Bekommt einen Hauptspeicherbereich zugeordnet, in dem das Programm läuft
+3. Kann in verschiedenen Zuständen sein
+
+*** Prozesszustände
++ Neu :: Der Prozess wurde gerade erzeugt.
++ Bereit :: Der Prozess könnte laufen/rechnen, wenn die CPU frei wäre
++ Rechnend :: Der Prozess wird ausgeführt/rechnet
++ Blockierte :: Der Prozess wartet auf ein Ereignis und kann nicht weiter abgearbeitet werden
++ Beendet :: Der Prozess ist fertig ausgeführt
+
+*** Zustansübergänge
+1. Der Porzess wurde gerade erzeugt, z.B. unter UNIX durch fork. Es wird in die Liste der bereiten Prozess eingetragen.
+2. Der Prozess bekommt vom Betriebssystem die CPU zugeteilt und darf rechnen.
+3. Prozess bekommt die CPU wieder entzogen. "Normaler" Entzugsgrund: Ablauf der Zeitscheibe.
+4. Prozess muss auf ein Ereignis warten, z.B. Tastendruck oder andere Ein-/ Ausgaben. Er kann nicht rechnen, selbst wenn er die CPU hätte.
+5. Die Ein-/ Ausgabe ist abgeschlossen. Der Prozess könnte weiter rechnen.
+6. Das Programmende ist erreicht.
+
+*** Prozessattribute gespeichert im Prozesskontrollblock
++ Prozessnummer(PID): Systemweit eindeutige Nummber
++ Prozessnummber des Elternprozesses (PPID): Prozess, der diesen Prozess erzeugt hat
++ Benutzer- und Gruppenidentität (UID, GID): In welchem Namen bzw. für welchen Benutzer läuft der Prozess.
++ CPU-Register: Wo steht der Programmzähler, usw.
++ Offene Dateien: Lister der von diesem Prozess geöffneten Dateien inklusive aktueller Position in der Datei.
++ Aktuelles Arbeitsverzeichnis: Das Verzeichnis in dem relative Dateinamen dieses Prozesses beginnen. Wird mit dem Kommando pwd angezeigt.
++ Terminal, von dem aus der Prozess gestartet wurde.
+
+*** Scheduler und Dispatcher
++ Scheduler :: Der Scheduler wählt aus der Liste der bereiten Prozesse einen aus, der als nächster die CPU bekommt.
+  - Fairness
+  - Priorität
+  - Wartezeit
++ Dispatcher :: Der Dispatcher schaltet die CPU zwischen den Prozessen hin und her
+  - Anhalten des laufenden Prozesses
+  - Sichern des Prozesszustands im Prozesskontrollblock
+  - Für den nächsten Prozess den Prozesszustand anhand des PCB rekonstruieren
+  - Den nächsten Prozess weiterlaufen lassen
+
+*** Round Robin Scheduling
+Neben dem laufenden Prozess gibt es eine Warteschlange mit bereiten Prozessen, Spätestens nach Ablauf der Zeitscheibe wird der laufende Prozess unterbrochen. Der bisher laufende Prozess kommt an das Ende der Warteschlange. Der erste Prozess in der Warteschlange bekommt die CPU
+** Prozesse in UNIX
+
+* 3. RAM
+** Randbedingungen und Adresse
+*** Randbedingungen der Hauptspeicherverwaltung
+1) Der Prozesser kann Programme nur dann ausführen, wenn sie im Hauptspeicher (eng. Random Access Memory).
+2) Der Zugriff auf den Hauptspeicher muss sehr effizient (d.h. schnell) möglich sein.  - Memory Management Unit (MMU)
+3) Das Betriebssystem darf durch andere laufende Prozesse nicht manipuliert werden können.
+4) Ein Prozess darf auch andere laufende Prozese nicht manipuliert werden können.
+
+*** Adresstypen
++ Hardware-Adressen :: (Physische Adresse)
+  - Sie beschreibt wo im RAM die Daten gespeichert sind.
+  - In der CPU werden sie in Adressregistern gespeichert.
+  - Sie waren typischerweise 32Bit breit, sind heute aber meist 64 Bit breit.
+
++ Pragramm-Adressen :: (logische Adresse)
+  - Kommen in der Assembler-Programmierung explizit vor.
+  - In höheren Programmiersprachen abstrahieren Variablennamen von unmerischen Adressen
+  - Mit Zeigern, bzw. Referenzen kann man Adressen auch bearbeiten.
+
+*** Adressumwandelung bei Programmerstellung
++ Compiler ersetzen Variablennamen durch zugehörige numerische Programmadresse
++ Mehrere Objektdateinen werden vom Binder (engl. linker) zusammengebunden und dabei werden Adressen angepasst.
++ Beim Start des Programms wird es in den Hauptspeicher geladen und dabei findet die letzte Adressumsetzung statt
+
+Quellprogramm -> Compiler -> bindemodul -> Binder -> Lademodul -> Lader -> Programm
+
+*** Adressanpassung durch den Binder
+Relative Adressen.
+
+Beim Zugriff auf logishen Adressen (0...i) eines Moduls wird der Inhalt der zugehörigen Basisregisters addiert und dann erst hat man die richtige Adresse.
+
+*** Speicheraufteilung von Prozessen
+Platzbedarf für Programmcode und globale Daten steht nach dem übersetzen fest.
+
+*** Zusammenhängende Speicherverwaltung
+Für Mehrprogrammbetrieb muss man den Hauptspeicher in Bereich einteilen, in denen dann die einzelnen Programme ausgeführt werden.
+
+Das Betriebssystem konnte einen Prozess stoppen, den Hauptspeicher des Prozesses auf Festplatte sichern, einen gesicherten anderen Prozess in den Hauptspeicher kopieren und diesen dann weiterlaufen lassen. Diese Ein- und Auslagerung nennt man swapping.
+
+*** Nicht zusammenhängende Speicherverwltung
+Eigentlich müssen Programme nicht immer komplett im Hauptspeicher vorliegen. Es reicht, wenn der Teil, der gerade benötiget wird, im Hauptspeicher liegt.
+
+*** Fachbegriffe
++ Segment :: Ein logischer Bestandteil des Speicherbereichs eines Programms, z.B. Programmcode, statischer Datenbereich, usw.
++ Seite :: Ein Ausschnitt aus dem logischen Adressbereich mit fester Größe, beispielsweise 1KB
++ Rahmen :: Ein Ausschnitt aus dem physischen Adressbereich mit fester Größe, beispielsweise 1KB.
++ Block :: Der Nutzinhalt eines Sektors auf der Festplatte
++ Memory Management Unit :: Bestandteil der CPU, der logische Adressen als Eingabe bekommt und daraus die zugehörige physische Adresse berechnet.
+
+** Segment- und Seitenbasierte Adressierung
+
+*** Segmentbasierte Adressierung
+Logische Adressen (virtuelle Adressen) gehören immer zu einem Segment und werden über eine Segmenttabelle auf physiche Adressen abgebildet.
+
+Segmente: Programmcode, statische Daten, dynamische Daten, usw.
+
+Der Segmentdeskriptor enthält Informationen über:
+ + Basisadresse des Segments, also wo das Segment im physischen Adressraum liegt
+ + Größe des Segments
+ + Weitere Status-Bits
+
+*** Seitenbasierte Adressierung
+Eine logische (virtuelle) Adresse besteht aus zwei Teilen:
+1. Seiteninformation (oder Adresse der Seite) p
+2. Adresse innerhalb der Seite d.
+
+Der Seitendeskriptor enthält Informationen über:
+1. Seitenadresse
+2. weitere Status-Bits(Schutzbits, Presence Bit, Reference Bit, Dirty Bit, usw.)
+
+*** Paging
+Beim Auslagern von Segmenten oder Seiten spricht man von Paging
+
+Vorteil: Man kann nun Programme ausführen, die mehr Hauptspeicher brachen, als RAM im Rechner eingebaut ist.
+
+*** Strategy
+1. Optimale Strategie nach Belady
+2. LRU
+3. FIFO
+
+
+
+
+* 4. Dateisysteme
+* 5. Netze
+* 6. Layer2
+* 7. IP
+* 8. IPv6/TCP
+* 9. DNS
+* 10. Email
+* 11. Http
