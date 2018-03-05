@@ -187,14 +187,568 @@ Vorteil: Man kann nun Programme ausführen, die mehr Hauptspeicher brachen, als 
 2. LRU
 3. FIFO
 
-
-
-
 * 4. Dateisysteme
+** Das Datei- und Verzeichniskonzept
+*** Zweck von Dateien:
++ Abstrahiere für den Benutzer (oder das Anwendungsprogramm) von den logischen Blocknummern einer Partition
+
++ Schütze Informationen in Dateien durch den Einsatz von Zugriffskontrollen
+
+*** Verweise (link)
++ hard link :: Hierbei wird im zweiten Verzeichnis einfach dieselbe Inode-Nr. eingetragen.
++ soft link :: Hierbei wird im zweiten Verzeichnis eine spezielle Datei angelegt, in der nur der Pfadname zur Originaldatei im ersten Verzeichnis steht.
+
+ln 硬链接
+ln -s 软连接
+
+*** Gerätedatein
+In UNIX werden auch Geräte als Dateien modelliert.
+Der Zugriff erfolgt über die normale Dateischnittstelle
+ + Dateien liegen in /dev
+ + Zugriffe werden an Gerätetreiber weitergeleitet
+
+*** Pipe
++ Endpunkt einer Kommunikationsverbindung zwischen Prozessen
+
+
+*** Benutzer und Gruppen
++ Jeder Benutzer eines Systems gehört (mindestens) einer Gruppe an.
++ Über Gruppen werden gleiche Zugriffsrechte für viele Benutzer einfach realisiert.
+
+user/group/ohter
+
+** Implementierung von Dateisystem
+*** Aufgaben eines Dateisystems
+FAT - Verzeichnis
+Dateiname + Dateinamenserweiterung + Dateiattribute + reserviert
++ Zeit & Datum der letzten Änderung + Cluster der Datei + Dateigröße in Byte
+
+*** File Allocation Table
+Jede Platte (Partition) hat genau eine FAT. Bei n Blöcken (Clustern) hat die FAT n+2 Einträge.
+
+*** Indexbasierte Dateisystem
+Die Platte (Partition) wird in vier Bezirke eingeteilt:
+1. Boot Block
+2. Super Block
+3. iNodes
+4. Blöcke
+
+**** Eigenschaften von UNIX-Dateisystemen
+1. Baum-Orientierte Datenstruktur verbessert Zugriffszeiten
+2. Vorhandene Beschränkungen bei Dateinamen
+3. Zugriffskontrollen sind möglich
+*** Journalinf File Systems
++ Zweck :: Vereinfache und beschleunige die Wiederherstellung des Dateisystems nach einem Rechner-Absturz.
++ Idee :: Halte in einem Journal fest, welche Änderungen anstehen und lösche sie nach Änderungsdurchführung.
+
+*** Redundant Array of Inexpensive Disks (RAID)
++ Ziele ::
+  1. Beschleunigung des Zugriffs durch Einsatz von Parallelität.
+  2. Erhöhung der Zuverlässigkeit durch Einführung weriterer Sicherungs-Codes
+  3. Vergrö0erung der Kapazität durch Zusammenfassen mehrerer realer Platten
+
++ Idee :: Kombiniere geschickt mehrere einfache Platten
+  1. Architektur = Anordnung und Steuerung von Platten
+  2. Jede Architektur wurde Raid Level genant
+
+Die Steuerung der RAID-Systeme erfolgt durch:
+ + Einen Controller, sogenanntes Hardware-RAID oder
+ + Software-RAID, also einen Bestandteil des Betriebssystems
+
+**** RAID 0
+Keine Redundanz, also eigentlich kein RAID
+
+**** RAID 1 (Mirroring)
++ Schließe zwei Platten an und benutze eine immer nur als Sicherungskopie.
++ "Verschendet" die Hälfte der Kapazität
++ Der Ausfall einer Platte kann kompensiert werden
++ Keine Änderung bei Schreib-/Lese-Geschwindigkeit
+
+**** RAID 5 (Striping with distributed Parity)
++ Verteie Daten auf mehrere Platten und speichere Paritätsbits
++ Kapazitätsverluste gering
++ Der Ausfall einer Platte kann kompensiert werden
++ Wiederherstellung dauert
++ Lesegeschwindigkeit > Schreibgeschwindigkeit
+
+*** Logical Volume Management (LVM)
++ Problem :: Festplattengrößen und -Partitionierungen ändern sich zur Laufzeit nicht. Der Bedarf nach Größenänderungen von Dateisystemen im laufenden Betrieb besteht aber.
+
++ Lösung :: Füge eine weitere Abstraktionsschicht zwischen Festplattenpartition und Dateisystem ein.
+
+  + Festplatten, bzw. Partitionen werden vom LVM verwaltet.
+
+  + LVM bietet dem Betriebssystem (logische ) Partitionen an, in denen dann ein Dateisystem installiert wird.
+
+  + Die logischen Partitionen kann der LVM dann zur Laufzeit vergrößern oder verkleinern
+
 * 5. Netze
+** Klassifikation nach Übertragungstechnik
+*** Punkt-zu-Punkt-Verbindungen
+1. dedizierte Übertragungskanäle
+2. Vermittlungsstationen
+3. Wegfindung(Routing)
+
+*** Broadcast-Netze
+1. Protokolle für Zugriffskontolle
+2. ein einziger Übertragungskanal
+3. Broadcasting, Multicasting
+
+*** Peer-to-Peer
+1. Gleichberechtigung der beteiligten Rechner
+2. keine Sonderaufgaben/-rollen für einzelne Rechner
+3. Beispiel: File-Sharing-Netze
+
+*** Client-Server
+1. Clients wollen bestimmten Dienste benutzen
+2. Server übernehmen spzielle Aufgaben und bieten Dienste an.
+3. Beispiele: Datei-Server, Benutzerverwaltung, Mail-Server
+
+** Klassifikation nach Übertragungsreichweite
+*** LAN: Local Area Network
++ Vernetzung eines Raums, Gebäudes oder Compus
++ meist Broadcast-Netzwerke
+
+
+*** WAN: Wide Area Network
++ Vernetzung über weite Strecken(Land, Kontinent)
++ meist Punkt-zu-Punkt-Verbindungen
+
+** Schichtenarchitekturen
++ Zuverlässigkeit
+  - Fehlererkennung bedeutet, dass man damit rechenen muss, dass Bits bei der Übertragung verändert werden
+  - Fehlerkorrektur bedeutet, dass man irgendwie die erkannten Fehler beheben möchte.
+  - Wegfindung (engl. routing) bedeutet, dass man Zwischensationen hat.
+
++ Erweiterbarkeit :: die Implementierungsdetails in den Schichten möglichst versteckt.
+
++ Ressourcenzuweisung :: (engl. resource allocation) versuche Diestgüte (engl. quality of service) zu garantieren
+
++ Sicherheit :: Vertraulichkeit, Integrität, Authentizität. Verfügbarkeit.
+
+** Übersicht
+*** Layer 1: Bitübertragng (engl. Physical)
+Sende "rohe" Bits über Kommuniktionskanal, lege physikalische Eigenschaften fest:
+1. Darstellung von Bits (elektrisch, optisch, usw.)
+2. Übertragungsrichtung festlegen (simplex vs. duplex)
+*** Layer 2: Data Link Layer
++ Gruppiere Bits in Rahmen (engl. frame) und übertrage diese.
++ Erste Fehlererkennungsmechanismen werden eingefügt
++ Behandele Probleme wie:
+  - Zerstörte, verlorengegangene, doppelte Rahmen
+  - Geschwindigkeitsunterschiede Sender-Empfänger
+  - Zugriff auf das Übertragungsmmedium
+
+*** Layer 3: Vermittlung (engl. Network)
++ Realisiere Ende-zu-Ende Übertragung durch geeignete Wegfindung
++ Abstrahiere von unterschiedlichen Übertragungstechniken und biete ein einheitliches Adressierungsschema für Rechner (engl. host)
+*** Layer 4: Transport
++ Übertrage Daten von Prozess zu Prozess
++ Baue Verbindungen auf und ab
++ Zerlege große Nachrichten in Teile, übertrage Teile und setze Teile beim Empfänger wieder richtig zusammen.
++ Biete Zuverlässigkeit, indem verloren gegangene Teile erneut übertragen werden
+*** Layer 5: Sitzung (engl. session)
++ Baue Sitzung zwischen zwei Rchnern/Benutzern auf
++ Dialogsteuerung: Wer darf senden, wer muss warten
++ Synchronisation: Setze unterbrochene Übertragungen neu auf.
+*** Layer 6: Presentation
+Betrachte Syntax und Semantik der übertragenen Bits, Abstrahiere von Zeichensatzkodierungen (ASCII, EBCDIC, Unicode)
+
+Erlaube komplexere Datenstrukturen.
+*** Layer 7: Application
+Biete Anwendungsprotokolle für Benutzerprogramme
+1) HTTP
+2) SMTP
+3) IMAP
+4) FTP
+5) DNS
+
+** Layer 1
++ Lege Signalart und Codierung fest
+
+*** Übertragungsmedien
+1) Koaxialkabel: Ein relativ Draht mit Isolierung und einer Umantelung zur Abschirmung. Beispiel: Kabelfernsehen
+2) Twisted Pair Kabel: Verdrillte isolierte dünne Kupferkabel, Beispiel: Telefon, Ethernet
+3) Lichtwellenleiter(Glasfaer): Dünne empfindliche Glasfaser. Beispiel: Glasfaseranschluß der Telekom
+4) WLAN: Elektromagnetische Wellen. Beispiel: Eduroam oder Heimnetze
+
+*** Wireless LAN (WLAN)
++ Idee :: Benutze eletromagnetische Funkwellen zur Datenübertragung
++ WLAN ist immer ein Broadcast Medium, d.h. jeder, der eine Antenne hochhält kann die Signale empfangen
+
+*** Kenngrößen und Codierung
++ Bandbreite :: gibt Frequenzdifferenz an, die ohne signifikante Verluste übertragen werden kann. Wird in Hertz(Hz) gemessen.
++ Signalfrequenz :: gibt an, wie oft sich der Signalwert proSekunde ändert. Wird in band gemessen.
++ Datenrate :: gibt an, wie viele Bit pro Sekunde übertragen werden können. Wird in Bit/s oder bps gemessen
+
 * 6. Layer2
+** Leitungsvermittlung oder Paketvermittlung
+*** Leitungsvermittlung
++ Idee :: beim Verbindungsaufbau wird eine dedizierte Leitung für genau diese Verbindung geschaltet.
+
+*** Paketvermittlung
++ Idee :: Teile Datenstrom in einzelne Pakete, die dann nach einander auf den Weg gebracht werden. Jedes Paket muss den Weg zum Ziel "alleine" finde.
+
+** Paketerkennung
+*** Anfangs- und Endezeichen mit Byte Stuffing
++ Idee :: Jder Rahmen beginnt und endet mit einem speziellen Byte, gennant FLAG
++ Problem :: Was ist, wenn dieses Byte irgendwo im Rahmen vorkmmt?
++ Lösung :: Maskiere FLAG-Byte im Rahmen mit einem anderen speziellen Byte,
+
+*** Anfangs- und Endezeichen mit Bit Stuffing
++ Idee :: Jeder Rahmen beginnt und endet mit demselben Byte, nähmlich: 01111110
+
+** Grundsätzliche Eigenschaften von Topologien
++ Gemeinsames Medium
++ Dediziertes Medium
+
+Problem bei gemeinsamen Medien: Durcheinander senden ergibt unverständlichen "Funksalat"
++ Lösung :: Steuere(engl. to control) den Zugriff auf das Übertragungsmeduim.
+
+Im ISO-Protokollstack ist dafür im Layer 2 der Sublayer Medium Access Control (MAC) zuständig
+
+** Grundsätzliche Steuerungsmöglichkeiten
+*** Feste kanalaufteilung
+ + Frequency Division Multiplexing (FDM)
+ + Time Division Multiplexing (TDM)
+
+*** Carrier Sense Multiple Access/ Collision Detection (CSMA/CD)
+**** Ablauf des Verfahrens:
+1. Prüfe, ob Medium belegt. Sende nur bei freiem Medium.
+2. Während des Sendens: Lese parallel mit, um kollisionen zu erkennen.
+3. Fllas Kollision erkannt: Abbruch der Übertragung und warte eine "zufällige" gewählte Zeit (engl. backoff)
+**** Entstehung einer Kollision
+Eine Station beginnt mit Senden, da Medium frei. Zweite Station beginnt mit Senden, während die Signale der ersten Station noch unterwegs sind.
+
+*** Carrier Sense Multiple Access/Collision Avoidance
++ Problem :: Station 1 kann eine Kliision mit Station 2 nicht erkennen. Man nennt das auch das hidden station Problem.
++ Lösung :: Empfänger muss bei kollisionsfreiem Empfang immer eine Bestätigung (engl. acknowlege) senden. Erst nach Empfang der Bestätigung weiss der Absender, dass es gut gegangen ist.
+
+*** Verbesserung für hidden station Problem
++ Idee :: Bevor der ganze Rahmen gesendet wird, vorher testen, ob es auch gut gegen wird.
++ Beispiel Station 1 will Rahmen X an AP senden ::
+  1. Station 1 sendet Request to send (RTS) mit Rhamenlänge von X
+  2. Alle Nachbarn von Station 1 inkl. AP hören das RTS. Sie machen Pse bis Clear to send(CTS) angekommen ist.
+  3. AP sendet ein CTS mit der erwarteten Sendezeit an Station 1.
+  4. Alle Nachbarn von AP hören das CTS und pausieren die angegebene Zeit.
+  5. Station 1 sendet jetzt den geplanten Rahmen X an AP.
+  6. AP sendet ACK an Station 1.
+
++ Kollisionen entstehen nur noch bei zwei gleichzeitigen RTS. Der Access Point sendet dann kein oder nur ein CTS.
+
+** Ethernet und WLAN Rahmenformate
+*** Das IEEE 802.3 Rahmenformat (Ethernet)
+1. Preamble: 8 byte, dient der Synchronisierung mit dem Empfänger
+2. Destination address: 6 byte
+3. Source address: 6 byte
+4. Type: 2 byte
+5. Data: 0 - 1500
+6. Pad: 0 - 46
+7. Checksum: 4 byte
+
+*** Ethernet-Adressen
++ Alle Ethernet-Adressen (auch MAC-Adresse genannt) sind 6 Bytes lang.
++ Gruppenadressen sind nur als Ziel erlaubt und beginnen mit 1-Bit
+  - Multicast-Adressen sprechen eine Gruppe von Rechnern an
+  - Die Broadcast-Adresse  at alle Bits auf 1 gesetzt und spricht alle angeschlossenen Rechner an.
++ Innerhal eines lokalen Netzes sollten Ethernet-Adressen eindeutig sein.
+
+*** WLAN Betriebsmodi
+1. Ad-hoc Modus: Hierbei kommunizieren zwei WLAN-Stationen direkt miteinander
+2. Infrastruktur-Modus: Hierbei kommuniziren zwei WLAN-Stationen nichrt direkt miteinander, sondern über einen Access Point
+
+WLAN-Rahmen haben Maximalgröße von 2346 Byts (Ethernet: 1518 Bytes).
+
+** Fehlererkennung
+*** Single Bit Parity
++ Idee :: Füge redundante Daten in einen Datenrahmen ein, mit denen dann Fehler erkannt werden.
++ Eigenschaften ::
+  1. Erkennt ein falsches (umgekipptes) Bit.
+  2. Zwei umgekippte Bits werden nicht erkannt.
+  3. Die Position des gekippten Bits ist unklar
+
+*** Zweidimensiinale Bitparität
++ Idee :: Betrachte den Datenrahmen als zweidimensionale Matrix und berechne Paritätsbits für jede Zeile und jede Spalte.
++ Eigenschaften ::
+  1. Einzelne Bitfehler kann lokalisiert und korrigiert werden.
+  2. Mehrbit-Fehler können nur teilweise erkannt werden.
+
+*** Cyclic Redundacy Check (CRC)
++ Bei Funkübertragungen häufig benutzes Verfahren zur Fehlererkennung.
++ Idee :: Prüfe Korrektheit durch Polynomdivision mit Rest. Ablauf:
+  1. Interpretiere den Datenrahmen D als Binärzhal. Jede Ziffer der Binärzahl ist der Koeffizient eines Polynoms D(x). Bei k Bit im Rahmen hat das Polynom den Grad k-1.
+  2. Sender und Empfänger vereinbaren eine Generatorzahl G und damit auch ein Generatorpolynom G(x).
+  3. Eine Prüfsumme P ergänzt Binärzahl D so, dass sie ohne Rest durch G teilbar wird.
+
+*** Hanmming Distanz
++ Definition :: Anzahl unterschielicher Bits in zwei Binärwörtern
++ Ziel :: Sicherung eines Datenrahmens mit k Bits
++ Hamming Distanz eines Codes :: Minimae Hamming-Distanz von zwei beliebigen Wörtern des Codes.
+
+*** Erzeugen eines hamming Codes
+它的意义在于, 1, 2, 4, 8...这些数字化为二进制后, 即为 1, 10, 100, 1000,...
+这样的好处在于, 它的检测是按位来算的.
+第7个数字异变了, 7的二进制位111, 那么 1, 10, 100 这三个位子都会产生相应的变化, 从而得出异变的数字是第七位. 而不是其他位置.
+** Aktive Netzkomponenten
++ Signalverstärker (engl. repeater) :: kompensieren die Leitungsdämpfung, indem sie die Signale wieder "auffrishcen". Dabei werden aber auch Störungen "aufgerischt"
++ Hub :: ist ein Gerät, das ein klassisches Bus-Ehternet in sternförmirger Verkabelung erlaubt. Ein Hub überträgt empfangene Datenrahmen an alle an den Hub angeschlossenen Stationen.
++ Bridge :: nimmt ganze Rahmen entgegen, prüft diese mit Hilfe der Prüfsummen auf Fehler und leitet nur fehlerfreie Rahmen weiter.
++ Switch :: Einfaches Briges haben 2 Anschlüsse. Multiport-Bridges mit mehr als 2 Anschlüssen nennt man auch Switch.
+
+*** Funktionsweise eines Switch
++ Ein Switsch benutzt eine interne Tabelle mit Mac-Adresse und Port-Zuordnung
++ Weiß der Switch nicht, an welchen Port welche Station angeschlossen ist, dann leitet er den Rahmen einfach an ale Ports weiter. (Boradcast)
++ Anhand der Absender-Mac-Adresse eines Rahmens lernt der Switch welche Station an welchen Port angeschlossen ist.
 * 7. IP
+** IP-Adressen, Netze, der IP-Kopf
+Eine IPv4 Adresse bestehet aus zwei Teilen:
+ + Netzadresse (engl. Network Identifier) :: Dieser Teil der Adresse bezeichnet das Netz, in dem diese Adresse benutzt wird.
+ + Rechneradresse (engl. Host Identifier) :: Dieser Teil der Adresse bezeichnet den Rechner im Netz.
+
+** Classless Inter Domain Routing (CIDR)
++ Idee :: Eine Netzadresse darf an jedem beliebigen Bit enden. Eine Netzmaske gibt an, wieviele Bits zur Netzadresse gehören.
+
+** Aufbau von IP-Paketen
+1. Version
+2. IHL
+3. Type of Service
+4. Total Length
+5. Identification
+6. DF
+7. MF
+8. Fragment Offset
+9. Time to live (TTL)
+10. Protocol
+11. Header Checksum
+12. Source und Destination Address
+13. Feld für Optionen
+
+** Paketversand in einem LAN mit ARP und über Router
++ Woher weiß A, dass B in demselben lokalen Netz wie A ist?
+-> Vergleiche Netzadressenteil der IP-Adressen
+
++ Wie erfährt A die MAC-Adresse von B?
+-> Benutze das Address Resolution Protocol (ARP): Sende einen MAC-Broadcast mit einem ARP request. Jeder Rechner im Netz empfängt diese Nachricht und B antwortet dann mit einen Ethernet-Frame ARP reply an die MAC-Adresse von A.
+
+** Routing in IP-Netzen
+Für jede Zeile der Routingtabelle:
+ - Berechne Ziel-IP A Genmask = Ziel-Netz-Adresse
+ - Wenn Ziel-Netz-Adresse = Ziel, dann ist Zeile ein kandidat
+
+*** Eigenschatfen des Routing in IP
++ Trifft keine der Zeilen in der Routing-Tabelle auf ein Paket zu, dann ist es nicht zustelbar und wird verworfen.
++ Gibt es eine Default Gateway-Zeile (0,0,0,0), dann trifft diese immer zu. Sie wird aber nur dann ausgeführt, wenn es keine besser passende zeile gibt.
++ Bei falsch konfigurierten Routern können Schleifen beim Pakettransport auftreten. Pakete könnenten ewig im Kreis laufen. Das verhindert man mit dem IP header Time To Live(TTL).
+
+** ICMP
+Austausch von Steuerungs- oder Fehlermeldungen
+
+Nachrichtentypen:
+1. Fehlermeldung
+2. Diagnosemeldungen
+
+Eingebettet in IP Paket -> Protokoll Typ 1
+
+*** Format
+1. Type
+2. Code: Sub-Typ der Meldung
+3. Checksum (2 Bytes): Prüfsumme
+4. Rest of header: weitere Infromation, z.B. Zeitstempel
+
+*** Fehlernachrichten:
+1. Destination unreachable
+2. Time exceeded
+3. Source quench
+4. Redirect
+
++ ping :: Sende ICMP-Echo-Request und warte auf ICMP-Echo-Reply
+
++ tracerout :: Weg von IP-Paketen teilweise nachvollziehen
+
 * 8. IPv6/TCP
+** IPv6
+*** Ipv6 Header
+1. Version: Hier steht die Nummer, also 6
+2. Diff. Services: Braucht man zur Unterstützung von Quality of Service
+3. Flow label: Markierung von "zusammengehörigen" Paketen, die gleich behandelt werden sollten.
+4. Payload Length: Größe der Nutzlast, sie kann maximal 64KB betragen.
+5. Next Header: Beschreibt den Inhalt hinter dem Kopf. Das kann ein TCP-paket sein oder ein weiterer IPv6 Header, genannt Extension Header.
+6. Hop Limit: TTL in IPv4
+7. Source/Destination Address: Absender und Empfänger IPv6-Adressen.
+
+*** IPv6 Adresstypen
++ Unicast :: Identifiziert ein Netzinterface eines Knoten eindetuig. Pakete an diese Adressen werden nur diesem einen Knoten zugestellt.
++ Multicast :: Identifiziert eine Gruppe von IPv6-Netzinterfaces. Pakete an diese Adressen werden von allen Mitgliedern der Gruppe empfangen und bearbeitet.
++ Anycast :: Verschiedenen IPv6-Netzinterfaces können dieselbe Anycast-Adresse besitzen.
+
+** Transmiision Control Protocol(TCP)
+*** Fokus der Transportschicht
+1. Datentransport von einem Absender-Prozess auf Quellrechner zu einem Empfänger-Prozess auf Zielrechner
+2. Bereitstellung einer Programmierschnittstelle für Anwendungen
+
+*** Kernaufgaben
+1. Bereitstellung einer Kommunikationsschnittstelle für einzelne Anwendungen durch Erweiterung des des Adressierungsschemas um Ports
+2. Gegebenenfalls Sicherstellung der Zuverlässigkeit und Reihenfolge der Daten, d.h. einen zuverlässigen Transportdiesnt über ein unzuverlässiges Netz anbieten
+3. Anbieten von Flusssteuerung, Überlastungsüberwachung
+4. Portnummern sind 16 Bit Binärzahlen (0 - 65536)
+5. Nummern bis 1024 sind well known ports, die für spezielle Dienste vorgesehen sind
+
+*** Segmente und verschachtelte Übertragung
+TCP-Segmente (TCP-Pakete) haben eine Nutzlast (engl. payload) und werden als Nutzlast in IP-Pakete gepackt, welche ihrerseites die Nutzlast in einem Datenrahmen sind.
+
+*** Der TCP-Kopf (engl. TCP header)
+1. Source port: Quell-Portnummer, identifiziert den Absender-Prozess
+2. Destination port: Ziel-Portnummer, identifiziert den Empfänger-Prozess
+3. Sequence number: Folgenummer, hilft bei der Identifizierung der Position der Daten im Bytestrom.
+4. Acknowledgment number: Bestätigungsnummer, hilft bei der Prüfung, welche Daten schon beim Empfänger angekommen sind.
+
+*** Adressierung bei TCP
++ TCP verwendet Ports zur Adressierung der Prozesse
+  - socket: IP-Adresse und Port-Nummer
+  - Ein socket identifiziert einen Prozess
++ Quell-Portnummern: "frische (kurzlebige)" Port-Nummern, überlicherweise zwischen 1024 und 5000
++ Ziel-Portnummern
+  - benötigen langlebige Port-Nummern
+  - für Standard-Applikationen sogennante well-known-Ports zwischen 1 und 1024
+  - Bsp. 25=SMTP, 80=HTTP, 110=POP3, usw.
+  - sonst "frische" Portnummern von Betriebssystem größer 5000
+
+*** Der TCP-Handshake (three way handshake)
+1. Client sendet Segment mit gesetztem SYN-Bit und einer zufällig gewählten initialen Sequenz-Nr. (ISN)seq = x.
+2. Server antwortet mit gesetzten SYN- und ACK-Bit. Er wählte eigene ISN Seq=y und bestätigi im Ack-Feld, was bisher empfangen wurde (x+1).
+3. Client antwortet mit Segment mit gesetztem ACK-Bit und der neuen Seq = x+1 (es wurde ein Byte übertragn). Außerdem bestätigt Client, den erfolgreichen Empfang von Server durch Ack=y+1.
+
+*** Datenübertragung
+1. Absender zählt übertragene Bytes und erhöht die Sequnz-Nr. entsprechend.
+2. Überholen sich Segmente, so erkennt der Empfänger das anhand der Sequenz-Nr.
+3. Anhand der Ack-Nummer in (Antwor-)Segmenten des Empfängers erkennt Absender verloren egangene Segmente und kann diese erneut abschicken.
+
+*** Verbindungsabbau
+1. Hat Client keine Daten mehr zu übertragen, dann sendet er ein Segment mit gesetztem FIN-Bit. Verbindung ist nun "halb geschlossen".
+2. Server kann weiter senden. Hat er auch nichts mehr zu übertragen, dann sendet auch er ein Segment mit gesetztem FIN-Bit.
+3. Auch die Segmente mit gesetztem FIN-Bit werden durch ein Segment mit gesetztem ACK quittiert. Auch Server kann als erster ein FIN senden.
+
+
+** User Datagram Protocol (UDP)
+*** Der UDP-Kopf
+1. Source port: Quell-Portnummer, identifiziert den Absender-prozess
+2. Destination port: Ziel-Portnummber, identifiziert den Eempfänger-Prozess
+3. UDP length: Länge des Segments (Kopf und Nutzlast) in Bytes
+4. UDP checksum: Optionale Prüfsumme
 * 9. DNS
+** DNS Aufgaben und Funktionsweise
+1. Stelle die Zuordnung zwischen Namen und IP-Adressen zur Verfügung
+
+** DNS Software Architektur
+1. Client/Server Architektur
+   + Client :: (Resolver, Stub-Resolver) ist für Anfragen zuständig.
+   - Name-Server :: wartet an UDP-Port 53 auf Anfragen und liefert Antworten.
+
+** Ablauf eienr DNS Anfrage
+1. Der Resolver prüft seinen lokalen Cache und / oder seine lokale hosts Datei.
+2. Falls kein Eintrag vorhanden, dann schickt der Resolver ein UDP-Angrage-Paket an den konfigurierten Name-Server.
+3. Beim Resolver kommt ein UDP-Paket als Antwort an.
+4. Resolver prüft nicht, ob das Paket tatsächlich ovm Name-Server kommt.
+5. Resolver prüft nicht, ob er überhaupt eine Anfrage geschickt hatte.
+6. In der Antwort stehen weitere Informationen!
+7. Die Antwort des Name-Servers wird Cache des Resolvers gespeichert.
+
+** DNS-Domain und DNS-Zone
++ Bei einer Domain wie z.B. hs-hannover.de kann ein eigener Name-Server eingesetzt werden, um die Namen und IP-Adressen der Hosts in dieser Domain zu verwalten.
++ Die dafür notwendige Datenbank wird auf dem Name-Server in Form einer Zonendatei abgelegt.
++ DNS-Domain :: Jeder Teilbaum im DNS-Namensraum ist eine Domain.
++ DNS-Zone :: Eine Zone ist die autorisierende Quelle für Informationen zu jedem DNS-Domänennamen, der in der Zone enthalten ist. Ein Ausschnitt aus dem DNS-Namensraum für den ein einzelner Name-Server zustängid ist, d.h. der Name-Server kennt alle Rechner dieser Zone.
++ Die Zonendatei der Subdomain inform.hs-hannover.de beinhaltet alle Hostnamen und IP-Adressen für die Domain inform.hs-hannover.de und die Adresse der übergeordneten Domain hs-hannover.de.
+
+
+*** Rekursives Verhalten
++ Der Name-Server liefert entweder ie komplette Antwort oder eine Fehlermeldung.
++ Der Client-Resolver soll keinen unnötig komplexen Code enthalten.
++ Aus Client-Sicht transparen.
+*** Iteratives Verhalten
++ Der Name-Server liefert als Antwort einen Verweis (IP-Adressen) auf einen anderen Name-Server.
++ Ein Name-Server soll möglichst wenig Arbeit haben
+
 * 10. Email
+** Simple Mail Transfer Protocol (SMTP)
+SMTP "Well Known" Portnummer: 25
+
+SMTP ist ein textbasierendes Protokoll
++ HELO :: - Begrüßungskommando
++ MAIL FROM :: Absenderangabe
++ RCPT TP :: Empfängerangabe
++ DATA :: Beginne Nachricht
+
+*** Eigenschaften von SMTP
+Man unterscheidet bei der E-Mail-Übertragung zwischen der Nachricht selbst und dem Umschlag.
+ + Die Nachricht selbst ist all das, was nach der DATA-Zeile übertragen wird.
+ + Der envelope enthält die Informationen zum Absender (Mail FROM) und zu den Empfängern (RCPT TO). An diese Adressen wird die E-Mail zugestellt.
+ + Die Nachricht selbst besteht aus Kopf (engl. head) und Rumpf (engl. body). Im kopf werden Absender- und Empfänger-Angaben wiederholt. (From: und To: )
+*** Header Zeilen einer E-Mail
++ Subject: :: Betreff der E-Mail
++ From: :: Absender der E-Mail
++ To: :: Empfänger der E-Mail
++ Cc: :: Weitere Empfänger der E-Mail
++ Organization :: Zu welcher Organisation gehört der Absender
++ Reply-To :: An welche Adresse sollen Antworten geschickt werden.
+
+** Multi Purpose Internet Mail Extensions (MIME)
+MIME ermöglicht das Übermitteln von Multimedia-Inhalten per E-Mail.
+
+*** MIME Attachments mit Multipart
+data
+Subjetct: Visitenkarten
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="----=border"
+/*E-Mail-Body*/
+/*Hier beginnt der Textteil der Email*/
+-----=border
+Content-Type: text/plain; charset="iso-8859-1"
+
+Hallo Frau Muster...
+
+-----=border
+Content-Type: application/msword; name="Bewerbung.doc"
+Content-Transfer-Encoding: base64
+Content-Description: Bewerbung.doc
+Content-Dispositon: attachment; filename="MUELLER.doc"
+
 * 11. Http
+** HyperText Transfer Protocol (HTTP) Übersicht
++ Das Hypertext Transfer Protocol (HTTP) ist ein
+  1. zustandsloses Protokoll zur
+  2. Übertragung von Daten (Dokomenten) im Klartext
+  3. über ein Netzwerk, auf der Anwendungsschicht.
+
++ Die Bedeutung von "zustandslos"
+  - Die Informationen aus früheren Anfragen gehen verloren
+ - Für Statusinformationen können Cookies eingesetzt werden
+
++ Portnummer: 80
+
+*** Aufbau einer HTTP-Anfrage-Nachricht
++ Eine Requestzeile :: , die sich in drei Teile geliedert:
+  1. Die Methode (z.B. GET)
+  2. Die URL  (z.B. /index.html) .
+  3. Die vom Broser verwendete Protokollversion  (z.B. HTTP/1.1).
+
+*** HTTP-Anfrage-Methoden
+1. GET
+2. HEAD
+3. PUT
+4. DELETE
+5. OPTIONS
+
+*** Cookes
++ Idee :: Bei der ersten Anfrage sendet der Web-Server im Kopf der Antwort ein Antwort-Header-Feld, eine Cookie-Zeile: Set-cookie: id=1678453
+
+** Uniform Resource Identifier (URI)
+*** Dokumente auf Web-Servern
+1. Prizipell sind alle Dokument-Typen möglich. Allerdings wurde zusammen mit HTTP ein spezieller Dokumenttyp definiert.
+2. HTML
+3. SGML = Standardized Gerneralized markup Language
+4. XML = eXtensible Markup Language
+
+*** Bezeichnung von Dokumenten / Uniform Resource Identifier (URI)
+<schema>://<autoority><path>[?<query>]
+
