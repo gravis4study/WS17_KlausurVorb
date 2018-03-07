@@ -2,23 +2,15 @@
 ** Aufgaben von Betriebssystemen
 *** Rechnerhardware
 + Prozessor :: Assembler-Befehle ausführen
-
-+ Die CPU kann im Benutzermodus(user mode) oder im Systemmodus(system mode) arbeiten.
-
++ Die CPU kann im Benutzermodus (user mode) oder im Systemmodus(system mode) arbeiten.
 + Hauptspeicher(RAM), in dem Bytes an bestimmten Adressen gespeichert werden können
-
 *** Adressräume
 + RAM, eine Speicherzelle ist ein Byte groß und sie wird durch eine Nummer(Adresse) angesprochen
-
 + Betriebssysteme stellen jedem Prozess einen virtuellen Adressraum (virtual address space) zur Verfügung
-
 + Spezielle Hardware (memory management unit(MMU)): die virtuellen Adressräume der Prozesse in das reale RAM abzubilden
-
 *** Dateien und Dateisysteme
 + sector -> block
-
 + Blöcke sind meist 512 Bytes groß und werden durchnummeriert.
-
 + hierarchische Struktur (Baum)
 *** Benutzer und Gruppen
 + Jeder Benutzer hat einen Benutzernamen(user name) und meist dazu eine Benutzernummer(user id)
@@ -58,12 +50,12 @@ $1: erster Parameter
 
 * 2. Prozesse
 ** Programm und Prozess
-Programm:
+*** Programm
 1. Statische Beschreibung eines Algorithmus
 2. Formuliert in einer Sprache, die vom Computer verarbeitet werden kann(Assembler)
 3. Normalerweise auf Festplatten gespeichert.
 
-Prozess
+*** Prozess
 1. Dynamische Ausführung eines Programms auf einem Computer
 2. Bekommt einen Hauptspeicherbereich zugeordnet, in dem das Programm läuft
 3. Kann in verschiedenen Zuständen sein
@@ -108,6 +100,7 @@ Neben dem laufenden Prozess gibt es eine Warteschlange mit bereiten Prozessen, S
 ** Prozesse in UNIX
 
 * 3. RAM
+
 ** Randbedingungen und Adresse
 *** Randbedingungen der Hauptspeicherverwaltung
 1) Der Prozesser kann Programme nur dann ausführen, wenn sie im Hauptspeicher (eng. Random Access Memory).
@@ -155,7 +148,6 @@ Eigentlich müssen Programme nicht immer komplett im Hauptspeicher vorliegen. Es
 + Rahmen :: Ein Ausschnitt aus dem physischen Adressbereich mit fester Größe, beispielsweise 1KB.
 + Block :: Der Nutzinhalt eines Sektors auf der Festplatte
 + Memory Management Unit :: Bestandteil der CPU, der logische Adressen als Eingabe bekommt und daraus die zugehörige physische Adresse berechnet.
-
 ** Segment- und Seitenbasierte Adressierung
 
 *** Segmentbasierte Adressierung
@@ -210,7 +202,6 @@ Der Zugriff erfolgt über die normale Dateischnittstelle
 *** Pipe
 + Endpunkt einer Kommunikationsverbindung zwischen Prozessen
 
-
 *** Benutzer und Gruppen
 + Jeder Benutzer eines Systems gehört (mindestens) einer Gruppe an.
 + Über Gruppen werden gleiche Zugriffsrechte für viele Benutzer einfach realisiert.
@@ -237,6 +228,7 @@ Die Platte (Partition) wird in vier Bezirke eingeteilt:
 1. Baum-Orientierte Datenstruktur verbessert Zugriffszeiten
 2. Vorhandene Beschränkungen bei Dateinamen
 3. Zugriffskontrollen sind möglich
+
 *** Journalinf File Systems
 + Zweck :: Vereinfache und beschleunige die Wiederherstellung des Dateisystems nach einem Rechner-Absturz.
 + Idee :: Halte in einem Journal fest, welche Änderungen anstehen und lösche sie nach Änderungsdurchführung.
@@ -380,7 +372,6 @@ Biete Anwendungsprotokolle für Benutzerprogramme
 + Bandbreite :: gibt Frequenzdifferenz an, die ohne signifikante Verluste übertragen werden kann. Wird in Hertz(Hz) gemessen.
 + Signalfrequenz :: gibt an, wie oft sich der Signalwert proSekunde ändert. Wird in band gemessen.
 + Datenrate :: gibt an, wie viele Bit pro Sekunde übertragen werden können. Wird in Bit/s oder bps gemessen
-
 * 6. Layer2
 ** Leitungsvermittlung oder Paketvermittlung
 *** Leitungsvermittlung
@@ -467,7 +458,7 @@ WLAN-Rahmen haben Maximalgröße von 2346 Byts (Ethernet: 1518 Bytes).
   2. Zwei umgekippte Bits werden nicht erkannt.
   3. Die Position des gekippten Bits ist unklar
 
-*** Zweidimensiinale Bitparität
+*** Zweidimensinale Bitparität
 + Idee :: Betrachte den Datenrahmen als zweidimensionale Matrix und berechne Paritätsbits für jede Zeile und jede Spalte.
 + Eigenschaften ::
   1. Einzelne Bitfehler kann lokalisiert und korrigiert werden.
@@ -564,7 +555,6 @@ Eingebettet in IP Paket -> Protokoll Typ 1
 + ping :: Sende ICMP-Echo-Request und warte auf ICMP-Echo-Reply
 
 + tracerout :: Weg von IP-Paketen teilweise nachvollziehen
-
 * 8. IPv6/TCP
 ** IPv6
 *** Ipv6 Header
@@ -628,7 +618,6 @@ TCP-Segmente (TCP-Pakete) haben eine Nutzlast (engl. payload) und werden als Nut
 2. Server kann weiter senden. Hat er auch nichts mehr zu übertragen, dann sendet auch er ein Segment mit gesetztem FIN-Bit.
 3. Auch die Segmente mit gesetztem FIN-Bit werden durch ein Segment mit gesetztem ACK quittiert. Auch Server kann als erster ein FIN senden.
 
-
 ** User Datagram Protocol (UDP)
 *** Der UDP-Kopf
 1. Source port: Quell-Portnummer, identifiziert den Absender-prozess
@@ -637,18 +626,18 @@ TCP-Segmente (TCP-Pakete) haben eine Nutzlast (engl. payload) und werden als Nut
 4. UDP checksum: Optionale Prüfsumme
 * 9. DNS
 ** DNS Aufgaben und Funktionsweise
-1. Stelle die Zuordnung zwischen Namen und IP-Adressen zur Verfügung
++ Stelle die Zuordnung zwischen Namen und IP-Adressen zur Verfügung
 
 ** DNS Software Architektur
-1. Client/Server Architektur
-   + Client :: (Resolver, Stub-Resolver) ist für Anfragen zuständig.
-   - Name-Server :: wartet an UDP-Port 53 auf Anfragen und liefert Antworten.
++ Client/Server Architektur
+  - Client :: (Resolver, Stub-Resolver) ist für Anfragen zuständig.
+  - Name-Server :: wartet an UDP-Port 53 auf Anfragen und liefert Antworten.
 
 ** Ablauf eienr DNS Anfrage
 1. Der Resolver prüft seinen lokalen Cache und / oder seine lokale hosts Datei.
 2. Falls kein Eintrag vorhanden, dann schickt der Resolver ein UDP-Angrage-Paket an den konfigurierten Name-Server.
 3. Beim Resolver kommt ein UDP-Paket als Antwort an.
-4. Resolver prüft nicht, ob das Paket tatsächlich ovm Name-Server kommt.
+4. Resolver prüft nicht, ob das Paket tatsächlich vom Name-Server kommt.
 5. Resolver prüft nicht, ob er überhaupt eine Anfrage geschickt hatte.
 6. In der Antwort stehen weitere Informationen!
 7. Die Antwort des Name-Servers wird Cache des Resolvers gespeichert.
@@ -722,7 +711,7 @@ Content-Dispositon: attachment; filename="MUELLER.doc"
 
 + Die Bedeutung von "zustandslos"
   - Die Informationen aus früheren Anfragen gehen verloren
- - Für Statusinformationen können Cookies eingesetzt werden
+  - Für Statusinformationen können Cookies eingesetzt werden
 
 + Portnummer: 80
 
